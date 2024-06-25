@@ -1,9 +1,13 @@
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
+import Test from './pages/test';
 
 function App() {
   return (
     <>
-      <div className='border bg-red-500 border-blue-500'>기다려라</div>
+      <Routes>
+        <Route path='/test' element={<Test />} />
+      </Routes>
     </>
   );
 }

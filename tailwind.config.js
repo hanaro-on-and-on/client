@@ -4,11 +4,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        hanaLightGreen: '28B2A5',
-        hanaYellow: 'FFF7B4',
-        hanaPink: 'FFDDE9',
-        hanaLime: 'E0FFE1',
-        hanaSkyblue: 'CBFAFF',
+        hanaLightGreen: '#28B2A5',
+        hanaYellow: '#FFF7B4',
+        hanaPink: '#FFDDE9',
+        hanaLime: '#E0FFE1',
+        hanaSkyblue: '#CBFAFF',
       },
     },
   },
