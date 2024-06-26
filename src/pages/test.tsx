@@ -18,21 +18,21 @@ const Test = () => {
       <Frame navTitle='알바ON'>
         {isModalOpen && (
           <ModalBottom
-            title='뒤지겠니?'
+            title='TITLE'
             btnBottom
-            btnText='아이스티'
+            btnText='btnText'
             closeModal={closeModal}
             action={[
               () => {
-                console.log('아이스티 미지근');
+                console.log('test');
               },
             ]}
           >
-            <div>뒤지겠다</div>
+            <div>contents here</div>
           </ModalBottom>
         )}
         <div className='text-2xl font-bold text-hanaLightGreen'>test</div>
-        <BtnBottom text='버튼' action={[func]}></BtnBottom>
+        <BtnBottom text='button test' action={[func]}></BtnBottom>
       </Frame>
     </>
   );
