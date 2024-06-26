@@ -7,8 +7,8 @@ type Prop = {
   hasDecline?: boolean;
   declineText?: string;
   confirmText?: string;
-  declineAction?: { (): void }[];
-  confirmAction: { (): void }[];
+  declineAction?: () => void;
+  confirmAction: () => void;
   closeModal: () => void;
   children: ReactNode;
 };
@@ -18,8 +18,8 @@ const ModalCenter = ({
   hasDecline = false,
   declineText = '취소',
   confirmText = '확인',
-  declineAction,
-  confirmAction,
+  declineAction = () => {},
+  confirmAction = () => {},
   closeModal,
   children,
 }: Prop) => {
@@ -33,12 +33,18 @@ const ModalCenter = ({
             {hasDecline && (
               <BtnGray
                 text={declineText}
-                action={[...(declineAction || []), closeModal]}
+                action={() => {
+                  declineAction();
+                  closeModal();
+                }}
               />
             )}
             <BtnPrimary
               text={confirmText}
-              action={[...confirmAction, closeModal]}
+              action={() => {
+                confirmAction();
+                closeModal();
+              }}
             />
           </div>
         </div>

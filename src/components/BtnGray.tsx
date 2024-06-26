@@ -1,6 +1,6 @@
 type Prop = {
   text: string;
-  action: { (): void }[];
+  action: () => void;
 };
 
 const BtnGray = ({ text, action }: Prop) => {
@@ -9,11 +9,7 @@ const BtnGray = ({ text, action }: Prop) => {
       <button
         type='button'
         className='bg-slate-300 rounded-md px-5 text-white font-semibold h-[45px] text-center'
-        onClick={() => {
-          action?.map((item) => {
-            item();
-          });
-        }}
+        onClick={action}
       >
         {text}
       </button>

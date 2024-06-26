@@ -4,7 +4,7 @@ import BtnBottom from './BtnBottom';
 type Prop = {
   title?: string;
   btnBottom?: boolean;
-  action?: { (): void }[];
+  action?: () => void;
   btnText?: string;
   children: ReactNode;
   closeModal: () => void;
@@ -13,7 +13,7 @@ type Prop = {
 const ModalBottom = ({
   title,
   btnBottom,
-  action,
+  action = () => {},
   btnText,
   closeModal,
   children,
@@ -28,7 +28,10 @@ const ModalBottom = ({
             <div>
               <BtnBottom
                 text={btnText || ''}
-                action={[...(action ?? []), closeModal]}
+                action={() => {
+                  action();
+                  closeModal();
+                }}
               />
             </div>
           )}
