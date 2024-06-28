@@ -3,13 +3,14 @@ import Nav from './Nav';
 
 type Prop = {
   children: ReactNode;
-  navTitle: string;
+  navTitle?: string;
+  option?: boolean;
 };
 
-const Frame = ({ children, navTitle }: Prop) => {
+const Frame = ({ children, navTitle = '알바ON', option = true }: Prop) => {
   return (
     <div className='h-[100vh]'>
-      <Nav title={navTitle} />
+      {option && <Nav title={navTitle} />}
       <div
         className='flex flex-col items-center overflow-y-scroll'
         style={{ height: 'calc(100vh - 60px)' }}
