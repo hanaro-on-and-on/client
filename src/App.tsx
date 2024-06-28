@@ -10,11 +10,13 @@ import EditMyPage from './pages/employee/MyPageTab/EditMyPage';
 import OwnerCalendarPage from './pages/OwnerMainPage';
 import Attendance from './pages/employee/Attendance/Attendance';
 import AttendanceDetail from './pages/employee/Attendance/AttendanceDeTail';
+import LandingPage from './pages/LandingPage/LandingPage';
 
 function App() {
   return (
     <>
       <Routes>
+        <Route path='/' element={<LandingPage />} />
         <Route path='/test' element={<Test />} />
         <Route path='/owner-calendar' element={<OwnerCalendarPage />} />
         <Route path='/part-time/*' element={<PaymentMain />}>
