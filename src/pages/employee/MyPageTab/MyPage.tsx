@@ -4,6 +4,7 @@ import Wrapper from '../../../components/Wrapper';
 import WhiteBox from '../../../components/ui/WhiteBox';
 import WorkPlaceName from '../../../components/ui/WorkPlaceName';
 import ToolBar2 from '../../../components/ui/ToolBar2';
+import ReturnArrow from '../../../components/ui/ReturnArrow';
 
 const MyPage = () => {
   const navigation = useNavigate();
@@ -13,7 +14,7 @@ const MyPage = () => {
       <div className='w-full flex flex-col gap-10 '>
         {/* 나의 정보 */}
         <Wrapper title='나의 정보' className='mt-7'>
-          <WhiteBox className='px-3 py-7'>
+          <WhiteBox className='px-3 py-7' border>
             <div className='flex flex-col gap-2 text-sm'>
               {/* 성명 */}
               <div className='flex justify-between'>
@@ -34,7 +35,7 @@ const MyPage = () => {
           </WhiteBox>
           {/* 수정하기 버튼 */}
           <button
-            className=' self-end text-gray-400 text-sm mt-2 pr-2'
+            className=' self-end text-gray-400 text-sm mt-2 pr-2 bg-transparent'
             onClick={() => navigation('/my/edit')}
           >
             수정하기
