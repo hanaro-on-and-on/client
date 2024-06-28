@@ -8,19 +8,25 @@ type Prop = {
 };
 const ReturnArrow = ({ To, text = '목록' }: Prop) => {
   const navigation = useNavigate();
+  const onClick = () => {
+    if (To === '-1') {
+      navigation(-1);
+      return;
+    }
+    navigation(To);
+  };
+
   return (
-    <>
+    <div className='mb-1'>
       <button
-        onClick={() => {
-          navigation(To);
-        }}
+        onClick={onClick}
         type='button'
         className='text-hanaLightGreen flex gap-2'
       >
-        <FaAngleLeft className='bg-hanaLightGreen' />
+        <FaAngleLeft className='' />
         {text}
       </button>
-    </>
+    </div>
   );
 };
 

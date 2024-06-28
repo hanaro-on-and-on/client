@@ -16,13 +16,10 @@ const WhiteBox = ({
   title = '',
   border = false,
   dropShadow = false,
-  onClick = () => {},
 }: Prop) => {
   return (
     <>
-      <button
-        type='button'
-        onClick={onClick}
+      <div
         className={clsx(
           `flex flex-col bg-white px-5 rounded-3xl ${className}`,
           {
@@ -33,7 +30,7 @@ const WhiteBox = ({
       >
         {title && <div className='font-semibold text-left'>{title}</div>}
         <div className='w-full'>{children}</div>
-      </button>
+      </div>
     </>
   );
 };

@@ -30,7 +30,7 @@ const NavToggle = ({ first, second, firstSelected, secondSelected }: Prop) => {
         <button
           onClick={selectPayment}
           className={clsx('col-span-1 bg-gray-300 rounded-xl  h-full', {
-            'bg-white font-semibold': selected === first,
+            'bg-white font-bold': selected === first,
           })}
         >
           {first}
@@ -40,7 +40,7 @@ const NavToggle = ({ first, second, firstSelected, secondSelected }: Prop) => {
         <button
           onClick={selectWorktime}
           className={clsx('bg-gray-300 rounded-xl  h-full', {
-            'bg-white font-semibold': selected === second,
+            'bg-white font-bold': selected === second,
           })}
         >
           {second}
