@@ -5,8 +5,10 @@ import WhiteBox from '../../../components/ui/WhiteBox';
 import WorkPlaceName from '../../../components/ui/WorkPlaceName';
 import BtnPrimary from '../../../components/BtnPrimary';
 import ToolBar2 from '../../../components/ui/ToolBar2';
+import { useNavigate } from 'react-router-dom';
 
 const Attendance = () => {
+  const navigation = useNavigate();
   return (
     <>
       <Frame navTitle='알바ON'>
@@ -16,10 +18,14 @@ const Attendance = () => {
           <Wrapper title='오늘 출근 목록'>
             <WhiteBox border className='py-5'>
               <div className='flex flex-col gap-1 text-start'>
-                <div className='flex justify-between items-center'>
+                <button
+                  type='button'
+                  className='flex justify-between items-center bg-transparent'
+                  onClick={() => navigation('detail/롯데리아')}
+                >
                   <WorkPlaceName name='롯데리아' colorType='02' />
                   <FaAngleRight />
-                </div>
+                </button>
                 <div className='font-bold text-gray-400'>9:00 ~ 10:00</div>
                 <div className='border rounded-sm text-sm border-hanaLightGreen px-3 mb-2'>
                   [롯데리아] 행주 널어놓고 가세요
