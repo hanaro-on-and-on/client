@@ -11,6 +11,8 @@ import OwnerCalendarPage from './pages/OwnerMainPage';
 import Attendance from './pages/employee/Attendance/Attendance';
 import AttendanceDetail from './pages/employee/Attendance/AttendanceDeTail';
 import LandingPage from './pages/LandingPage/LandingPage';
+import EmployeeGreeting from './pages/LandingPage/EmployeeGreeting';
+import EmployeeAddMainAccount from './pages/LandingPage/EmployeeAddMainAccount';
 
 function App() {
   return (
@@ -33,6 +35,11 @@ function App() {
         <Route
           path='/attendance/detail/:workPlace'
           element={<AttendanceDetail />}
+        />
+        <Route path='/greeting/employee' element={<EmployeeGreeting />} />
+        <Route
+          path='/greeting/employee/account'
+          element={<EmployeeAddMainAccount />}
         />
       </Routes>
     </>

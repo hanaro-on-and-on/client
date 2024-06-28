@@ -35,7 +35,7 @@ const LandingPage = () => {
                 <button
                   type='button'
                   className='w-full h-full flex justify-start bg-transparent py-3'
-                  onClick={() => navigation('/my')}
+                  onClick={() => navigation('/greeting/employee')}
                 >
                   알바ON
                 </button>
