@@ -7,12 +7,14 @@ import Payment from './pages/employee/PartTimeTab/Payment';
 import PaymentDetail from './pages/employee/PartTimeTab/PaymentDetail';
 import MyPage from './pages/employee/MyPageTab/MyPage';
 import EditMyPage from './pages/employee/MyPageTab/EditMyPage';
+import OwnerCalendarPage from './pages/OwnerMainPage';
 
 function App() {
   return (
     <>
       <Routes>
         <Route path='/test' element={<Test />} />
+        <Route path='/owner-calendar' element={<OwnerCalendarPage />} />
         <Route path='/part-time/*' element={<PaymentMain />}>
           <Route path='worktime' element={<WorkTime />} />
           <Route path='payment' element={<Payment />} />
