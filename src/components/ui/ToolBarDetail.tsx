@@ -5,7 +5,9 @@ type ToolBarDetailProps = {
 
 const ToolBarDetail = ({ title, isSelected }: ToolBarDetailProps) => {
   return (
-    <div className={`transition-all ${isSelected ? 'font-bold' : ''}`}>
+    <div
+      className={`transition-all ${isSelected ? 'font-bold text-hanaLightGreen' : ''}`}
+    >
       {title}
     </div>
   );
