@@ -58,23 +58,22 @@ const Payment = () => {
         {/* 매장 목록 */}
         {paymentList?.map((item) => {
           return (
-            <WhiteBox
-              key={item.name}
-              border
-              className='w-full py-3'
-              onClick={() =>
-                navigation(
-                  `detail/${selectedMonth?.getFullYear()}-${selectedMonth?.getMonth() + 1}` +
-                    `/${item.name}`
-                )
-              }
-            >
-              <div className='flex justify-between items-center'>
+            <WhiteBox key={item.name} border className='w-full py-3'>
+              <button
+                type='button'
+                onClick={() =>
+                  navigation(
+                    `detail/${selectedMonth?.getFullYear()}-${selectedMonth?.getMonth() + 1}` +
+                      `/${item.name}`
+                  )
+                }
+                className='flex justify-between items-center w-full bg-transparent'
+              >
                 <WorkPlaceName name={item.name} colorType='01' />
                 <div className='flex items-center gap-1'>
                   {item.payment} <FaAngleRight />
                 </div>
-              </div>
+              </button>
             </WhiteBox>
           );
         })}
