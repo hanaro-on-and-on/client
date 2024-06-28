@@ -25,7 +25,7 @@ const NavToggle = ({ first, second, firstSelected, secondSelected }: Prop) => {
 
   return (
     <>
-      <div className='grid grid-cols-2 justify-between rounded-xl bg-gray-300 w-full h-[45px]'>
+      <div className='grid grid-cols-2 justify-between rounded-xl border border-gray-300 bg-gray-300 w-full h-[45px]'>
         {/* 첫 항목 */}
         <button
           onClick={selectPayment}
