@@ -1,19 +1,15 @@
 type Prop = {
   text: string;
-  action: { (): void }[];
+  action: () => void | undefined;
 };
 
-const BtnBottom = ({ text, action = [] }: Prop) => {
+const BtnBottom = ({ text, action }: Prop) => {
   return (
     <>
       <button
         type='button'
         className='bg-hanaLightGreen rounded-md min-w-full text-white font-semibold h-[45px] text-center'
-        onClick={() => {
-          action?.map((item) => {
-            item();
-          });
-        }}
+        onClick={action}
       >
         {text}
       </button>
