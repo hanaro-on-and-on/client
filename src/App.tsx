@@ -8,6 +8,8 @@ import PaymentDetail from './pages/employee/PartTimeTab/PaymentDetail';
 import MyPage from './pages/employee/MyPageTab/MyPage';
 import EditMyPage from './pages/employee/MyPageTab/EditMyPage';
 import OwnerCalendarPage from './pages/OwnerMainPage';
+import Attendance from './pages/employee/Attendance/Attendance';
+import AttendanceDetail from './pages/employee/Attendance/AttendanceDeTail';
 
 function App() {
   return (
@@ -25,6 +27,11 @@ function App() {
         />
         <Route path='/my' element={<MyPage />} />
         <Route path='/my/edit' element={<EditMyPage />} />
+        <Route path='/attendance' element={<Attendance />} />
+        <Route
+          path='/attendance/detail/:workPlace'
+          element={<AttendanceDetail />}
+        />
       </Routes>
     </>
   );
