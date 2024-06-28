@@ -20,7 +20,7 @@ const ModalBottom = ({
 }: Prop) => {
   return (
     <>
-      <div className='fixed w-[390px] h-screen bg-black bg-opacity-50 z-40 flex justify-center items-center'>
+      <div className='fixed bottom-0 self-center w-[390px] h-screen bg-black bg-opacity-50 z-40 flex justify-center items-center'>
         <div className='fixed bottom-0 w-[390px]  bg-white rounded-t-3xl drop-shadow-sm min-h-[200px] flex flex-col justify-between px-5 pt-10 pb-5 '>
           {title && <div className='font-black mb-2'>{title}</div>}
           <div>{children}</div>
