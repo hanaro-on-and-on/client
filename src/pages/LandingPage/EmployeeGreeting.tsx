@@ -25,7 +25,10 @@ const EmployeeGreeting = () => {
             <div>를 도와드립니다</div>
           </div>
 
-          <BtnBottom text='알바ON 시작하기' action={() => navigation('/my')} />
+          <BtnBottom
+            text='알바ON 시작하기'
+            action={() => navigation('/greeting/employee/account')}
+          />
         </div>
       </Frame>
     </>
