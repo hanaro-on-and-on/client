@@ -5,7 +5,7 @@ export function getColor(colorType: string) {
     case '01':
       return 'bg-red-400';
     case '02':
-      return 'bg-hanaLime';
+      return 'bg-lime-500';
     case '03':
       return 'bg-yellow-200 ';
     case '04':
