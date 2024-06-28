@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import ToolBarDetail from './ToolBarDetail';
 
 const mockData = ['나의 사업장', '캘린더'];
@@ -21,7 +20,7 @@ const ToolBar = ({
 
   return (
     <>
-      <div className='flex justify-evenly min-h-12 items-center border-b border-gray-200'>
+      <div className='relative flex justify-evenly min-h-12 items-center border-b border-gray-200 w-full'>
         {options.map((option, idx) => (
           <button
             key={option}
