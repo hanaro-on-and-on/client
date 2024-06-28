@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import WhiteBox from '../../components/ui/WhiteBox';
-import { formatMonths, styleMonths } from '../../utils/format-date';
+import WhiteBox from '../../../components/ui/WhiteBox';
+import { formatMonths, styleMonths } from '../../../utils/format-date';
 import { useEffect, useState } from 'react';
 import { FaAngleRight } from 'react-icons/fa6';
-import WorkPlaceName from '../../components/ui/WorkPlaceName';
+import WorkPlaceName from '../../../components/ui/WorkPlaceName';
 
 type Payment = {
   name: string;

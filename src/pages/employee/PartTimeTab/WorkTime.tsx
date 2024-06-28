@@ -1,8 +1,8 @@
-import Wrapper from '../../components/Wrapper';
-import WhiteBox from '../../components/ui/WhiteBox';
-import WorkPlaceName from '../../components/ui/WorkPlaceName';
-import BtnBorder from '../../components/BtnBorder';
-import ModalBottom from '../../components/ModalBottom';
+import Wrapper from '../../../components/Wrapper';
+import WhiteBox from '../../../components/ui/WhiteBox';
+import WorkPlaceName from '../../../components/ui/WorkPlaceName';
+import BtnBorder from '../../../components/BtnBorder';
+import ModalBottom from '../../../components/ModalBottom';
 import { useState } from 'react';
 
 const WorkTime = () => {

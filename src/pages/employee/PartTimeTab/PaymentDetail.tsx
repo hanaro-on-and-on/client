@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import WhiteBox from '../../components/ui/WhiteBox';
-import WorkPlaceName from '../../components/ui/WorkPlaceName';
-import ReturnArrow from '../../components/ui/ReturnArrow';
-import Frame from '../../components/Frame';
-import { formatMonths, styleMonths } from '../../utils/format-date';
-import BtnGray from '../../components/BtnGray';
-import Circle from '../../components/ui/Circle';
+import WhiteBox from '../../../components/ui/WhiteBox';
+import WorkPlaceName from '../../../components/ui/WorkPlaceName';
+import ReturnArrow from '../../../components/ui/ReturnArrow';
+import Frame from '../../../components/Frame';
+import { formatMonths, styleMonths } from '../../../utils/format-date';
+import BtnGray from '../../../components/BtnGray';
+import Circle from '../../../components/ui/Circle';
 
 const PaymentDetail = () => {
   const today = new Date();
