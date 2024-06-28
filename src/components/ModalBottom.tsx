@@ -21,7 +21,14 @@ const ModalBottom = ({
   return (
     <>
       <div className='fixed bottom-0 self-center w-[390px] h-screen bg-black bg-opacity-50 z-40 flex justify-center items-center'>
-        <div className='fixed bottom-0 w-[390px]  bg-white rounded-t-3xl drop-shadow-sm min-h-[200px] flex flex-col justify-between px-5 pt-10 pb-5 '>
+        <div className='fixed bottom-0 w-[390px]  bg-white rounded-t-3xl drop-shadow-sm min-h-[200px] flex flex-col justify-between px-5 pt-0 pb-5 '>
+          <button
+            className='w-full py-3 flex justify-center bg-transparent'
+            onClick={closeModal}
+          >
+            <div className='rounded-xl w-[90px] bg-slate-500 h-1 '></div>
+          </button>
+
           {title && <div className='font-black mb-2'>{title}</div>}
           <div>{children}</div>
           {btnBottom && (
