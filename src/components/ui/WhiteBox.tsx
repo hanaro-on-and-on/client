@@ -7,6 +7,7 @@ type Prop = {
   className?: string;
   title?: string;
   children: ReactNode;
+  onClick?: () => void;
 };
 
 const WhiteBox = ({
@@ -20,7 +21,7 @@ const WhiteBox = ({
     <>
       <div
         className={clsx(
-          `flex flex-col bg-white py-5 px-5 rounded-3xl ${className}`,
+          `flex flex-col bg-white px-5 rounded-3xl ${className}`,
           {
             'border border-gray-200': border,
             'drop-shadow-sm': dropShadow,

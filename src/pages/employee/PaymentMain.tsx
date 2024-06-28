@@ -1,8 +1,10 @@
 import Frame from '../../components/Frame';
 import NavToggle from '../../components/NavToggle';
-import WhiteBox from '../../components/ui/WhiteBox';
+
+import { Outlet, useNavigate } from 'react-router-dom';
 
 const PaymentMain = () => {
+  const navigation = useNavigate();
   return (
     <>
       <Frame navTitle='알바ON'>
@@ -10,12 +12,14 @@ const PaymentMain = () => {
           <NavToggle
             first='급여관리'
             second='근무 관리'
-            firstSelected={() => {}}
-            secondSelected={() => {}}
+            firstSelected={() => {
+              navigation('/part-time/payment');
+            }}
+            secondSelected={() => {
+              navigation('/part-time/worktime');
+            }}
           />
-          <WhiteBox className='w-full' border>
-            안녕?
-          </WhiteBox>
+          <Outlet />
         </div>
       </Frame>
     </>
