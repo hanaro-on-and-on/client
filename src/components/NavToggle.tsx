@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Prop = {
   first: string;
@@ -21,12 +21,15 @@ const NavToggle = ({ first, second, firstSelected, secondSelected }: Prop) => {
     secondSelected();
   };
 
+  useEffect(() => {
+    console.log(selected);
+  }, []);
   return (
     <>
-      <div className='relative rounded-xl bg-gray-300 w-[80%] h-[50px]'>
+      <div className='grid grid-cols-2 justify-between rounded-xl bg-gray-300 w-[80%] h-[50px]'>
         <button
           onClick={selectPayment}
-          className={clsx('absolute rounded-xl bg-white w-[50%] h-[50px]', {
+          className={clsx('col-span-1 bg-gray-300 rounded-xl  h-[50px]', {
             'bg-white font-semibold': selected === first,
           })}
         >
@@ -34,13 +37,13 @@ const NavToggle = ({ first, second, firstSelected, secondSelected }: Prop) => {
         </button>
         <button
           onClick={selectWorktime}
-          className={clsx('absolute rounded-xl bg-white w-[50%] h-[50px]', {
+          className={clsx('bg-gray-300 rounded-xl  h-[50px]', {
             'bg-white font-semibold': selected === second,
           })}
         >
           {second}
         </button>
-        <div className='absolute rounded-xl bg-white w-[50%] h-[50px]'></div>
+        <div className='absolute rounded-xl bg-white  h-[50px]'></div>
       </div>
     </>
   );
