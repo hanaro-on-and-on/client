@@ -21,7 +21,7 @@ const ReturnArrow = ({ To, text = '목록' }: Prop) => {
       <button
         onClick={onClick}
         type='button'
-        className='text-hanaLightGreen flex gap-2'
+        className='text-hanaLightGreen flex gap-2 bg-transparent'
       >
         <FaAngleLeft className='' />
         {text}
