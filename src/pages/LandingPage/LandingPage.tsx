@@ -28,7 +28,7 @@ const LandingPage = () => {
                   type='button'
                   className='w-full h-full flex justify-start bg-transparent py-3'
                 >
-                  사장ON
+                  사장님ON
                 </button>
               </WhiteBox>
               <WhiteBox border>
