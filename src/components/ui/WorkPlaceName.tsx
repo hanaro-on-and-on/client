@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { getColor } from '../../utils/get-color';
 
 type WorkPlaceNameProps = {

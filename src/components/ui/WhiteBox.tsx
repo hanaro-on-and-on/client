@@ -1,0 +1,37 @@
+import clsx from 'clsx';
+import { ReactNode } from 'react';
+
+type Prop = {
+  border?: boolean;
+  dropShadow?: boolean;
+  className?: string;
+  title?: string;
+  children: ReactNode;
+};
+
+const WhiteBox = ({
+  children,
+  className = '',
+  title = '',
+  border = false,
+  dropShadow = false,
+}: Prop) => {
+  return (
+    <>
+      <div
+        className={clsx(
+          `flex flex-col bg-white py-5 px-5 rounded-3xl ${className}`,
+          {
+            'border border-gray-200': border,
+            'drop-shadow-sm': dropShadow,
+          }
+        )}
+      >
+        {title && <div className='font-semibold text-left'>{title}</div>}
+        <div className='w-full'>{children}</div>
+      </div>
+    </>
+  );
+};
+
+export default WhiteBox;
