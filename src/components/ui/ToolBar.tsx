@@ -15,11 +15,11 @@ const ToolBar = ({ options = mockData }: ToolBarProps) => {
 
   return (
     <>
-      <div className='flex justify-evenly min-h-12 items-center border-b border-gray-200'>
+      <div className='relative flex justify-evenly min-h-12 items-center border-b border-gray-200 w-full'>
         {options.map((option, idx) => (
           <button
             key={option}
-            className={`bg-white px-8 py-3 ${idx == selected ? 'border-b-2 border-hanaLightGreen' : ''}`}
+            className={`bg-transparent px-2 py-3 ${idx == selected ? 'border-b-2 border-hanaLightGreen' : ''}`}
             onClick={() => onClickSelect(idx)}
             disabled={selected == idx}
           >
