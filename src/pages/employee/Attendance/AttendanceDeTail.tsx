@@ -4,9 +4,29 @@ import Wrapper from '../../../components/Wrapper';
 import ToolBar2 from '../../../components/ui/ToolBar2';
 import WhiteBox from '../../../components/ui/WhiteBox';
 import ReturnArrow from '../../../components/ui/ReturnArrow';
+import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { useEffect, useState } from 'react';
+const { kakao } = window;
 
 const AttendanceDetail = () => {
   const { workPlace } = useParams();
+  const [location, setLoacation] = useState<{
+    latitude: number;
+    longitude: number;
+  }>({ longitude: 0, latitude: 0 });
+
+  const successHandler = (response: any) => {
+    console.log(response); // coords: GeolocationCoordinates {latitude: 위도, longitude: 경도, …} timestamp: 1673446873903
+    const { latitude, longitude } = response.coords;
+    setLoacation({ latitude, longitude });
+  };
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(successHandler, (err) => {
+      console.log(err);
+    });
+  }, []);
+
   return (
     <>
       <Frame navTitle='알바ON'>
@@ -14,7 +34,18 @@ const AttendanceDetail = () => {
         <div className='w-full flex flex-col mt-5 pb-10'>
           <ReturnArrow To='/attendance' />
           <Wrapper title={workPlace} className='gap-3'>
-            <div className='bg-white rounded-md border h-[200px]'> </div>
+            {/* 지도 */}
+            <div className='bg-white rounded-md border h-[200px]'>
+              <Map
+                center={{ lat: location.latitude, lng: location.longitude }}
+                style={{ width: '100%', height: '100%' }}
+              >
+                <MapMarker
+                  position={{ lat: location.latitude, lng: location.longitude }}
+                ></MapMarker>
+              </Map>
+            </div>
+            {/* 근무요일 */}
             <WhiteBox title='근무요일' border className='py-3 min-h-[200px]'>
               <div className='flex justify-between mt-5'>
                 <div className='flex flex-col items-center'>
