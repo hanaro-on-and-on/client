@@ -23,6 +23,29 @@ class ApiClient implements employeeApi {
     return response.data;
   }
 
+  //알바생 - 서명 요청 목록
+  public async getConfirmReq() {
+    const response = await this.axiosInstance.request({
+      method: 'get',
+      url: 'employee/work-places/invitation',
+    });
+
+    return response.data;
+  }
+
+  //알바생 - 월별 급여 내역 조회
+  public async getMonthlyPayment(
+    year: number,
+    month: number
+  ): Promise<BaseResponse<MonthlyPayment>> {
+    const response = await this.axiosInstance.request({
+      method: 'get',
+      url: `employee/salaries?year=${year}&month=${month}`,
+    });
+
+    return response.data;
+  }
+
   //==========================
   // 생성 메소드
   private static createAxiosInstance() {
