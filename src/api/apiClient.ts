@@ -34,6 +34,19 @@ class ApiClient implements employeeApi {
     return response.data;
   }
 
+  //알바생 - 월별 급여 내역 조회
+  public async getMonthlyPayment(
+    year: number,
+    month: number
+  ): Promise<BaseResponse<MonthlyPayment>> {
+    const response = await this.axiosInstance.request({
+      method: 'get',
+      url: `employee/salaries?year=${year}&month=${month}`,
+    });
+
+    return response.data;
+  }
+
   //==========================
   // 생성 메소드
   private static createAxiosInstance() {
