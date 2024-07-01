@@ -20,13 +20,10 @@ const WhiteBox = ({
   return (
     <>
       <div
-        className={clsx(
-          `flex flex-col bg-white px-5 rounded-3xl ${className}`,
-          {
-            'border border-gray-200': border,
-            'drop-shadow-sm': dropShadow,
-          }
-        )}
+        className={clsx(`flex flex-col bg-white px-5 rounded-xl ${className}`, {
+          'border border-gray-200': border,
+          'drop-shadow-sm': dropShadow,
+        })}
       >
         {title && <div className='font-semibold text-left'>{title}</div>}
         <div className='w-full'>{children}</div>
