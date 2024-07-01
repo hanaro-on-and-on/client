@@ -11,6 +11,7 @@ type ManualWorkPlaceAdditionResponse = {
 //서명 요청
 type ConfirmWorks = {
   employeeId: number | null;
+
   workPlaceName: string;
   colorCodeType: string;
   ownerName: string;

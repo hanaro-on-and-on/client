@@ -3,27 +3,49 @@ import WhiteBox from '../../../components/ui/WhiteBox';
 import WorkPlaceName from '../../../components/ui/WorkPlaceName';
 import BtnBorder from '../../../components/BtnBorder';
 import ModalBottom from '../../../components/ModalBottom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ApiClient from '../../../api/apiClient';
 
 const WorkTime = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const navigation = useNavigate();
+  const [confirmList, setConfirmList] = useState<ConfirmWorks[]>([]);
+
+  const getConfirmList = async () => {
+    try {
+      const response: ConfirmReqResponse =
+        await ApiClient.getInstance().getConfirmReq();
+
+      console.log(response);
+      setConfirmList(response.workPlacesInvitaionsGetResponseList);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    getConfirmList();
+  }, []);
 
   return (
     // 연동 요청
     <div className='w-full flex flex-col gap-10'>
       <Wrapper title='연동 요청'>
-        <WhiteBox className='py-3' border>
-          <div className='flex justify-between items-center'>
-            <WorkPlaceName name='롯데리아' colorType='02' />
-            <BtnBorder
-              color='green'
-              text='서명 요청'
-              onClick={() => setModalOpen(true)}
-            />
-          </div>
-        </WhiteBox>
+        {confirmList?.map((item) => {
+          return (
+            <WhiteBox className='py-3' border key={item.workPlaceName}>
+              <div className='flex justify-between items-center'>
+                <WorkPlaceName name='롯데리아' colorType={item.colorCodeType} />
+                <BtnBorder
+                  color='green'
+                  text='서명 요청'
+                  onClick={() => setModalOpen(true)}
+                />
+              </div>
+            </WhiteBox>
+          );
+        })}
       </Wrapper>
 
       {/* 사장님과 연동 */}
