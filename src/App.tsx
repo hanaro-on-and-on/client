@@ -31,6 +31,10 @@ function App() {
           path='/part-time/payment/detail/:dayMonth/:workPlace'
           element={<PaymentDetail />}
         />
+        <Route
+          path='/part-time/worktime/manual/addition'
+          element={<ManualWorkPlaceAddition />}
+        />
         <Route path='/my' element={<MyPage />} />
         <Route path='/my/edit' element={<EditMyPage />} />
         <Route path='/attendance' element={<Attendance />} />
