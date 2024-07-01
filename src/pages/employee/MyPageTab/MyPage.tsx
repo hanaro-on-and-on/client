@@ -4,10 +4,28 @@ import Wrapper from '../../../components/Wrapper';
 import WhiteBox from '../../../components/ui/WhiteBox';
 import WorkPlaceName from '../../../components/ui/WorkPlaceName';
 import ToolBar2 from '../../../components/ui/ToolBar2';
-import ReturnArrow from '../../../components/ui/ReturnArrow';
+import { useEffect, useState } from 'react';
+import ApiClient from '../../../api/apiClient';
 
 const MyPage = () => {
   const navigation = useNavigate();
+  const [papers, setPapers] = useState<EmploymentContractListGetResponse[]>([]);
+
+  const fetchData = async () => {
+    try {
+      const response: EmploymentContractListGetResponse[] =
+        await ApiClient.getInstance().getPaperList();
+
+      console.log(response);
+      setPapers(response);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <Frame navTitle='알바ON'>
       <ToolBar2 isEmployee />
@@ -45,14 +63,20 @@ const MyPage = () => {
         {/* 근로계약서 */}
         <Wrapper title='근로계약서'>
           <div className='flex flex-col'>
-            <WhiteBox className='px-3 py-5' border>
-              <div className='flex flex-col justify-center text-sm w-full'>
-                <div className='w-full flex justify-between items-center'>
-                  <WorkPlaceName name='롯데리아' colorType='02' />
-                  <div>2023.01.01</div>
+            {papers?.map((item, index) => (
+              <WhiteBox
+                className='px-3 py-5'
+                border
+                key={item.employmentContractId}
+              >
+                <div className='flex flex-col justify-center text-sm w-full'>
+                  <div className='w-full flex justify-between items-center'>
+                    <WorkPlaceName name={item.workPlaceNm} colorType='02' />
+                    <div>{item.employmentContractCreatedAt}</div>
+                  </div>
                 </div>
-              </div>
-            </WhiteBox>
+              </WhiteBox>
+            ))}
           </div>
         </Wrapper>
       </div>
