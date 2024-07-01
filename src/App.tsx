@@ -15,6 +15,7 @@ import EmployeeGreeting from './pages/LandingPage/EmployeeGreeting';
 import EmployeeAddMainAccount from './pages/LandingPage/EmployeeAddMainAccount';
 import AddWorkPlace from './pages/owner/AddWorkPlace';
 import ManualWorkPlaceAddition from './pages/employee/PartTimeTab/ManualWorkPlaceAddition';
+import SignPad from './components/SignPad';
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
           element={<EmployeeAddMainAccount />}
         />
         <Route path='/hi' element={<ManualWorkPlaceAddition />} />
+        <Route path='/hello' element={<SignPad />} />
       </Routes>
     </>
   );
