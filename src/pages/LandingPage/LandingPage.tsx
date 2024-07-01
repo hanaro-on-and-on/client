@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import Frame from '../../components/Frame';
 import Wrapper from '../../components/Wrapper';
 import WhiteBox from '../../components/ui/WhiteBox';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
 const LandingPage = () => {
   const navigation = useNavigate();

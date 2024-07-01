@@ -22,9 +22,13 @@ const AttendanceDetail = () => {
   };
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(successHandler, (err) => {
-      console.log(err);
-    });
+    navigator.geolocation.getCurrentPosition(
+      successHandler,
+      (err) => {
+        console.log(err);
+      },
+      { maximumAge: 60000, timeout: 5000, enableHighAccuracy: true }
+    );
   }, []);
 
   return (
