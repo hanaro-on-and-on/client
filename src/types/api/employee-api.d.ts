@@ -7,3 +7,15 @@ type ManualWorkPlaceAdditionRequest = {
 type ManualWorkPlaceAdditionResponse = {
   customWorkPlaceId: number;
 };
+
+//서명 요청
+type ConfirmWorks = {
+  employeeId: number;
+  workPlaceName: string;
+  colorCodeType: string;
+  ownerName: string;
+};
+
+type ConfirmReqResponse = {
+  workPlacesInvitaionsGetResponseList: ConfirmWorks[];
+};
