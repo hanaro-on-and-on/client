@@ -8,6 +8,8 @@ interface employeeApi {
     year: number,
     month: number
   ): Promise<BaseResponse<MonthlyPayment>>;
+
+  getPaperList(): Promise<EmploymentContractListGetResponse[]>;
 }
 
 export default employeeApi;

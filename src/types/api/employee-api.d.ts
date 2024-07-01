@@ -37,3 +37,10 @@ type MonthlyPayment = {
   totalPayment: number;
   employeeSalaryGetResponseList: EmployeeSalaryGetResponseList[];
 };
+
+//서류 조회
+type EmploymentContractListGetResponse = {
+  employmentContractId: number; // 근로계약서 id
+  workPlaceNm: string;
+  employmentContractCreatedAt: string;
+};
