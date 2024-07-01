@@ -4,9 +4,11 @@ import WorkPlaceName from '../../../components/ui/WorkPlaceName';
 import BtnBorder from '../../../components/BtnBorder';
 import ModalBottom from '../../../components/ModalBottom';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const WorkTime = () => {
   const [isModalOpen, setModalOpen] = useState(false);
+  const navigation = useNavigate();
 
   return (
     // 연동 요청
@@ -35,7 +37,12 @@ const WorkTime = () => {
       </Wrapper>
 
       {/* 내가 추가한 */}
-      <Wrapper title='내가 추가한'>
+      <Wrapper
+        title='내가 추가한'
+        button
+        buttonText='수동 등록'
+        onButtonClick={() => navigation('manual/addition')}
+      >
         <WhiteBox className='py-3' border>
           <div className='flex justify-between items-center'>
             <WorkPlaceName name='롯데리아' colorType='02' />
