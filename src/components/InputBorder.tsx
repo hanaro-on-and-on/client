@@ -4,11 +4,15 @@ import { ForwardedRef, forwardRef, useState } from 'react';
 type Prop = {
   title?: string;
   placeHolder?: string;
+  type?: string;
+  max?: number;
+  min?: number;
+  unit?: string;
 };
 
 const InputBorder = forwardRef(
   (
-    { title, placeHolder }: Prop,
+    { title, placeHolder, max, min, unit, type = 'text' }: Prop,
     ref: ForwardedRef<HTMLInputElement | null>
   ) => {
     const [focused, setFocused] = useState<boolean>(false);
@@ -28,19 +32,25 @@ const InputBorder = forwardRef(
           )}
         >
           <div className='font-bold text-start'>{title}</div>
-
-          <input
-            ref={ref}
-            placeholder={placeHolder || ''}
-            onFocus={handleFocused}
-            onBlur={handleBlur}
-            className={clsx(
-              'w-full px-1 mt-4 border-b border-b-gray-300 focus:outline-none',
-              {
-                'border-b-hanaLightGreen': focused,
-              }
-            )}
-          />
+          <div className='flex justify-between items-end'>
+            <input
+              ref={ref}
+              type={type}
+              max={max || 0}
+              min={min || 0}
+              placeholder={placeHolder || ''}
+              onFocus={handleFocused}
+              onBlur={handleBlur}
+              className={clsx(
+                'w-[90%] px-1 mt-4 border-b border-b-gray-300 focus:outline-none',
+                {
+                  'border-b-hanaLightGreen': focused,
+                  'w-full': !unit,
+                }
+              )}
+            />
+            {unit && <div className='pl-1 text-end'>{unit}</div>}
+          </div>
         </div>
       </>
     );
