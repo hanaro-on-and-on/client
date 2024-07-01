@@ -13,6 +13,7 @@ import AttendanceDetail from './pages/employee/Attendance/AttendanceDeTail';
 import LandingPage from './pages/LandingPage/LandingPage';
 import EmployeeGreeting from './pages/LandingPage/EmployeeGreeting';
 import EmployeeAddMainAccount from './pages/LandingPage/EmployeeAddMainAccount';
+import AddWorkPlace from './pages/owner/AddWorkPlace';
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           path='/greeting/employee/account'
           element={<EmployeeAddMainAccount />}
         />
+        <Route path='/hi' element={<AddWorkPlace />} />
       </Routes>
     </>
   );

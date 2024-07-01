@@ -5,6 +5,7 @@ import WhiteBox from '../../components/ui/WhiteBox';
 
 const LandingPage = () => {
   const navigation = useNavigate();
+
   return (
     <>
       <Frame option={false}>
