@@ -1,6 +1,7 @@
 import axios from 'axios';
+import employeeApi from './interfaces/employeeApi';
 
-class ApiClient {
+class ApiClient implements employeeApi {
   //singleton pattern
   private static instance: ApiClient;
   private axiosInstance;
@@ -11,6 +12,16 @@ class ApiClient {
 
   //=========================
   // 메소드
+
+  public async manualWorkPlaceAddition(req: ManualWorkPlaceAdditionRequest) {
+    const response = await this.axiosInstance.request({
+      method: 'post',
+      url: '/employee/work-places/custom',
+      data: req,
+    });
+
+    return response.data;
+  }
 
   //==========================
   // 생성 메소드
@@ -27,10 +38,20 @@ class ApiClient {
 
     newInstance.interceptors.request.use((config) => {
       config.headers['Content-Type'] = 'application/json';
+      config.headers['Authorization'] =
+        `Bearer ${import.meta.env.VITE_ACCESS_TOKEN}`;
       return config;
     });
 
     return newInstance;
+  }
+
+  static getInstance(): ApiClient {
+    if (!this.instance) {
+      this.instance = new this();
+    }
+
+    return this.instance;
   }
 }
 
