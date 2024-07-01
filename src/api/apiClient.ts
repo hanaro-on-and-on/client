@@ -13,11 +13,22 @@ class ApiClient implements employeeApi {
   //=========================
   // 메소드
 
+  //알바생 - 근무지 수동 추가
   public async manualWorkPlaceAddition(req: ManualWorkPlaceAdditionRequest) {
     const response = await this.axiosInstance.request({
       method: 'post',
       url: '/employee/work-places/custom',
       data: req,
+    });
+
+    return response.data;
+  }
+
+  //알바생 - 서명 요청 목록
+  public async getConfirmReq() {
+    const response = await this.axiosInstance.request({
+      method: 'get',
+      url: 'employee/work-places/invitation',
     });
 
     return response.data;
