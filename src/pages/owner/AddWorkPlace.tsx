@@ -57,6 +57,7 @@ const AddWorkPlace = () => {
     }
   }, [info]);
 
+  //   키워드 검색
   useEffect(() => {
     if (!keyword) return;
     if (!map) return;
@@ -89,6 +90,7 @@ const AddWorkPlace = () => {
     });
   }, [map, keyword]);
 
+  //   현재 위치
   useEffect(() => {
     if (!map) return;
     navigator.geolocation.getCurrentPosition(
@@ -125,7 +127,7 @@ const AddWorkPlace = () => {
   }, [map]);
 
   return (
-    <Frame>
+    <Frame navTitle='사장ON'>
       <div className='w-full flex flex-col'>
         <WhiteBox border className='py-3 px-3 mt-5' title='사업장 위치 등록'>
           <div className='flex flex-col gap-5 w-full'>
