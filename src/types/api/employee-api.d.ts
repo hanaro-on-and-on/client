@@ -43,4 +43,5 @@ type EmploymentContractListGetResponse = {
   employmentContractId: number; // 근로계약서 id
   workPlaceNm: string;
   employmentContractCreatedAt: string;
+  colorTypeCd: string;
 };
