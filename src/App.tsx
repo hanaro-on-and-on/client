@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import Test from './pages/test';
-import UiTest from './pages/UiTest';
+// import UiTest from './pages/UiTest';
 import OwnerMainPage from './pages/OwnerMainPage';
 import CalendarCustom from './components/ui/CalendarCustom';
 import DateDetail from './components/calendar-owner/DateDetail';
@@ -26,7 +26,7 @@ function App() {
       <Routes>
         <Route path='/' element={<LandingPage />} />
         <Route path='/test' element={<Test />} />
-        <Route path='/ui' element={<UiTest />} />
+        {/* <Route path='/ui' element={<UiTest />} /> */}
         <Route path='/owner/*' element={<OwnerMainPage />}>
           <Route path='calendar' element={<CalendarCustom />} />
           <Route path='calendar/:date' element={<DateDetail />} />

@@ -10,37 +10,37 @@ export function getColor(
 
   switch (colorType) {
     case '01':
-      baseColor = 'red-400';
+      baseColor = 'red-200';
       break;
     case '02':
-      baseColor = 'lime-500';
+      baseColor = 'lime-200';
       break;
     case '03':
       baseColor = 'yellow-200';
       break;
     case '04':
-      baseColor = 'blue-300';
+      baseColor = 'blue-100';
       break;
     case '05':
-      baseColor = 'emerald-400';
+      baseColor = 'emerald-200';
       break;
     case '06':
-      baseColor = 'slate-300';
+      baseColor = 'slate-200';
       break;
     case '07':
       baseColor = 'cyan-200';
       break;
     case '08':
-      baseColor = 'pink-300';
+      baseColor = 'pink-100';
       break;
     case '09':
-      baseColor = 'fuchsia-400';
+      baseColor = 'fuchsia-100';
       break;
     case '10':
-      baseColor = 'violet-300';
+      baseColor = 'violet-100';
       break;
     default:
-      baseColor = 'hanaLightGreen';
+      baseColor = 'violet-200';
   }
 
   if (label === 'TEXT') {

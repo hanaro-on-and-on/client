@@ -59,6 +59,18 @@ class ApiClient implements employeeApi {
     return response.data;
   }
 
+  //알바생 - 단일 근로 계약서 조회
+  public async employeeGetContract(
+    employmentContractId: number
+  ): Promise<EmployeePaperGetResponse> {
+    const response = await this.axiosInstance.request({
+      method: 'get',
+      url: `papers/employment-contracts/${employmentContractId}`,
+    });
+
+    return response.data;
+  }
+
   //알바생 - 대표 계좌 등록
   public async registerEmployeeAccount({
     accountNumber,
@@ -105,6 +117,30 @@ class ApiClient implements employeeApi {
       await this.axiosInstance.request({
         method: 'get',
         url: `papers/${workPlaceEmployeeId}/pay-stubs?year=${year}&month=${month}`,
+      });
+
+    return response.data;
+  }
+
+  //알바생 - 급여 명세서 서명
+  public async employeeSignature(
+    payStubId: number
+  ): Promise<EmployeeSignatureResponse> {
+    const response: BaseResponse<EmployeeSignatureResponse> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `papers/pay-stubs/${payStubId}/e-sign`,
+      });
+
+    return response.data;
+  }
+
+  //알바생 - 출결 목록 조회
+  public async employeeGetAttendanceList(): Promise<EmployeeTodayAttendancesResponse> {
+    const response: BaseResponse<EmployeeTodayAttendancesResponse> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: 'attendances/today',
       });
 
     return response.data;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import WhiteBox from '../../../components/ui/WhiteBox';
 import { formatMonths, styleMonths } from '../../../utils/format-date';
 import BtnGray from '../../../components/BtnGray';
@@ -6,6 +6,9 @@ import Circle from '../../../components/ui/Circle';
 import ApiClient from '../../../api/apiClient';
 import generateMonthList from '../../../utils/generateMonthList';
 import BtnPrimary from '../../../components/BtnPrimary';
+import ModalBottom from '../../../components/ModalBottom';
+import SignPad from '../../../components/SignPad';
+import { redirect, useNavigate } from 'react-router-dom';
 
 type Prop = {
   year: number;
@@ -13,14 +16,60 @@ type Prop = {
 };
 
 const PayStub = ({ year, month }: Prop) => {
+  const navigation = useNavigate();
   const [monthList, setMonthList] = useState<Date[]>([]);
   const [selectedYear, setSelectedYear] = useState<number>(year);
   const [selectedMonth, setSelectedMonth] = useState<number>(month);
-  const [payStub, setPayStub] = useState<EmployeePayStubGetResponse>(null);
+
+  //급여 명세서
+  const [payStub, setPayStub] = useState<EmployeePayStubGetResponse | null>(
+    null
+  );
+
+  //모달
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [modalMsg, setModalMsg] = useState<string>('');
+
+  //서명
+  const [getSign, setGetsign] = useState<boolean>(false);
+  const signRef = useRef<SignPadHandler>(null);
 
   const setSelectedYearMonth = (year: number, month: number) => {
     setSelectedYear(year);
     setSelectedMonth(month);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const openModal = (msg?: string) => {
+    setModalMsg(msg || '');
+    setIsModalOpen(true);
+  };
+
+  const signature = async (payStubId: number) => {
+    const sign: [] = signRef.current?.canvasRef.current.toData();
+    console.log(sign);
+    if (!sign) return;
+    try {
+      const response: EmployeeSignatureResponse =
+        await ApiClient.getInstance().employeeSignature(payStubId);
+      if (response) {
+        window.location.reload();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const textConvert = (status: string): string => {
+    if (status === 'READY') return '간편 지급';
+    if (status === 'SIGN') return '수령 받기';
+    if (status === 'WAITING') return '수령 대기';
+    if (status === 'COMPLETED') return '수령 완료';
+
+    return '';
   };
 
   const getData = async () => {
@@ -47,6 +96,26 @@ const PayStub = ({ year, month }: Prop) => {
 
   return (
     <>
+      {isModalOpen && payStub && (
+        <ModalBottom
+          title='전자 서명 동의'
+          closeModal={closeModal}
+          btnText='동의후 서명 시작'
+          btnBottom={!getSign}
+          action={() => setGetsign(true)}
+        >
+          <div>
+            {!getSign ? (
+              <>{modalMsg}</>
+            ) : (
+              <SignPad
+                ref={signRef}
+                submit={() => signature(payStub.payStubId)}
+              />
+            )}
+          </div>
+        </ModalBottom>
+      )}
       {payStub && (
         <WhiteBox className='py-3 px-3 w-full border'>
           <select>
@@ -74,17 +143,20 @@ const PayStub = ({ year, month }: Prop) => {
               총 {payStub.totalPay.toLocaleString()}
             </div>
           </div>
-          {payStub.status !== 'READY' ? (
+          {payStub.status === 'READY' ? (
             <BtnPrimary
-              text='수령 받기'
-              action={() => {}}
+              text={textConvert(payStub.status)}
+              action={() =>
+                openModal('급여 수령을 위한 전자 서명을 시작하시겠습니까?')
+              }
               className='w-full my-2'
             />
           ) : (
             <BtnGray
-              text='수령예정'
+              text={textConvert(payStub.status)}
               action={() => {}}
               className='w-full my-2'
+              disabled
             />
           )}
 
