@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { FaAngleRight } from 'react-icons/fa6';
 import WorkPlaceName from '../../../components/ui/WorkPlaceName';
 import ApiClient from '../../../api/apiClient';
+import generateMonthList from '../../../utils/generateMonthList';
 
 type Payment = {
   name: string;
@@ -33,8 +34,6 @@ const Payment = () => {
         setTotalMonthlyPayment(response.totalPayment);
         setPaymentList(response.employeeSalaryGetResponseList);
       }
-
-      console.log(response);
     } catch (err) {
       console.error(err);
     }
@@ -42,15 +41,6 @@ const Payment = () => {
 
   useEffect(() => {
     fetchData(selectedYear, selectedMonth);
-    const generateMonthList = (): Date[] => {
-      const today = new Date();
-      const months = [];
-      for (let i = 0; i < 12; i++) {
-        const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
-        months.push(date);
-      }
-      return months;
-    };
 
     setMonthList(generateMonthList());
   }, [selectedYear, selectedMonth]);
