@@ -82,3 +82,8 @@ type EmployeePayStubGetResponse = {
   taxRate: number;
   taxPay: number;
 };
+
+//급여 명세서 전자 서명
+type EmployeeSignatureResponse = {
+  status: number;
+};
