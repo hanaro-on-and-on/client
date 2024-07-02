@@ -38,21 +38,73 @@ class ApiClient implements employeeApi {
   public async getMonthlyPayment(
     year: number,
     month: number
-  ): Promise<BaseResponse<MonthlyPayment>> {
-    const response = await this.axiosInstance.request({
-      method: 'get',
-      url: `employee/salaries?year=${year}&month=${month}`,
-    });
+  ): Promise<MonthlyPayment> {
+    const response: BaseResponse<MonthlyPayment> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `employee/salaries?year=${year}&month=${month}`,
+      });
 
     return response.data;
   }
 
   //알바생 - 서류 목록
   public async getPaperList(): Promise<EmploymentContractListGetResponse[]> {
-    const response: BaseResponse<EmploymentContractListGetResponse> =
+    const response: BaseResponse<EmploymentContractListGetResponse[]> =
       await this.axiosInstance.request({
         method: 'get',
         url: 'papers',
+      });
+
+    return response.data;
+  }
+
+  //알바생 - 대표 계좌 등록
+  public async registerEmployeeAccount({
+    accountNumber,
+    employeeNm,
+  }: RegisterEmployeeAccount): Promise<RegisterEmployeeAccountResponse> {
+    const dat: RegisterEmployeeAccount = {
+      accountNumber,
+      employeeNm,
+    };
+
+    const response: BaseResponse<RegisterEmployeeAccountResponse> =
+      await this.axiosInstance.request({
+        method: 'post',
+        url: 'employee/accounts',
+        data: dat,
+      });
+
+    return response.data;
+  }
+
+  //알바생 - 대표 계좌 수정
+  public async employeeUpdateAccount(
+    prop: EmployeeAccountUpdate
+  ): Promise<any> {
+    const dat: EmployeeAccountUpdate = {
+      accountNumber: prop.accountNumber,
+    };
+    const response = await this.axiosInstance.request({
+      method: 'put',
+      url: 'employee/accounts',
+      data: dat,
+    });
+
+    return response.data;
+  }
+
+  //알바생 - 월별 급여 명세서 조회
+  public async employeeGetPayStub(
+    workPlaceEmployeeId: string,
+    year: number,
+    month: number
+  ): Promise<EmployeePayStubGetResponse> {
+    const response: BaseResponse<EmployeePayStubGetResponse> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `papers/${workPlaceEmployeeId}/pay-stubs?year=${year}&month=${month}`,
       });
 
     return response.data;

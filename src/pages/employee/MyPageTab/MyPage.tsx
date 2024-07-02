@@ -62,7 +62,7 @@ const MyPage = () => {
 
         {/* 근로계약서 */}
         <Wrapper title='근로계약서'>
-          <div className='flex flex-col'>
+          <div className='flex flex-col gap-2'>
             {papers?.map((item, index) => (
               <WhiteBox
                 className='px-3 py-5'
@@ -71,7 +71,10 @@ const MyPage = () => {
               >
                 <div className='flex flex-col justify-center text-sm w-full'>
                   <div className='w-full flex justify-between items-center'>
-                    <WorkPlaceName name={item.workPlaceNm} colorType='02' />
+                    <WorkPlaceName
+                      name={item.workPlaceNm}
+                      colorType={item.colorTypeCd}
+                    />
                     <div>{item.employmentContractCreatedAt}</div>
                   </div>
                 </div>

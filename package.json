@@ -22,7 +22,8 @@
     "react-router-dom": "^6.24.0",
     "react-time-picker": "^7.0.0",
     "react-time-picker-typescript": "^1.2.3",
-    "swiper": "^11.1.4"
+    "swiper": "^11.1.4",
+    "react-signature-canvas": "^1.0.6"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
