@@ -56,7 +56,12 @@ const WorkTime = () => {
   useEffect(() => {
     getConfirmList();
     fetchPaperList();
+    console.log(papers);
   }, []);
+
+  useEffect(() => {
+    console.log(papers);
+  }, [papers]);
 
   return (
     // 연동 요청
@@ -79,11 +84,14 @@ const WorkTime = () => {
       </Wrapper>
 
       {/* 사장님과 연동 */}
-      <Wrapper title='사장님과 연동'>
+      <Wrapper title='사장님과 연동' className='flex flex-col gap-1'>
         {papers?.map((item) => (
           <WhiteBox className='py-3' border key={item.employmentContractId}>
             <div className='flex justify-between items-center'>
-              <WorkPlaceName name={item.workPlaceNm} colorType='02' />
+              <WorkPlaceName
+                name={item.workPlaceNm}
+                colorType={item.colorTypeCd}
+              />
               <BtnBorder color='gray' text='계약 완료' onClick={() => {}} />
             </div>
           </WhiteBox>
