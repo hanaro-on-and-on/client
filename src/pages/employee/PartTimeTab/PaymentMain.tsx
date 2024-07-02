@@ -11,6 +11,7 @@ const PaymentMain = () => {
       <Frame navTitle='알바ON'>
         <ToolBar2 isEmployee />
         <div className='w-full flex flex-col  items-center gap-5 mt-7'>
+          {/* 토글 버튼 */}
           <NavToggle
             first='급여관리'
             second='근무 관리'
