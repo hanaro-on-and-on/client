@@ -35,7 +35,7 @@ function App() {
             element={<AttendanceEdit />}
           />
         </Route>
-        <Route path='/owner-calendar' element={<OwnerCalendarPage />} />
+        {/* <Route path='/owner-calendar' element={<OwnerCalendarPage />} /> */}
         <Route path='/part-time/*' element={<PaymentMain />}>
           <Route path='worktime' element={<WorkTime />} />
           <Route path='payment' element={<Payment />} />

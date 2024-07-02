@@ -6,93 +6,12 @@ import CalendarMark from './CalendarMark';
 import { useNavigate } from 'react-router-dom';
 import { useCalendarData } from '../../contexts/Calender-Data-Context';
 
-const mockData = [
-  {
-    workPlaceId: 1,
-    workPlaceName: '롯데리아',
-    workPlaceColor: '01',
-    days: [
-      {
-        attendanceId: 2453,
-        workPlaceEmployeeId: 10,
-        employeeName: '이신광',
-        attendanceType: 'real', // expect, real
-        payPerHour: 10000,
-        startTime: '2024-06-26T10:30:00',
-        endTime: '2024-06-26T14:30:00',
-      },
-      {
-        attendanceId: 2460,
-        workPlaceEmployeeId: 10,
-        employeeName: '이신광',
-        attendanceType: 'expect', // expect, real
-        payPerHour: 10000,
-        startTime: '2024-06-30T09:30:00',
-        endTime: '2024-06-30T18:30:00',
-      },
-      {
-        attendanceId: 2461,
-        workPlaceEmployeeId: 12,
-        employeeName: '이서하',
-        attendanceType: 'expect', // expect, real
-        payPerHour: 12000,
-        startTime: '2024-06-30T09:30:00',
-        endTime: '2024-06-30T18:30:00',
-      },
-      {
-        attendanceId: 2991,
-        workPlaceEmployeeId: 12,
-        employeeName: '이서하',
-        attendanceType: 'real', // expect, real
-        payPerHour: 9910,
-        startTime: '2024-06-28T09:30:00',
-        endTime: '2024-06-28T18:30:00',
-      },
-    ],
-  },
-  {
-    workPlaceId: 2,
-    workPlaceName: '버거킹',
-    workPlaceColor: '02',
-    days: [
-      {
-        attendanceId: 1999,
-        workPlaceEmployeeId: 15,
-        employeeName: '정연주',
-        attendanceType: 'real', // expect, real
-        payPerHour: 10000,
-        startTime: '2024-06-26T10:30:00',
-        endTime: '2024-06-26T14:30:00',
-      },
-      {
-        attendanceId: 2464,
-        workPlaceEmployeeId: 18,
-        employeeName: '최은진',
-        attendanceType: 'expect', // expect, real
-        payPerHour: 12000,
-        startTime: '2024-06-29T09:30:00',
-        endTime: '2024-06-29T18:30:00',
-      },
-      {
-        attendanceId: 2479,
-        workPlaceEmployeeId: 18,
-        employeeName: '최은진',
-        attendanceType: 'expect', // expect, real
-        payPerHour: 12000,
-        startTime: '2024-06-30T09:30:00',
-        endTime: '2024-06-30T18:30:00',
-      },
-    ],
-  },
-];
-
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 const CalendarCustom = () => {
   const [value, setValue] = useState<Value>(new Date());
   const { calendarData } = useCalendarData();
-  // const [data, setData] = useState(mockData);
   const navigate = useNavigate();
 
   const onChangeCurrentDate = (args: OnArgs) => {

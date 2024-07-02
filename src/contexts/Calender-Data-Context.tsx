@@ -15,6 +15,7 @@ const mockData = [
         payPerHour: 10000,
         startTime: new Date('2024-06-26T10:30:00'),
         endTime: new Date('2024-06-26T14:30:00'),
+        restMinutes: 60,
       },
       {
         attendanceId: 2460,
@@ -24,6 +25,7 @@ const mockData = [
         payPerHour: 10000,
         startTime: new Date('2024-06-30T10:30:00'),
         endTime: new Date('2024-06-30T18:30:00'),
+        restMinutes: 60,
       },
       {
         attendanceId: 2461,
@@ -33,6 +35,7 @@ const mockData = [
         payPerHour: 12000,
         startTime: new Date('2024-06-30T08:30:00'),
         endTime: new Date('2024-06-30T18:30:00'),
+        restMinutes: 30,
       },
       {
         attendanceId: 2991,
@@ -42,6 +45,7 @@ const mockData = [
         payPerHour: 9910,
         startTime: new Date('2024-06-28T09:30:00'),
         endTime: new Date('2024-06-28T18:30:00'),
+        restMinutes: 30,
       },
     ],
   },
@@ -58,6 +62,7 @@ const mockData = [
         payPerHour: 10000,
         startTime: new Date('2024-06-26T10:30:00'),
         endTime: new Date('2024-06-26T14:30:00'),
+        restMinutes: 60,
       },
       {
         attendanceId: 2464,
@@ -67,6 +72,7 @@ const mockData = [
         payPerHour: 12000,
         startTime: new Date('2024-06-29T09:30:00'),
         endTime: new Date('2024-06-29T18:30:00'),
+        restMinutes: 30,
       },
       {
         attendanceId: 2479,
@@ -76,6 +82,7 @@ const mockData = [
         payPerHour: 12000,
         startTime: new Date('2024-06-30T09:30:00'),
         endTime: new Date('2024-06-30T18:30:00'),
+        restMinutes: 60,
       },
     ],
   },
@@ -86,7 +93,10 @@ type CalendarDataContextProps = {
   getFilteredData: (date: Date) => DateWorkDetail[];
 };
 
-const CalendarDataContext = createContext<CalendarDataContextProps>([]);
+const CalendarDataContext = createContext<CalendarDataContextProps>({
+  calendarData: [],
+  getFilteredData: (date: Date) => [],
+});
 
 export const CalendarDataProvider = ({ children }: PropsWithChildren) => {
   const [calendarData, setCalendarData] = useState(mockData);
