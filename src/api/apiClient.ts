@@ -135,6 +135,17 @@ class ApiClient implements employeeApi {
     return response.data;
   }
 
+  //알바생 - 출결 목록 조회
+  public async employeeGetAttendanceList(): Promise<EmployeeTodayAttendancesResponse> {
+    const response: BaseResponse<EmployeeTodayAttendancesResponse> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: 'attendances/today',
+      });
+
+    return response.data;
+  }
+
   //==========================
   // 생성 메소드
   private static createAxiosInstance() {

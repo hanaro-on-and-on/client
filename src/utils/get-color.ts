@@ -3,26 +3,26 @@
 export function getColor(colorType: string) {
   switch (colorType) {
     case '01':
-      return 'bg-red-400';
+      return 'bg-red-200';
     case '02':
-      return 'bg-lime-500';
+      return 'bg-lime-200';
     case '03':
       return 'bg-yellow-200 ';
     case '04':
-      return 'bg-blue-300';
+      return 'bg-blue-100';
     case '05':
-      return 'bg-emerald-400';
+      return 'bg-emerald-200';
     case '06':
-      return 'bg-slate-300';
+      return 'bg-slate-200';
     case '07':
       return 'bg-cyan-200';
     case '08':
-      return 'bg-pink-300';
+      return 'bg-pink-100';
     case '09':
-      return 'bg-fuchsia-400';
+      return 'bg-fuchsia-100';
     case '10':
-      return 'bg-violet-300';
+      return 'bg-violet-100';
     default:
-      return 'bg-hanaLightGreen';
+      return 'bg-violet-200';
   }
 }
