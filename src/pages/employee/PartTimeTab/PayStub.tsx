@@ -63,6 +63,15 @@ const PayStub = ({ year, month }: Prop) => {
     }
   };
 
+  const textConvert = (status: string): string => {
+    if (status === 'READY') return '간편 지급';
+    if (status === 'SIGN') return '수령 받기';
+    if (status === 'WAITING') return '수령 대기';
+    if (status === 'COMPLETED') return '수령 완료';
+
+    return '';
+  };
+
   const getData = async () => {
     try {
       const response = await ApiClient.getInstance().employeeGetPayStub(
@@ -136,7 +145,7 @@ const PayStub = ({ year, month }: Prop) => {
           </div>
           {payStub.status === 'READY' ? (
             <BtnPrimary
-              text={payStub.status === 'COMPLETED' ? '수령받기' : '수령완료'}
+              text={textConvert(payStub.status)}
               action={() =>
                 openModal('급여 수령을 위한 전자 서명을 시작하시겠습니까?')
               }
@@ -144,7 +153,7 @@ const PayStub = ({ year, month }: Prop) => {
             />
           ) : (
             <BtnGray
-              text='수령예정'
+              text={textConvert(payStub.status)}
               action={() => {}}
               className='w-full my-2'
               disabled

@@ -8,13 +8,21 @@ import Frame from '../../../components/Frame';
 import NavToggle from '../../../components/NavToggle';
 import PayStub from './PayStub';
 import generateMonthList from '../../../utils/generateMonthList';
+import useToggle from '../../../hooks/toggle';
+
+enum ToggleStatus {
+  PAYMENT = 'payment',
+  WORKTIME = 'worktime',
+}
 
 const PaymentDetail = () => {
   const today = new Date();
   const { workPlace, dayMonth } = useParams();
   const [monthList, setMonthList] = useState<Date[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<Date>(today);
-
+  const [selectedToggle, setSelectedToggle] = useState<ToggleStatus>(
+    ToggleStatus.PAYMENT
+  );
   useEffect(() => {
     setMonthList(generateMonthList());
   }, []);
@@ -42,15 +50,18 @@ const PaymentDetail = () => {
             <NavToggle
               first='급여 명세서'
               second='근무 내역'
-              firstSelected={() => {}}
-              secondSelected={() => {}}
+              firstSelected={() => setSelectedToggle(ToggleStatus.PAYMENT)}
+              secondSelected={() => setSelectedToggle(ToggleStatus.WORKTIME)}
             />
 
             {/* 급여명세서 */}
-            <PayStub
-              year={selectedMonth.getFullYear()}
-              month={selectedMonth.getMonth()}
-            />
+            {selectedToggle === ToggleStatus.PAYMENT && (
+              <PayStub
+                year={selectedMonth.getFullYear()}
+                month={selectedMonth.getMonth()}
+              />
+            )}
+            {selectedToggle === ToggleStatus.WORKTIME && <div></div>}
           </div>
         )}
       </div>
