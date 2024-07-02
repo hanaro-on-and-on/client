@@ -10,7 +10,7 @@ import InputBorderSelect from '../../components/InputBorderSelect';
 import ModalCenter from '../../components/ModalCenter';
 import ApiClient from '../../api/apiClient';
 
-const BankList: SelectionProp[] = [
+export const BankList: SelectionProp[] = [
   { text: '하나은행', value: 'HANA' },
   { text: '신한은행', value: 'SHIN_HAN' },
   { text: '국민은행', value: 'KUK_MIN' },
