@@ -19,6 +19,8 @@ interface employeeApi {
     yearn: number,
     month: number
   ): Promise<EmployeePayStubGetResponse>;
+
+  employeeSignature(payStubId: number): Promise<EmployeeSignatureResponse>;
 }
 
 export default employeeApi;
