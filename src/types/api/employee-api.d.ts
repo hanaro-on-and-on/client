@@ -83,6 +83,34 @@ type EmployeePayStubGetResponse = {
   taxPay: number;
 };
 
+//단일 근로 계약서 조회
+type WorkTimes = {
+  workDayOfWeek: string;
+  workStartTime: string;
+  workEndTime: string;
+  restStartTime: string;
+  restEndTime: string;
+};
+
+type EmployeePaperGetResponse = {
+  employmentContractId: number; // 근로계약서 id
+  workPlaceName: string;
+  workStartDate: Date;
+  workSite: string;
+  workDetail: string;
+  workTimes: WorkTimes[];
+  payPerHour: number;
+  paymentDay: number;
+  employeeNm: string;
+  employeeAddress: string;
+  employeePhone: string;
+  restDayOfWeek: number;
+  bonusAmount: number;
+  otherAllowancesAmount: number;
+  otherAllowancesName: string;
+  overTimeRate: number;
+};
+
 //급여 명세서 전자 서명
 type EmployeeSignatureResponse = {
   status: number;

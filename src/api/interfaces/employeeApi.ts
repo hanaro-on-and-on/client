@@ -20,6 +20,10 @@ interface employeeApi {
     month: number
   ): Promise<EmployeePayStubGetResponse>;
 
+  employeeGetContract(
+    employmentContractId: number
+  ): Promise<EmployeePaperGetResponse>;
+
   employeeSignature(payStubId: number): Promise<EmployeeSignatureResponse>;
 }
 
