@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { ForwardedRef, forwardRef, useState } from 'react';
+import { ForwardedRef, forwardRef, useEffect, useState } from 'react';
 
 type SelectionProp = {
   text: string;
@@ -33,7 +33,7 @@ const InputBorderSelect = forwardRef(
             }
           )}
         >
-          <div className='font-bold'>{title}</div>
+          <div className='font-bold text-start'>{title}</div>
           <select
             ref={ref}
             onFocus={handleFocused}
