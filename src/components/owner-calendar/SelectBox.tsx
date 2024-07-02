@@ -51,20 +51,20 @@ type SelectBoxProps = {
     employeeNm: string;
   }[];
   onClose: () => void;
-  onClick: (data) => void;
+  onClick: (id: number) => void;
 };
 
 const SelectBox = ({ isOpen, options, onClose, onClick }: SelectBoxProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className='w-full border overflow-y-scroll rounded-b-xl'>
-      <VStack>
+    <div className='w-full h-full border rounded-b-xl'>
+      <VStack className='h-40 overflow-scroll '>
         {options.map((data) => (
           <button
             key={data.workPlaceEmployeeId}
             onClick={() => {
-              onClick(data);
+              onClick(data.workPlaceEmployeeId);
               onClose();
             }}
             className='bg-white'

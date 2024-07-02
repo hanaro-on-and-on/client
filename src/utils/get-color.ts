@@ -1,28 +1,50 @@
 // BLACK("01"), RED("02"), GREEN("03"), YELLOW("04"), BLUE("05"), MAGENTA("06"), WHITE("07");
 
-export function getColor(colorType: string) {
+// type getColorFunction = (colorType: string, label: 'BG' | 'TEXT') => string;
+
+export function getColor(
+  colorType: string,
+  label: 'BG' | 'TEXT' | undefined = 'BG'
+): string {
+  let baseColor: string;
+
   switch (colorType) {
     case '01':
-      return 'bg-red-200';
+      baseColor = 'red-200';
+      break;
     case '02':
-      return 'bg-lime-200';
+      baseColor = 'lime-200';
+      break;
     case '03':
-      return 'bg-yellow-200 ';
+      baseColor = 'yellow-200';
+      break;
     case '04':
-      return 'bg-blue-100';
+      baseColor = 'blue-100';
+      break;
     case '05':
-      return 'bg-emerald-200';
+      baseColor = 'emerald-200';
+      break;
     case '06':
-      return 'bg-slate-200';
+      baseColor = 'slate-200';
+      break;
     case '07':
-      return 'bg-cyan-200';
+      baseColor = 'cyan-200';
+      break;
     case '08':
-      return 'bg-pink-100';
+      baseColor = 'pink-100';
+      break;
     case '09':
-      return 'bg-fuchsia-100';
+      baseColor = 'fuchsia-100';
+      break;
     case '10':
-      return 'bg-violet-100';
+      baseColor = 'violet-100';
+      break;
     default:
-      return 'bg-violet-200';
+      baseColor = 'violet-200';
   }
+
+  if (label === 'TEXT') {
+    return `text-${baseColor}`;
+  }
+  return `bg-${baseColor}`;
 }

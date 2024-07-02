@@ -5,7 +5,7 @@ import { CalendarDataProvider } from '../contexts/Calender-Data-Context';
 import { AttendanceProvider } from '../contexts/Attendance-Context';
 
 const ownerOptions = [
-  { idx: 0, title: '나의 사업장', url: 'myList' },
+  { idx: 0, title: '나의 사업장', url: 'myWorkPlaces' },
   { idx: 1, title: '캘린더', url: 'calendar' },
 ];
 
