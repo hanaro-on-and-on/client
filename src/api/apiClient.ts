@@ -95,6 +95,21 @@ class ApiClient implements employeeApi {
     return response.data;
   }
 
+  //알바생 - 월별 급여 명세서 조회
+  public async employeeGetPayStub(
+    workPlaceEmployeeId: string,
+    year: number,
+    month: number
+  ): Promise<EmployeePayStubGetResponse> {
+    const response: BaseResponse<EmployeePayStubGetResponse> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `papers/${workPlaceEmployeeId}/pay-stubs?year=${year}&month=${month}`,
+      });
+
+    return response.data;
+  }
+
   //==========================
   // 생성 메소드
   private static createAxiosInstance() {

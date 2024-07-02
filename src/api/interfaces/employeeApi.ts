@@ -13,6 +13,12 @@ interface employeeApi {
   ): Promise<RegisterEmployeeAccountResponse>;
 
   employeeUpdateAccount(prop: EmployeeAccountUpdate): Promise<any>;
+
+  employeeGetPayStub(
+    id: string,
+    yearn: number,
+    month: number
+  ): Promise<EmployeePayStubGetResponse>;
 }
 
 export default employeeApi;
