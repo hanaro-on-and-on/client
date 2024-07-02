@@ -19,6 +19,10 @@ interface employeeApi {
     yearn: number,
     month: number
   ): Promise<EmployeePayStubGetResponse>;
+
+  employeeGetContract(
+    employmentContractId: number
+  ): Promise<EmployeePaperGetResponse>;
 }
 
 export default employeeApi;

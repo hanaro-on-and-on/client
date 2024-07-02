@@ -59,6 +59,18 @@ class ApiClient implements employeeApi {
     return response.data;
   }
 
+  //알바생 - 단일 근로 계약서 조회
+  public async employeeGetContract(
+    employmentContractId: number
+  ): Promise<EmployeePaperGetResponse> {
+    const response = await this.axiosInstance.request({
+      method: 'get',
+      url: `papers/employment-contracts/${employmentContractId}`,
+    });
+
+    return response.data;
+  }
+
   //알바생 - 대표 계좌 등록
   public async registerEmployeeAccount({
     accountNumber,
