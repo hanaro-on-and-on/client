@@ -115,3 +115,38 @@ type EmployeePaperGetResponse = {
 type EmployeeSignatureResponse = {
   status: number;
 };
+
+//오늘 출근 목록
+type Notice = {
+  notificationId: number;
+  title: string;
+  content: string;
+  date: Date;
+};
+type AttendanceWorkTime = {
+  workDayOfWeek: string;
+  workStartTime: string;
+  workEndTime: string;
+  restStartTime: string;
+  restEndTime: string;
+};
+
+type AttendanceTodayWork = {
+  workPlaceEmployeeId: number;
+  workPlaceName: string;
+  colorTypeCode: string;
+  workTime: AttendanceWorkTime[];
+  notice: Notice[]; // <- 차이점! 밑의 totalWorks 에는 없음
+};
+
+type AttendanceWork = {
+  workPlaceEmployeeId: number;
+  workPlaceName: string;
+  colorTypeCode: string;
+  workTime: AttendanceWorkTime[];
+};
+
+type EmployeeTodayAttendancesResponse = {
+  works: AttendanceTodayWork[];
+  totalWorks: AttendanceWork[];
+};
