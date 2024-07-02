@@ -11,6 +11,8 @@ interface employeeApi {
   registerEmployeeAccount(
     prop: RegisterEmployeeAccount
   ): Promise<RegisterEmployeeAccountResponse>;
+
+  employeeUpdateAccount(prop: EmployeeAccountUpdate): Promise<any>;
 }
 
 export default employeeApi;

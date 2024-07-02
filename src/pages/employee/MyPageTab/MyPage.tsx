@@ -62,7 +62,7 @@ const MyPage = () => {
 
         {/* 근로계약서 */}
         <Wrapper title='근로계약서'>
-          <div className='flex flex-col'>
+          <div className='flex flex-col gap-2'>
             {papers?.map((item, index) => (
               <WhiteBox
                 className='px-3 py-5'
