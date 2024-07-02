@@ -59,6 +59,7 @@ class ApiClient implements employeeApi {
     return response.data;
   }
 
+  //알바생 - 대표 계좌 등록
   public async registerEmployeeAccount({
     accountNumber,
     employeeNm,
@@ -68,13 +69,28 @@ class ApiClient implements employeeApi {
       employeeNm,
     };
 
-    console.log(dat);
     const response: BaseResponse<RegisterEmployeeAccountResponse> =
       await this.axiosInstance.request({
         method: 'post',
         url: 'employee/accounts',
         data: dat,
       });
+
+    return response.data;
+  }
+
+  //알바생 - 대표 계좌 수정
+  public async employeeUpdateAccount(
+    prop: EmployeeAccountUpdate
+  ): Promise<any> {
+    const dat: EmployeeAccountUpdate = {
+      accountNumber: prop.accountNumber,
+    };
+    const response = await this.axiosInstance.request({
+      method: 'put',
+      url: 'employee/accounts',
+      data: dat,
+    });
 
     return response.data;
   }

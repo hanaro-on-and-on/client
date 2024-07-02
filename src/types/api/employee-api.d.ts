@@ -55,3 +55,8 @@ type RegisterEmployeeAccount = {
 type RegisterEmployeeAccountResponse = {
   employeeId: number;
 };
+
+//대표 계좌 수정
+type EmployeeAccountUpdate = {
+  accountNumber: string;
+};
