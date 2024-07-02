@@ -45,3 +45,13 @@ type EmploymentContractListGetResponse = {
   employmentContractCreatedAt: string;
   colorTypeCd: string;
 };
+
+//대표 계좌 등록
+type RegisterEmployeeAccount = {
+  employeeNm: string;
+  accountNumber: string;
+};
+
+type RegisterEmployeeAccountResponse = {
+  employeeId: number;
+};

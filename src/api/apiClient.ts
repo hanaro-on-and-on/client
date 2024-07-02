@@ -38,21 +38,42 @@ class ApiClient implements employeeApi {
   public async getMonthlyPayment(
     year: number,
     month: number
-  ): Promise<BaseResponse<MonthlyPayment>> {
-    const response = await this.axiosInstance.request({
-      method: 'get',
-      url: `employee/salaries?year=${year}&month=${month}`,
-    });
+  ): Promise<MonthlyPayment> {
+    const response: BaseResponse<MonthlyPayment> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `employee/salaries?year=${year}&month=${month}`,
+      });
 
     return response.data;
   }
 
   //알바생 - 서류 목록
   public async getPaperList(): Promise<EmploymentContractListGetResponse[]> {
-    const response: BaseResponse<EmploymentContractListGetResponse> =
+    const response: BaseResponse<EmploymentContractListGetResponse[]> =
       await this.axiosInstance.request({
         method: 'get',
         url: 'papers',
+      });
+
+    return response.data;
+  }
+
+  public async registerEmployeeAccount({
+    accountNumber,
+    employeeNm,
+  }: RegisterEmployeeAccount): Promise<RegisterEmployeeAccountResponse> {
+    const dat: RegisterEmployeeAccount = {
+      accountNumber,
+      employeeNm,
+    };
+
+    console.log(dat);
+    const response: BaseResponse<RegisterEmployeeAccountResponse> =
+      await this.axiosInstance.request({
+        method: 'post',
+        url: 'employee/accounts',
+        data: dat,
       });
 
     return response.data;
