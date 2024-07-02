@@ -18,9 +18,11 @@
     "react-calendar": "^5.0.0",
     "react-dom": "^18.3.1",
     "react-icons": "^5.2.1",
+    "react-kakao-maps-sdk": "^1.1.27",
     "react-router-dom": "^6.24.0",
-    "swiper": "^11.1.4",
-    "react-kakao-maps-sdk": "^1.1.27"
+    "react-time-picker": "^7.0.0",
+    "react-time-picker-typescript": "^1.2.3",
+    "swiper": "^11.1.4"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

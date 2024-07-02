@@ -23,8 +23,7 @@ const onClickChangeAttendance = (data: DateWorkDetail) => {
     payPerHour: data.payPerHour,
     startTime: data.startTime,
     endTime: data.endTime,
-    restStartTime: new Date(),
-    restEndTime: new Date(),
+    restMinutes: data.restMinutes,
   };
 };
 
@@ -41,15 +40,13 @@ const DateDetail = () => {
   const targetDate = new Date(date!);
 
   const temp = getFilteredData(targetDate);
-  console.log(temp);
+  // console.log(temp);
 
   return (
-    <div className='px-6'>
-      <h2>Selected Date: {date}</h2>
-
+    <div className='px-6 py-7'>
       <VStack className='gap-3'>
         <HStack className='justify-between items-center'>
-          <div>총 근무 시간: 8시간</div>
+          <div>총 근무 시간: 8시간 이거 꼭 바꿔야함</div>
           <button className='bg-hanaLightGreen gap-2 py-1 px-2 flex items-center rounded-lg text-white'>
             <AiOutlinePlusCircle />
             <div>근무 추가</div>
@@ -66,8 +63,7 @@ const DateDetail = () => {
                 payPerHour: item.payPerHour,
                 startTime: item.startTime,
                 endTime: item.endTime,
-                restStartTime: new Date(),
-                restEndTime: new Date(),
+                restMinutes: item.restMinutes,
               }),
                 onClickEditAttendance(item.attendanceId);
             }}

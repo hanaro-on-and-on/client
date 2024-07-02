@@ -3,23 +3,26 @@ import WorkPlaceName from '../ui/WorkPlaceName';
 import SelectBox from './SelectBox';
 import { useState } from 'react';
 
+type optionView = {
+  workPlaceId: number;
+  workPlaceNm: string;
+  workPlaceColor: string;
+  workPlaceEmployeeId: number;
+  employeeNm: string;
+};
 type SelectProps = {
-  options: [];
+  options: optionView[];
+  selectedId: number;
+  onSelect: (id: number) => void;
 };
 
-const Select = ({ options }: SelectProps) => {
-  const [selected, setSelected] = useState({
-    workPlaceId: 1, // Long
-    workPlaceNm: '롯데리아 자양점',
-    workPlaceColor: '01', // String
-    workPlaceEmployeeId: 1, // Long
-    employeeNm: '이신광', // String
-  });
-  const [showList, setShowList] = useState(false);
+const filteredData = (options: optionView[], selectedId: number) => {
+  return options.find((e) => e.workPlaceEmployeeId === selectedId);
+};
 
-  const onClickSelect = (data) => {
-    setSelected(data);
-  };
+const Select = ({ options, selectedId, onSelect }: SelectProps) => {
+  const [showList, setShowList] = useState(false);
+  const selected = filteredData(options, selectedId);
 
   return (
     <div className='w-full'>
@@ -29,18 +32,18 @@ const Select = ({ options }: SelectProps) => {
       >
         <div className='w-1/2 px-1 py-2'>
           <WorkPlaceName
-            name={selected.workPlaceNm}
-            colorType={selected.workPlaceColor}
+            name={selected!.workPlaceNm}
+            colorType={selected!.workPlaceColor}
           />
         </div>
-        <div className='w-1/2'>{selected.employeeNm}</div>
+        <div className='w-1/2 font-bold'>{selected!.employeeNm}</div>
         <FaAngleDown />
       </button>
       <SelectBox
         isOpen={showList}
         options={options}
         onClose={() => setShowList(false)}
-        onClick={onClickSelect}
+        onClick={onSelect}
       />
     </div>
   );

@@ -6,6 +6,7 @@ export type CalendarDayType = {
   payPerHour: number;
   startTime: Date;
   endTime: Date;
+  restMinutes: number;
 };
 
 export type CalendarSalaryType = {
@@ -25,6 +26,7 @@ export type DateWorkDetail = {
   payPerHour: number;
   startTime: Date;
   endTime: Date;
+  restMinutes: number;
 };
 
 export type Attendance = {
@@ -33,6 +35,5 @@ export type Attendance = {
   payPerHour: number; // 시급
   startTime: Date; // 시작 시간
   endTime: Date; // 끝 시간
-  restStartTime: Date;
-  restEndTime: Date;
+  restMinutes: number;
 };
