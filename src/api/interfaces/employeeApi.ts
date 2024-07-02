@@ -1,15 +1,16 @@
 interface employeeApi {
   manualWorkPlaceAddition(
     req: ManualWorkPlaceAdditionRequest
-  ): Promise<BaseResponse<ManualWorkPlaceAdditionResponse>>;
+  ): Promise<ManualWorkPlaceAdditionResponse>;
 
-  getConfirmReq(): Promise<BaseResponse<ConfirmReqResponse>>;
-  getMonthlyPayment(
-    year: number,
-    month: number
-  ): Promise<BaseResponse<MonthlyPayment>>;
+  getConfirmReq(): Promise<ConfirmReqResponse>;
+  getMonthlyPayment(year: number, month: number): Promise<MonthlyPayment>;
 
   getPaperList(): Promise<EmploymentContractListGetResponse[]>;
+
+  registerEmployeeAccount(
+    prop: RegisterEmployeeAccount
+  ): Promise<RegisterEmployeeAccountResponse>;
 }
 
 export default employeeApi;
