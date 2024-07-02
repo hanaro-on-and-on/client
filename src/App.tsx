@@ -1,6 +1,11 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import Test from './pages/test';
+import UiTest from './pages/UiTest';
+import OwnerMainPage from './pages/OwnerMainPage';
+import CalendarCustom from './components/ui/CalendarCustom';
+import DateDetail from './components/calendar-owner/DateDetail';
+import AttendanceEdit from './components/calendar-owner/AttendanceEdit';
 import PaymentMain from './pages/employee/PartTimeTab/PaymentMain';
 import WorkTime from './pages/employee/PartTimeTab/WorkTime';
 import Payment from './pages/employee/PartTimeTab/Payment';
@@ -21,6 +26,15 @@ function App() {
       <Routes>
         <Route path='/' element={<LandingPage />} />
         <Route path='/test' element={<Test />} />
+        <Route path='/ui' element={<UiTest />} />
+        <Route path='/owner/*' element={<OwnerMainPage />}>
+          <Route path='calendar' element={<CalendarCustom />} />
+          <Route path='calendar/:date' element={<DateDetail />} />
+          <Route
+            path='calendar/attendance/:id/edit'
+            element={<AttendanceEdit />}
+          />
+        </Route>
         <Route path='/owner-calendar' element={<OwnerCalendarPage />} />
         <Route path='/part-time/*' element={<PaymentMain />}>
           <Route path='worktime' element={<WorkTime />} />

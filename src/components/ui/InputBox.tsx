@@ -1,9 +1,16 @@
-import { InputHTMLAttributes, PropsWithChildren, useState } from 'react';
+import {
+  ChangeEvent,
+  InputHTMLAttributes,
+  PropsWithChildren,
+  useState,
+} from 'react';
 import { VStack } from './Stack';
 
 interface InputBoxProps extends InputHTMLAttributes<HTMLInputElement> {
   type?: 'UNDER_BAR' | 'BORDER';
   label: string;
+  value?: string;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const getClassNameByType = (type: string) => {
@@ -16,7 +23,14 @@ const getClassNameByType = (type: string) => {
 };
 
 const InputBox = (props: PropsWithChildren<InputBoxProps>) => {
-  const { type = 'UNDER_BAR', label, children, ...rest } = props;
+  const {
+    type = 'UNDER_BAR',
+    label,
+    value,
+    onChange,
+    children,
+    ...rest
+  } = props;
   const [isFocused, setIsFocused] = useState(false);
 
   const onFocusHandle = () => setIsFocused(true);
@@ -33,6 +47,8 @@ const InputBox = (props: PropsWithChildren<InputBoxProps>) => {
         {children || (
           <input
             className={`w-full border-gray-300 ${getClassNameByType(type)} focus:outline-none focus:border-hanaLightGreen`}
+            value={value}
+            onChange={onChange}
             onFocus={onFocusHandle}
             onBlur={onBlurHnadle}
             {...rest}

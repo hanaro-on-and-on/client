@@ -3,6 +3,8 @@ import './CalendarCustom.css';
 import Calendar, { OnArgs } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import CalendarMark from './CalendarMark';
+import { useNavigate } from 'react-router-dom';
+import { useCalendarData } from '../../contexts/Calender-Data-Context';
 
 const mockData = [
   {
@@ -50,7 +52,7 @@ const mockData = [
   },
   {
     workPlaceId: 2,
-    workPalceName: '버거킹',
+    workPlaceName: '버거킹',
     workPlaceColor: '02',
     days: [
       {
@@ -89,8 +91,9 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 const CalendarCustom = () => {
   const [value, setValue] = useState<Value>(new Date());
-  // const [value, setValue] = useState<Date>(new Date());
-  const [data, setData] = useState(mockData);
+  const { calendarData } = useCalendarData();
+  // const [data, setData] = useState(mockData);
+  const navigate = useNavigate();
 
   const onChangeCurrentDate = (args: OnArgs) => {
     const { action, activeStartDate, value, view } = args;
@@ -101,14 +104,19 @@ const CalendarCustom = () => {
     setValue(activeStartDate!);
   };
 
+  const onClickDate = (date: Date) => {
+    const localDateString = date.toLocaleDateString('en-CA'); // 'YYYY-MM-DD' 형식
+    navigate(`/owner/calendar/${localDateString}`);
+  };
+
   const getEventsForDate = (date: Date) => {
     const events = [];
-    data.forEach((workPlace) => {
+    calendarData.forEach((workPlace) => {
       workPlace.days.forEach((day) => {
         if (new Date(day.startTime).toDateString() === date.toDateString()) {
           events.push({
             ...day,
-            workPlaceName: workPlace.workPalceName,
+            workPlaceName: workPlace.workPlaceName,
             workPlaceColor: workPlace.workPlaceColor,
           });
         }
@@ -144,6 +152,7 @@ const CalendarCustom = () => {
         locale='en'
         className={'w-full'}
         onChange={setValue}
+        onClickDay={onClickDate}
         onActiveStartDateChange={onChangeCurrentDate}
         value={value}
         tileClassName={['h-28']}

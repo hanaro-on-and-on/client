@@ -1,25 +1,24 @@
-import { useState } from 'react';
 import Nav from '../components/Nav';
-import CalendarCustom from '../components/ui/CalendarCustom';
-import ToolBar from '../components/ui/ToolBar';
+import { Outlet } from 'react-router-dom';
+import ToolBarLink from '../components/ui/ToolBarLink';
+import { CalendarDataProvider } from '../contexts/Calender-Data-Context';
+import { AttendanceProvider } from '../contexts/Attendance-Context';
 
-const ownerOptions = ['나의 사업장', '캘린더'];
+const ownerOptions = [
+  { idx: 0, title: '나의 사업장', url: 'myList' },
+  { idx: 1, title: '캘린더', url: 'calendar' },
+];
 
 const OwnerMainPage = () => {
-  const [selected, setSelected] = useState(0);
-  const onClickSelected = (idx: number) => {
-    setSelected(idx);
-  };
-
   return (
     <div>
       <Nav title='사장님 ON'></Nav>
-      <ToolBar
-        options={ownerOptions}
-        selected={selected}
-        onClickSelected={onClickSelected}
-      />
-      {selected == 1 && <CalendarCustom />}
+      <ToolBarLink options={ownerOptions} />
+      <CalendarDataProvider>
+        <AttendanceProvider>
+          <Outlet />
+        </AttendanceProvider>
+      </CalendarDataProvider>
     </div>
   );
 };
