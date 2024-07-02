@@ -110,3 +110,8 @@ type EmployeePaperGetResponse = {
   otherAllowancesName: string;
   overTimeRate: number;
 };
+
+//급여 명세서 전자 서명
+type EmployeeSignatureResponse = {
+  status: number;
+};

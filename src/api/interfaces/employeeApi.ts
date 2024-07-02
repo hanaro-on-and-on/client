@@ -23,6 +23,8 @@ interface employeeApi {
   employeeGetContract(
     employmentContractId: number
   ): Promise<EmployeePaperGetResponse>;
+
+  employeeSignature(payStubId: number): Promise<EmployeeSignatureResponse>;
 }
 
 export default employeeApi;

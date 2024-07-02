@@ -122,6 +122,19 @@ class ApiClient implements employeeApi {
     return response.data;
   }
 
+  //알바생 - 급여 명세서 서명
+  public async employeeSignature(
+    payStubId: number
+  ): Promise<EmployeeSignatureResponse> {
+    const response: BaseResponse<EmployeeSignatureResponse> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `papers/pay-stubs/${payStubId}/e-sign`,
+      });
+
+    return response.data;
+  }
+
   //==========================
   // 생성 메소드
   private static createAxiosInstance() {
