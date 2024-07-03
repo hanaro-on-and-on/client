@@ -4,15 +4,12 @@ import Test from './pages/test';
 // import UiTest from './pages/UiTest';
 import OwnerMainPage from './pages/OwnerMainPage';
 import CalendarCustom from './components/ui/CalendarCustom';
-// import DateDetail from './components/calendar-owner/DateDetail';
-// import AttendanceEdit from './components/calendar-owner/AttendanceEdit';
 import PaymentMain from './pages/employee/PartTimeTab/PaymentMain';
 import WorkTime from './pages/employee/PartTimeTab/WorkTime';
 import Payment from './pages/employee/PartTimeTab/Payment';
 import PaymentDetail from './pages/employee/PartTimeTab/PaymentDetail';
 import MyPage from './pages/employee/MyPageTab/MyPage';
 import EditMyPage from './pages/employee/MyPageTab/EditMyPage';
-import OwnerCalendarPage from './pages/OwnerMainPage';
 import Attendance from './pages/employee/Attendance/Attendance';
 import AttendanceDetail from './pages/employee/Attendance/AttendanceDeTail';
 import LandingPage from './pages/LandingPage/LandingPage';
@@ -21,6 +18,9 @@ import EmployeeAddMainAccount from './pages/LandingPage/EmployeeAddMainAccount';
 import ManualWorkPlaceAddition from './pages/employee/PartTimeTab/ManualWorkPlaceAddition';
 import DateDetail from './components/owner-calendar/DateDetail';
 import AttendanceEdit from './components/owner-calendar/AttendanceEdit';
+import MyWorkPlaces from './components/owner-workplace/MyWorkPlaces';
+import MyWorkPlaceDetail from './components/owner-workplace/MyWorkPlaceDetail';
+import WorkEmployeeDetail from './components/owner-workplace/WorkEmployeeDetail';
 
 function App() {
   return (
@@ -36,8 +36,13 @@ function App() {
             path='calendar/attendance/:id/edit'
             element={<AttendanceEdit />}
           />
+          <Route path='myWorkPlaces' element={<MyWorkPlaces />} />
+          <Route path='myWorkPlaces/:id' element={<MyWorkPlaceDetail />} />
+          <Route
+            path='myWorkPlaces/:placeId/employees/:id'
+            element={<WorkEmployeeDetail />}
+          />
         </Route>
-        {/* <Route path='/owner-calendar' element={<OwnerCalendarPage />} /> */}
         <Route path='/part-time/*' element={<PaymentMain />}>
           <Route path='worktime' element={<WorkTime />} />
         </Route>
