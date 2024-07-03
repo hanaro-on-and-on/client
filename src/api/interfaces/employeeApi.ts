@@ -15,7 +15,7 @@ interface employeeApi {
   employeeUpdateAccount(prop: EmployeeAccountUpdate): Promise<any>;
 
   employeeGetPayStub(
-    id: string,
+    id: number,
     yearn: number,
     month: number
   ): Promise<EmployeePayStubGetResponse>;

@@ -75,7 +75,7 @@ const ManualWorkPlaceAddition = () => {
       <Frame navTitle='알바ON'>
         <div className='w-full flex flex-col gap-2 pt-2 pb-5 h-full justify-between'>
           <div className='flex flex-col gap-3'>
-            <ReturnArrow text='근무지 목록' To='/part-time/worktime' />
+            <ReturnArrow text='근무지 목록' To='/part-time/payment' />
             <div className='font-bold text-xl text-start mb-5 px-1'>
               근무지 정보를<br></br>
               입력해주세요

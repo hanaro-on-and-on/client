@@ -9,28 +9,25 @@ import NavToggle from '../../../components/NavToggle';
 import PayStub from './PayStub';
 
 import WorkHourManagement from './WorkHourManagement';
+import generateMonthList from '../../../utils/generateMonthList';
+import { useDate } from '../../../contexts/Date-Context';
 
 enum ToggleStatus {
   PAYMENT = 'payment',
   WORKTIME = 'worktime',
 }
 
-type Prop = {
-  monthList: Date[];
-  selectedDate: Date;
-  selectDate: React.Dispatch<Date>;
-};
-
 const PaymentDetail = () => {
   const today = new Date();
-  const { workPlace, yearMonth } = useParams();
+  const { workPlace, yearMonth, id } = useParams();
   const [selectedToggle, setSelectedToggle] = useState<ToggleStatus>(
     ToggleStatus.PAYMENT
   );
 
-  const comp: number[] = yearMonth?.split('-').map((item) => +item) ?? [];
-  const year = comp[0];
-  const month = comp[1] ?? -1;
+  const { date, setYear, setMonth, setYearMonth, getYear, getMonth } =
+    useDate();
+
+  const [monthList, setMonthList] = useState<Date[]>(() => generateMonthList());
 
   return (
     <Frame navTitle='알바ON'>
@@ -38,7 +35,7 @@ const PaymentDetail = () => {
         {workPlace && (
           <div className='flex flex-col gap-2'>
             {/* 뒤로 가기 */}
-            <ReturnArrow text='목록' To='-1' />
+            <ReturnArrow text='목록' To='/part-time/payment' />
 
             {/* 매장명 */}
             <WhiteBox className='py-3 px-3 w-full border '>
@@ -61,7 +58,12 @@ const PaymentDetail = () => {
 
             {/* 급여명세서 */}
             {selectedToggle === ToggleStatus.PAYMENT && (
-              <PayStub year={year} month={month} />
+              <PayStub
+                year={getYear()}
+                month={getMonth()}
+                id={Number(id)}
+                monthList={monthList}
+              />
             )}
             {selectedToggle === ToggleStatus.WORKTIME && (
               <WorkHourManagement year={year} month={month} />
