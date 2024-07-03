@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import ApiClient from '../../../api/apiClient';
 import { useEffect, useState } from 'react';
 import BtnGray from '../../../components/BtnGray';
+import ToolBarLink from '../../../components/ui/ToolBarLink';
+import { EmployeeMenuList } from '../datas';
 
 const today = new Date();
 const day = today.getDay();
@@ -79,7 +81,7 @@ const Attendance = () => {
     <>
       {attendances && (
         <Frame navTitle='알바ON'>
-          <ToolBar2 isEmployee />
+          <ToolBarLink options={EmployeeMenuList} />
           <div className='w-full flex flex-col gap-10 mt-7'>
             {/* 오늘 출근 목록 */}
             <Wrapper title='오늘 출근 목록'>
@@ -98,7 +100,7 @@ const Attendance = () => {
                       >
                         <WorkPlaceName
                           name={item.workPlaceName}
-                          colorType={item.colorTypeCode}
+                          colorType={item.colorTypeCd}
                         />
                         <FaAngleRight />
                       </button>
@@ -115,13 +117,15 @@ const Attendance = () => {
                           ))}
                       </div>
 
-                      <div className='border rounded-sm text-sm border-hanaLightGreen px-3 mb-2'>
-                        <div className='flex font-semibold '>
-                          <span className='pr-1'>[{item.workPlaceName}]</span>
-                          <span>{item.notice[0].title}</span>
+                      {item.notice.length > 0 && (
+                        <div className='border rounded-sm text-sm border-hanaLightGreen px-3 mb-2'>
+                          <div className='flex font-semibold '>
+                            <span className='pr-1'>[{item.workPlaceName}]</span>
+                            <span>{item?.notice[0].title}</span>
+                          </div>
+                          {` ${item?.notice[0].content}`}
                         </div>
-                        {` ${item.notice[0].content}`}
-                      </div>
+                      )}
                       {isActivated(item) ? (
                         <BtnPrimary text='출근' action={() => {}} />
                       ) : (
@@ -145,14 +149,14 @@ const Attendance = () => {
                       <div className='flex flex-col items-start gap-1'>
                         <WorkPlaceName
                           name={item.workPlaceName}
-                          colorType={item.colorTypeCode}
+                          colorType={item.colorTypeCd}
                         />
                         {item.workTime.length > 0 ? (
                           <div className='text-gray-400 text-sm'>
-                            {item.workTime[0]?.workDayOfWeek}{' '}
-                            {item.workTime[0]?.workStartTime}
+                            {item.workTime[0].workDayOfWeek}{' '}
+                            {item.workTime[0].workStartTime}
                             {' - '}
-                            {item.workTime[0]?.workEndTime}
+                            {item.workTime[0].workEndTime}
                           </div>
                         ) : (
                           <div className='text-gray-400 text-sm'>

@@ -3,11 +3,11 @@ import Frame from '../../../components/Frame';
 import Wrapper from '../../../components/Wrapper';
 import WhiteBox from '../../../components/ui/WhiteBox';
 import WorkPlaceName from '../../../components/ui/WorkPlaceName';
-import ToolBar2 from '../../../components/ui/ToolBar2';
 import { useEffect, useState } from 'react';
 import ApiClient from '../../../api/apiClient';
 import ModalBottom from '../../../components/ModalBottom';
-import { formatDate, styleDate } from '../../../utils/format-date';
+import ToolBarLink from '../../../components/ui/ToolBarLink';
+import { EmployeeMenuList } from '../datas';
 
 const MyPage = () => {
   const navigation = useNavigate();
@@ -15,6 +15,7 @@ const MyPage = () => {
   const [paperDetail, setPaperDetail] =
     useState<EmployeePaperGetResponse | null>(null);
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const [myInfo, setMyInfo] = useState<MyInfo | null>(null);
   const [modalMsg, setModalMsg] = useState<string>('');
 
   const openModal = (msg?: string) => {
@@ -41,6 +42,17 @@ const MyPage = () => {
     }
   };
 
+  const getMyInfo = async () => {
+    try {
+      const response: MyInfo =
+        await ApiClient.getInstance().employeeGetMyInfo();
+
+      setMyInfo(response);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const fetchData = async () => {
     try {
       const response: EmploymentContractListGetResponse[] =
@@ -55,6 +67,7 @@ const MyPage = () => {
 
   useEffect(() => {
     fetchData();
+    getMyInfo();
   }, []);
   return (
     <>
@@ -146,7 +159,7 @@ const MyPage = () => {
         </ModalBottom>
       )}
       <Frame navTitle='알바ON'>
-        <ToolBar2 isEmployee />
+        <ToolBarLink options={EmployeeMenuList} />
         <div className='w-full flex flex-col gap-10 '>
           {/* 나의 정보 */}
           <Wrapper title='나의 정보' className='mt-7'>
@@ -155,17 +168,17 @@ const MyPage = () => {
                 {/* 성명 */}
                 <div className='flex justify-between'>
                   <div>성명</div>
-                  <div className='text-gray-400'>이름</div>
+                  <div className='text-gray-400'>{myInfo?.username}</div>
                 </div>
                 {/* 전화번호 */}
                 <div className='flex justify-between'>
                   <div>전화번호</div>
-                  <div className='text-gray-400'>이름</div>
+                  <div className='text-gray-400'>{myInfo?.phoneNumber}</div>
                 </div>
                 {/* 계좌번호 */}
                 <div className='flex justify-between'>
                   <div>계좌번호</div>
-                  <div className='text-gray-400'>이름</div>
+                  <div className='text-gray-400'>{myInfo?.accountNumber}</div>
                 </div>
               </div>
             </WhiteBox>
