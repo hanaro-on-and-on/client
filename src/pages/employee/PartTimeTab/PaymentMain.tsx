@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import generateMonthList from '../../../utils/generateMonthList';
 import Payment from './Payment';
 import WorkTime from './WorkTime';
+import WorkHourManagement from './WorkHourManagement';
 
 enum SELECTED_TAB {
   PAYMENT = 'payment',
@@ -46,7 +47,13 @@ const PaymentMain = () => {
               selectDate={setSelectedYearMonth}
             />
           )}
-          {selectedTab === SELECTED_TAB.WORKTIME && <WorkTime />}
+          {selectedTab === SELECTED_TAB.WORKTIME && (
+            <WorkHourManagement
+              monthList={monthList}
+              selectedDate={selectedYearMonth}
+              selectDate={setSelectedYearMonth}
+            />
+          )}
         </div>
       </Frame>
     </>
