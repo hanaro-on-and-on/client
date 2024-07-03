@@ -159,3 +159,11 @@ type MyInfo = {
   phoneNumber: string; //전화번호
   username: string; //성명
 };
+
+//근무지 간략 조회
+type WorkPlaceInfo = {
+  workPlaceEmployeeId: long;
+  workPlaceNm: string;
+  colorTypeCd: string;
+  workStartDate: string;
+};
