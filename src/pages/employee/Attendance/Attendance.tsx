@@ -18,15 +18,7 @@ const month = today.getMonth() + 1;
 const currentTime = today.getHours();
 const currentTimeMin = today.getMinutes();
 
-const days = [
-  '일요일',
-  '월요일',
-  '화요일',
-  '수요일',
-  '목요일',
-  '금요일',
-  '토요일',
-];
+const days = ['일', '월', '화', '수', '목', '금', '토'];
 
 const Attendance = () => {
   const navigation = useNavigate();
@@ -34,31 +26,51 @@ const Attendance = () => {
   const [attendances, setAttendances] =
     useState<EmployeeTodayAttendancesResponse | null>(null);
 
+  // const isActivated = (target: AttendanceTodayWork): boolean => {
+  //   const index = target.workTime.findIndex(
+  //     (item) => item.workDayOfWeek === days[day]
+  //   );
+  //   if (!index) return false;
+
+  //   const startTime = target.workTime[index].workStartTime;
+  //   const sh = startTime.substring(0, startTime.indexOf(':'));
+  //   const smin = startTime.substring(startTime.indexOf(':') + 1);
+
+  //   const endTime = target.workTime[index].workEndTime;
+  //   const eh = endTime.substring(0, startTime.indexOf(':'));
+  //   const emin = endTime.substring(startTime.indexOf(':') + 1);
+
+  //   const start = new Date();
+  //   start.setTime(+sh);
+  //   start.setMinutes(+smin);
+
+  //   const end = new Date();
+  //   end.setTime(+eh);
+  //   end.setMinutes(+emin);
+
+  //   if (start < today && start < end) return true;
+
+  //   return false;
+  // };
+
   const isActivated = (target: AttendanceTodayWork): boolean => {
-    const index = target.workTime.findIndex(
-      (item) => item.workDayOfWeek === days[day]
-    );
-    if (!index) return false;
+    const startTime = new Date(target.startTime);
+    const endTime = new Date(target.endTime);
 
-    const startTime = target.workTime[index].workStartTime;
-    const sh = startTime.substring(0, startTime.indexOf(':'));
-    const smin = startTime.substring(startTime.indexOf(':') + 1);
+    const realStart = target.realStartTime
+      ? new Date(target.realStartTime)
+      : null;
+    const realEnd = new Date(target.realEndTime) || null;
 
-    const endTime = target.workTime[index].workEndTime;
-    const eh = endTime.substring(0, startTime.indexOf(':'));
-    const emin = endTime.substring(startTime.indexOf(':') + 1);
+    const now = new Date();
 
-    const start = new Date();
-    start.setTime(+sh);
-    start.setMinutes(+smin);
+    if (!realStart) return false;
+    if (startTime.getDate() && endTime.getDate()) {
+      if (endTime < now) return false;
+      if (now.getTime() < startTime.getTime() - 1) return false;
+    }
 
-    const end = new Date();
-    end.setTime(+eh);
-    end.setMinutes(+emin);
-
-    if (start < today && start < end) return true;
-
-    return false;
+    return true;
   };
 
   const getAttendanceList = async () => {
@@ -104,21 +116,10 @@ const Attendance = () => {
                         />
                         <FaAngleRight />
                       </button>
-                      <div>
-                        {item.workTime
-                          .filter((it) => it.workDayOfWeek === days[day])
-                          .map((i, index) => (
-                            <div
-                              key={i.restEndTime + String(index)}
-                              className='font-bold text-gray-400'
-                            >
-                              {i.workStartTime} - {i.workEndTime}
-                            </div>
-                          ))}
-                      </div>
+                      <div className='text-sm'>{`${new Date(item.startTime).getHours()}:${new Date(item.startTime).getMinutes() || '00'} - ${new Date(item.endTime).getHours()}:${new Date(item.endTime).getMinutes() || '00'}`}</div>
 
                       {item.notice.length > 0 && (
-                        <div className='border rounded-sm text-sm border-hanaLightGreen px-3 mb-2'>
+                        <div className='border rounded-sm text-sm border-hanaLightGreen px-3 py-1 mb-2'>
                           <div className='flex font-semibold '>
                             <span className='pr-1'>[{item.workPlaceName}]</span>
                             <span>{item?.notice[0].title}</span>
@@ -153,10 +154,12 @@ const Attendance = () => {
                         />
                         {item.workTime.length > 0 ? (
                           <div className='text-gray-400 text-sm'>
-                            {item.workTime[0].workDayOfWeek}{' '}
+                            <span className='font-semibold pr-3'>근무요일</span>
+                            {item.workTime?.map((i) => i.workDayOfWeek + ' ')}
+                            {/* {item.workTime[0].workDayOfWeek}{' '}
                             {item.workTime[0].workStartTime}
                             {' - '}
-                            {item.workTime[0].workEndTime}
+                            {item.workTime[0].workEndTime} */}
                           </div>
                         ) : (
                           <div className='text-gray-400 text-sm'>
@@ -164,7 +167,6 @@ const Attendance = () => {
                           </div>
                         )}
                       </div>
-                      <FaAngleDown />
                     </div>
                   </WhiteBox>
                 ))}
