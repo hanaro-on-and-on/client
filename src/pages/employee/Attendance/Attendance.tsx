@@ -108,7 +108,9 @@ const Attendance = () => {
                       <button
                         type='button'
                         className='flex justify-between items-center bg-transparent'
-                        onClick={() => navigation('detail/롯데리아')}
+                        onClick={() =>
+                          navigation(`detail/${item.workPlaceEmployeeId}`)
+                        }
                       >
                         <WorkPlaceName
                           name={item.workPlaceName}
@@ -141,12 +143,14 @@ const Attendance = () => {
             <Wrapper title='전체 출근 목록'>
               <div className='flex flex-col gap-1'>
                 {attendances?.totalWorks?.map((item) => (
-                  <WhiteBox
-                    key={item.workPlaceEmployeeId}
-                    border
-                    className='py-3'
-                  >
-                    <div className='flex justify justify-between items-center '>
+                  <WhiteBox key={item.workPlaceEmployeeId} border>
+                    <button
+                      type='button'
+                      className='flex justify justify-between items-center w-full h-full py-3 bg-transparent'
+                      onClick={() =>
+                        navigation(`detail/${item.workPlaceEmployeeId}`)
+                      }
+                    >
                       <div className='flex flex-col items-start gap-1'>
                         <WorkPlaceName
                           name={item.workPlaceName}
@@ -156,10 +160,6 @@ const Attendance = () => {
                           <div className='text-gray-400 text-sm'>
                             <span className='font-semibold pr-3'>근무요일</span>
                             {item.workTime?.map((i) => i.workDayOfWeek + ' ')}
-                            {/* {item.workTime[0].workDayOfWeek}{' '}
-                            {item.workTime[0].workStartTime}
-                            {' - '}
-                            {item.workTime[0].workEndTime} */}
                           </div>
                         ) : (
                           <div className='text-gray-400 text-sm'>
@@ -167,7 +167,7 @@ const Attendance = () => {
                           </div>
                         )}
                       </div>
-                    </div>
+                    </button>
                   </WhiteBox>
                 ))}
               </div>

@@ -6,10 +6,26 @@ import WhiteBox from '../../../components/ui/WhiteBox';
 import ReturnArrow from '../../../components/ui/ReturnArrow';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { useEffect, useState } from 'react';
+import ApiClient from '../../../api/apiClient';
+import clsx from 'clsx';
+import WorkPlaceName from '../../../components/ui/WorkPlaceName';
 const { kakao } = window;
 
+const days = ['일', '월', '화', '수', '목', '금', '토', '일'];
+
 const AttendanceDetail = () => {
-  const { workPlace } = useParams();
+  const { workPlaceId } = useParams();
+  const [workingDay, setWorkingDay] = useState<
+    {
+      day: null | string;
+      start: null | string;
+      end: null | string;
+      isWorkDay: boolean;
+    }[]
+  >([]);
+
+  const [attendanceDetail, setAttendaceDetail] =
+    useState<EmployeeAttendanceDetail | null>(null);
   const [location, setLoacation] = useState<{
     latitude: number;
     longitude: number;
@@ -19,9 +35,96 @@ const AttendanceDetail = () => {
     console.log(response); // coords: GeolocationCoordinates {latitude: 위도, longitude: 경도, …} timestamp: 1673446873903
     const { latitude, longitude } = response.coords;
     setLoacation({ latitude, longitude });
+    console.log(latitude, longitude);
+  };
+
+  const getDetail = async () => {
+    if (!workPlaceId) return;
+    try {
+      const response: EmployeeAttendanceDetail =
+        await ApiClient.getInstance().employeeGetAttendanceDetail(+workPlaceId);
+      console.log(response);
+      setAttendaceDetail(response);
+      isActivated(response.workTime);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const isActivated = (workTime: AttendanceWorkTime[]) => {
+    // const idx = workTime.findIndex((item) => item.workDayOfWeek === day);
+    // if (idx != -1) return idx;
+
+    const ret = Array(7).fill({
+      day: null,
+      start: null,
+      end: null,
+      isWorkDay: false,
+    });
+
+    workTime.forEach((item, index) => {
+      if (item.workDayOfWeek.charAt(0) === '월') {
+        ret[1] = {
+          day: '월',
+          start: item.workStartTime,
+          end: item.workEndTime,
+          isWorkDay: true,
+        };
+      }
+      if (item.workDayOfWeek.charAt(0) === '화') {
+        ret[2] = {
+          day: '화',
+          start: item.workStartTime,
+          end: item.workEndTime,
+          isWorkDay: true,
+        };
+      }
+      if (item.workDayOfWeek.charAt(0) === '수') {
+        ret[3] = {
+          day: '수',
+          start: item.workStartTime,
+          end: item.workEndTime,
+          isWorkDay: true,
+        };
+      }
+      if (item.workDayOfWeek.charAt(0) === '목') {
+        ret[4] = {
+          day: '목',
+          start: item.workStartTime,
+          end: item.workEndTime,
+          isWorkDay: true,
+        };
+      }
+      if (item.workDayOfWeek.charAt(0) === '금') {
+        ret[2] = {
+          day: '금',
+          start: item.workStartTime,
+          end: item.workEndTime,
+          isWorkDay: true,
+        };
+      }
+      if (item.workDayOfWeek.charAt(0) === '토') {
+        ret[2] = {
+          day: '토',
+          start: item.workStartTime,
+          end: item.workEndTime,
+          isWorkDay: true,
+        };
+      }
+      if (item.workDayOfWeek.charAt(0) === '일') {
+        ret[0] = {
+          day: '일',
+          start: item.workStartTime,
+          end: item.workEndTime,
+          isWorkDay: true,
+        };
+      }
+    });
+    setWorkingDay(ret);
   };
 
   useEffect(() => {
+    getDetail();
     navigator.geolocation.getCurrentPosition(
       successHandler,
       (err) => {
@@ -33,84 +136,77 @@ const AttendanceDetail = () => {
 
   return (
     <>
-      <Frame navTitle='알바ON'>
-        <ToolBar2 isEmployee />
-        <div className='w-full flex flex-col mt-5 pb-10'>
-          <ReturnArrow To='/attendance' />
-          <Wrapper title={workPlace} className='gap-3'>
-            {/* 지도 */}
-            <div className='bg-white rounded-md border h-[200px]'>
-              <Map
-                center={{ lat: location.latitude, lng: location.longitude }}
-                style={{ width: '100%', height: '100%' }}
-              >
-                <MapMarker
-                  position={{ lat: location.latitude, lng: location.longitude }}
-                ></MapMarker>
-              </Map>
-            </div>
-            {/* 근무요일 */}
-            <WhiteBox title='근무요일' border className='py-3 min-h-[200px]'>
-              <div className='flex justify-between mt-5'>
-                <div className='flex flex-col items-center'>
-                  <div className='flex justify-center items-center rounded-sm bg-hanaLightGreen text-white font-bold w-[30px] h-[30px]'>
-                    월
-                  </div>
-                  <div className='flex flex-col gap-0 text-sm mt-2'>
-                    <div>09:00</div>
-                    <div>10:00</div>
-                  </div>
-                </div>
-                <div className='flex flex-col items-center'>
-                  <div className='flex justify-center items-center rounded-sm bg-white border-hanaLightGreen w-[30px] h-[30px]'>
-                    화
-                  </div>
-                </div>
-                <div className='flex flex-col items-center'>
-                  <div className='flex justify-center items-center rounded-sm bg-hanaLightGreen text-white font-bold w-[30px] h-[30px]'>
-                    수
-                  </div>
-                  <div className='flex flex-col gap-0 text-sm mt-2'>
-                    <div>09:00</div>
-                    <div>10:00</div>
-                  </div>
-                </div>
-                <div className='flex flex-col items-center'>
-                  <div className='flex justify-center items-center rounded-sm bg-white border-hanaLightGreen w-[30px] h-[30px]'>
-                    목
-                  </div>
-                </div>
-                <div className='flex flex-col items-center'>
-                  <div className='flex justify-center items-center rounded-sm bg-hanaLightGreen text-white font-bold w-[30px] h-[30px]'>
-                    금
-                  </div>
-                  <div className='flex flex-col gap-0 text-sm mt-2'>
-                    <div>09:00</div>
-                    <div>10:00</div>
-                  </div>
-                </div>
-                <div className='flex flex-col items-center'>
-                  <div className='flex justify-center items-center rounded-sm bg-white border-hanaLightGreen w-[30px] h-[30px]'>
-                    토
-                  </div>
-                </div>
-                <div className='flex flex-col items-center'>
-                  <div className='flex justify-center items-center rounded-sm bg-white border-hanaLightGreen w-[30px] h-[30px]'>
-                    일
-                  </div>
-                </div>
+      {attendanceDetail && (
+        <Frame navTitle='알바ON'>
+          <ToolBar2 isEmployee />
+          <div className='w-full flex flex-col mt-5 pb-10'>
+            <ReturnArrow To='/attendance' />
+            <Wrapper className='gap-3'>
+              <WorkPlaceName
+                name={attendanceDetail.workPlaceName}
+                colorType={attendanceDetail.colorTypeCode}
+              />
+              {/* 지도 */}
+              <div className='bg-white rounded-md border h-[200px]'>
+                <Map
+                  center={{ lat: location.latitude, lng: location.longitude }}
+                  style={{ width: '100%', height: '100%' }}
+                >
+                  <MapMarker
+                    position={{
+                      lat: location.latitude,
+                      lng: location.longitude,
+                    }}
+                  >
+                    <div>안녕</div>
+                  </MapMarker>
+                </Map>
               </div>
-            </WhiteBox>
-          </Wrapper>
-          <Wrapper title='공지사항' className='mt-10'>
-            <div>
-              <WhiteBox title='롯데리아' border className='py-3'>
-                <div className='text-start text-sm'>설거지 끝내놓고 가세요</div>
+              {/* 근무요일 */}
+              <WhiteBox title='근무요일' border className='py-3 min-h-[110px]'>
+                <div className='flex justify-between mt-5'>
+                  {workingDay?.map((item, index) => (
+                    <div
+                      key={item.day || index}
+                      className='flex flex-col items-center'
+                    >
+                      <div
+                        className={clsx(
+                          'flex justify-center items-center rounded-sm  w-[30px] h-[30px]',
+                          {
+                            'bg-hanaLightGreen text-white font-bold ':
+                              item.isWorkDay,
+                          }
+                        )}
+                      >
+                        {days[index]}
+                      </div>
+                      <div className='flex flex-col gap-0 text-sm mt-2'>
+                        <div>{item.start}</div>
+                        <div>{item.end}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </WhiteBox>
-            </div>
-          </Wrapper>
-        </div>
-      </Frame>
+            </Wrapper>
+            <Wrapper title='공지사항' className='mt-10'>
+              <div className='flex flex-col gap-2'>
+                {attendanceDetail.notice?.map((item) => (
+                  <WhiteBox
+                    key={item.notificationId}
+                    title={item.title}
+                    border
+                    className='py-3'
+                  >
+                    <div className='text-start text-sm'>{item.content}</div>
+                  </WhiteBox>
+                ))}
+              </div>
+            </Wrapper>
+          </div>
+        </Frame>
+      )}
     </>
   );
 };

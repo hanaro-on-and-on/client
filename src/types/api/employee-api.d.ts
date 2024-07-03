@@ -201,3 +201,19 @@ type EmployeeWorkPlaceList = {
   connectedWorkPlaceList: connectedWorkPlace[];
   customWorkPlaceList: customWorkPlace[];
 };
+
+//출퇴근 상세 조회
+type AttendanceWorkTime = {
+  workDayOfWeek: string;
+  startTime: Date;
+  endTime: Date;
+  date: Date;
+};
+type EmployeeAttendanceDetail = {
+  workPlaceEmployeeId: number;
+  workPlaceName: string;
+  colorTypeCode: string;
+  location: { lat: number; lng: number };
+  workTime: AttendanceWorkTime[];
+  notice: Notice[];
+};

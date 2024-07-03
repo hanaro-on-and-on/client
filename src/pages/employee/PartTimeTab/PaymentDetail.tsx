@@ -93,7 +93,12 @@ const PaymentDetail = () => {
               />
             )}
             {selectedToggle === ToggleStatus.WORKTIME && (
-              <WorkHourManagement year={year} month={month} />
+              <WorkHourManagement
+                year={getYear()}
+                month={getMonth()}
+                id={Number(id)}
+                monthList={monthList}
+              />
             )}
           </div>
         )}
