@@ -22,7 +22,6 @@ const Payment = ({ monthList, selectedDate, selectDate }: Prop) => {
   >([]);
 
   const fetchData = async (year: number, month: number) => {
-    console.log(year, month);
     try {
       const response: MonthlyPayment =
         await ApiClient.getInstance().getMonthlyPayment(year, month);
@@ -30,8 +29,6 @@ const Payment = ({ monthList, selectedDate, selectDate }: Prop) => {
       if (response) {
         setTotalMonthlyPayment(response.totalPayment);
         setPaymentList(response.list);
-        console.log(response);
-        console.log('paymentList', paymentList);
       }
     } catch (err) {
       console.error(err);
