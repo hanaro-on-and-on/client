@@ -134,7 +134,7 @@ type AttendanceWorkTime = {
 type AttendanceTodayWork = {
   workPlaceEmployeeId: number;
   workPlaceName: string;
-  colorTypeCode: string;
+  colorTypeCd: string;
   workTime: AttendanceWorkTime[];
   notice: Notice[]; // <- 차이점! 밑의 totalWorks 에는 없음
 };
@@ -142,7 +142,7 @@ type AttendanceTodayWork = {
 type AttendanceWork = {
   workPlaceEmployeeId: number;
   workPlaceName: string;
-  colorTypeCode: string;
+  colorTypeCd: string;
   workTime: AttendanceWorkTime[];
 };
 
