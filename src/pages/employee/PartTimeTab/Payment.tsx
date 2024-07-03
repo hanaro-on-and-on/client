@@ -27,6 +27,7 @@ const Payment = ({ monthList, selectedDate, selectDate }: Prop) => {
         await ApiClient.getInstance().getMonthlyPayment(year, month);
 
       if (response) {
+        console.log(response.list);
         setTotalMonthlyPayment(response.totalPayment);
         setPaymentList(response.list);
       }
@@ -71,37 +72,35 @@ const Payment = ({ monthList, selectedDate, selectDate }: Prop) => {
       </WhiteBox>
       <div className='w-full flex flex-col gap-1'>
         {/* 매장 목록 */}
-        {paymentList
-          ?.filter((item) => item.payment > 0)
-          .map((item, index) => {
-            return (
-              <WhiteBox
-                key={item.workPlaceName + String(index)}
-                border
-                className='w-full py-3'
+        {paymentList.map((item, index) => {
+          return (
+            <WhiteBox
+              key={item.workPlaceName + String(index)}
+              border
+              className='w-full '
+            >
+              <button
+                type='button'
+                onClick={() =>
+                  navigate(
+                    `/part-time/payment/detail/${selectedDate.getFullYear()}-${selectedDate.getMonth()}` +
+                      `/${item.workPlaceName}`
+                  )
+                }
+                className='flex justify-between items-center w-full bg-transparent py-4'
               >
-                <button
-                  type='button'
-                  onClick={() =>
-                    navigate(
-                      `/part-time/payment/detail/${selectedDate.getFullYear()}-${selectedDate.getMonth()}` +
-                        `/${item.workPlaceName}`
-                    )
-                  }
-                  className='flex justify-between items-center w-full bg-transparent'
-                >
-                  <WorkPlaceName
-                    name={item.workPlaceName}
-                    colorType={item.workPlaceColor}
-                  />
-                  <div className='flex items-center gap-1'>
-                    {item.payment.toLocaleString()}
-                    <FaAngleRight />
-                  </div>
-                </button>
-              </WhiteBox>
-            );
-          })}
+                <WorkPlaceName
+                  name={item.workPlaceName}
+                  colorType={item.workPlaceColor}
+                />
+                <div className='flex items-center gap-1'>
+                  {item.payment.toLocaleString()}
+                  <FaAngleRight />
+                </div>
+              </button>
+            </WhiteBox>
+          );
+        })}
       </div>
     </>
   );

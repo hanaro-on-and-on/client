@@ -11,7 +11,7 @@ const WorkPlaceName = ({ name, colorType }: WorkPlaceNameProps) => {
       <span
         className={`rounded-full text-white font-semibold flex justify-center items-center w-[20px] h-[20px] ${getColor(colorType)}`}
       ></span>
-      {name}
+      <span className=' line-clamp-1 w-[120px] text-start'>{name}</span>
     </span>
   );
 };

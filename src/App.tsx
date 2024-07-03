@@ -47,7 +47,7 @@ function App() {
           <Route path='worktime' element={<WorkTime />} />
         </Route>
         <Route
-          path='/part-time/payment/detail/:dayMonth/:workPlace'
+          path='/part-time/payment/detail/:yearMonth/:workPlace'
           element={<PaymentDetail />}
         />
         <Route
