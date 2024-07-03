@@ -28,7 +28,7 @@ type EmployeeSalaryGetResponseList = {
   isQuit: boolean;
   payStubId: number | null;
   workPlaceName: string;
-  workPlaceColor: string;
+  workPlaceColorCode: string;
   payment: number;
 };
 
@@ -128,15 +128,16 @@ type AttendanceWorkTime = {
   workDayOfWeek: string;
   workStartTime: string;
   workEndTime: string;
-  restStartTime: string;
-  restEndTime: string;
 };
 
 type AttendanceTodayWork = {
+  colorTypeCd: string;
+  endTime: Date;
   workPlaceEmployeeId: number;
   workPlaceName: string;
-  colorTypeCd: string;
-  workTime: AttendanceWorkTime[];
+  startTime: Date;
+  realStartTime: Date;
+  realEndTime: Date;
   notice: Notice[]; // <- 차이점! 밑의 totalWorks 에는 없음
 };
 
@@ -157,4 +158,46 @@ type MyInfo = {
   accountNumber: string;
   phoneNumber: string; //전화번호
   username: string; //성명
+};
+
+//근무지 간략 조회
+type WorkPlaceInfo = {
+  workPlaceEmployeeId: long;
+  workPlaceNm: string;
+  colorTypeCd: string;
+  workStartDate: string;
+};
+
+//근무지 목록 조회
+type invitatedWorkPlace = {
+  isQuit: null | boolean;
+  employmentContractId: number;
+  customWorkPlaceId: number | null;
+  workPlaceName: string;
+  colorCodeType: string;
+  ownerName: string;
+};
+
+type connectedWorkPlace = {
+  isQuit: boolean | null;
+  employmentContractId: null | number;
+  customWorkPlaceId: null | number;
+  workPlaceName: string;
+  colorCodeType: string;
+  ownerName: string;
+};
+
+type customWorkPlace = {
+  isQuit: boolean | null;
+  employmentContractId: null | number;
+  customWorkPlaceId: 1;
+  workPlaceName: string;
+  colorCodeType: string;
+  ownerName: null;
+};
+
+type EmployeeWorkPlaceList = {
+  invitatedWorkPlaceList: invitatedWorkPlace[];
+  connectedWorkPlaceList: connectedWorkPlace[];
+  customWorkPlaceList: customWorkPlace[];
 };

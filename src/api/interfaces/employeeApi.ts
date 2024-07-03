@@ -15,7 +15,7 @@ interface employeeApi {
   employeeUpdateAccount(prop: EmployeeAccountUpdate): Promise<any>;
 
   employeeGetPayStub(
-    id: string,
+    id: number,
     yearn: number,
     month: number
   ): Promise<EmployeePayStubGetResponse>;
@@ -29,6 +29,10 @@ interface employeeApi {
   employeeGetAttendanceList(): Promise<EmployeeTodayAttendancesResponse>;
 
   employeeGetMyInfo(): Promise<MyInfo>;
+
+  employeeGetWorkPlaceInfo(workPlaceEmployeeId: number): Promise<WorkPlaceInfo>;
+
+  employeeGetWorkPlaceList(): Promise<EmployeeWorkPlaceList>;
 }
 
 export default employeeApi;
