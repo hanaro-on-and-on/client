@@ -2,6 +2,8 @@ import { useParams } from 'react-router-dom';
 import NavToggle from '../NavToggle';
 import { useState } from 'react';
 import PayStub from '../../pages/employee/PartTimeTab/PayStub';
+import { HStack, VStack } from '../ui/Stack';
+import OwnerPayStub from './OwnerPayStub';
 
 enum ToggleStatus {
   PAYMENT = 'payment',
@@ -16,9 +18,14 @@ const WorkEmployeeDetail = () => {
     ToggleStatus.PAYMENT
   );
   return (
-    <>
-      <div>{placeId}</div>
-      <div>{id}</div>
+    <VStack className='m-6 gap-3'>
+      <HStack className='border border-gray-300 p-3 rounded-xl justify-evenly items-center gap-3'>
+        <div>롯데리아</div>
+        <VStack className='text-start'>
+          <div>최은진</div>
+          <div className='text-xs'>근무 시작일: 24.06.01</div>
+        </VStack>
+      </HStack>
 
       {/* 토글버튼 */}
       <NavToggle
@@ -30,9 +37,9 @@ const WorkEmployeeDetail = () => {
 
       {/* 급여명세서 */}
       {selectedToggle === ToggleStatus.PAYMENT && (
-        <PayStub year={today.getFullYear()} month={today.getMonth()} />
+        <OwnerPayStub year={today.getFullYear()} month={today.getMonth()} />
       )}
-    </>
+    </VStack>
   );
 };
 export default WorkEmployeeDetail;

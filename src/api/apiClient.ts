@@ -173,6 +173,7 @@ class ApiClient implements employeeApi {
       config.headers['Content-Type'] = 'application/json';
       config.headers['Authorization'] =
         `Bearer ${import.meta.env.VITE_ACCESS_TOKEN}`;
+      // config.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173';
       return config;
     });
 
