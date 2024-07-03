@@ -46,7 +46,6 @@ const WorkTime = () => {
       const response: ConfirmReqResponse =
         await ApiClient.getInstance().getConfirmReq();
 
-      console.log(response);
       setConfirmList(response.workPlacesInvitaionsGetResponseList);
     } catch (err) {
       console.error(err);
@@ -56,12 +55,7 @@ const WorkTime = () => {
   useEffect(() => {
     getConfirmList();
     fetchPaperList();
-    console.log(papers);
   }, []);
-
-  useEffect(() => {
-    console.log(papers);
-  }, [papers]);
 
   return (
     // 연동 요청

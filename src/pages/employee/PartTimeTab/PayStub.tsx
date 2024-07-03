@@ -50,7 +50,6 @@ const PayStub = ({ year, month }: Prop) => {
 
   const signature = async (payStubId: number) => {
     const sign: [] = signRef.current?.canvasRef.current.toData();
-    console.log(sign);
     if (!sign) return;
     try {
       const response: EmployeeSignatureResponse =
@@ -81,7 +80,6 @@ const PayStub = ({ year, month }: Prop) => {
       );
 
       if (response) {
-        console.log(response);
         setPayStub(response);
       }
     } catch (err) {

@@ -31,8 +31,6 @@ const MyPage = () => {
       const response =
         await ApiClient.getInstance().employeeGetContract(employmentContractId);
 
-      console.log(response);
-
       setPaperDetail(response);
       if (response) {
         openModal();
