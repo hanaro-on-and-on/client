@@ -29,7 +29,9 @@ const Payment = ({ monthList, selectedDate, selectDate }: Prop) => {
 
       if (response) {
         setTotalMonthlyPayment(response.totalPayment);
-        setPaymentList(response.employeeSalaryGetResponseList);
+        setPaymentList(response.list);
+        console.log(response);
+        console.log('paymentList', paymentList);
       }
     } catch (err) {
       console.error(err);
