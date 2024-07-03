@@ -8,6 +8,8 @@ import { useEffect, useState } from 'react';
 import ApiClient from '../../../api/apiClient';
 import ModalBottom from '../../../components/ModalBottom';
 import { formatDate, styleDate } from '../../../utils/format-date';
+import ToolBarLink from '../../../components/ui/ToolBarLink';
+import { EmployeeMenuList } from '../datas';
 
 const MyPage = () => {
   const navigation = useNavigate();
@@ -146,7 +148,7 @@ const MyPage = () => {
         </ModalBottom>
       )}
       <Frame navTitle='알바ON'>
-        <ToolBar2 isEmployee />
+        <ToolBarLink options={EmployeeMenuList} />
         <div className='w-full flex flex-col gap-10 '>
           {/* 나의 정보 */}
           <Wrapper title='나의 정보' className='mt-7'>

@@ -2,14 +2,15 @@ import Frame from '../../../components/Frame';
 import NavToggle from '../../../components/NavToggle';
 
 import { Outlet, useNavigate } from 'react-router-dom';
-import ToolBar2 from '../../../components/ui/ToolBar2';
+import ToolBarLink from '../../../components/ui/ToolBarLink';
+import { EmployeeMenuList } from '../datas';
 
 const PaymentMain = () => {
   const navigation = useNavigate();
   return (
     <>
       <Frame navTitle='알바ON'>
-        <ToolBar2 isEmployee />
+        <ToolBarLink options={EmployeeMenuList} />
         <div className='w-full flex flex-col  items-center gap-5 mt-7'>
           {/* 토글 버튼 */}
           <NavToggle

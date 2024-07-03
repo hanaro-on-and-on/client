@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import ApiClient from '../../../api/apiClient';
 import { useEffect, useState } from 'react';
 import BtnGray from '../../../components/BtnGray';
+import ToolBarLink from '../../../components/ui/ToolBarLink';
+import { EmployeeMenuList } from '../datas';
 
 const today = new Date();
 const day = today.getDay();
@@ -79,7 +81,7 @@ const Attendance = () => {
     <>
       {attendances && (
         <Frame navTitle='알바ON'>
-          <ToolBar2 isEmployee />
+          <ToolBarLink options={EmployeeMenuList} />
           <div className='w-full flex flex-col gap-10 mt-7'>
             {/* 오늘 출근 목록 */}
             <Wrapper title='오늘 출근 목록'>
