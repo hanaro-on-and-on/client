@@ -4,8 +4,8 @@ import Test from './pages/test';
 // import UiTest from './pages/UiTest';
 import OwnerMainPage from './pages/OwnerMainPage';
 import CalendarCustom from './components/ui/CalendarCustom';
-import DateDetail from './components/calendar-owner/DateDetail';
-import AttendanceEdit from './components/calendar-owner/AttendanceEdit';
+// import DateDetail from './components/calendar-owner/DateDetail';
+// import AttendanceEdit from './components/calendar-owner/AttendanceEdit';
 import PaymentMain from './pages/employee/PartTimeTab/PaymentMain';
 import WorkTime from './pages/employee/PartTimeTab/WorkTime';
 import Payment from './pages/employee/PartTimeTab/Payment';
@@ -19,6 +19,8 @@ import LandingPage from './pages/LandingPage/LandingPage';
 import EmployeeGreeting from './pages/LandingPage/EmployeeGreeting';
 import EmployeeAddMainAccount from './pages/LandingPage/EmployeeAddMainAccount';
 import ManualWorkPlaceAddition from './pages/employee/PartTimeTab/ManualWorkPlaceAddition';
+import DateDetail from './components/owner-calendar/DateDetail';
+import AttendanceEdit from './components/owner-calendar/AttendanceEdit';
 
 function App() {
   return (
