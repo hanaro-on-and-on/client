@@ -15,7 +15,7 @@ const WorkTime = () => {
   const [getsign, setGetsign] = useState<boolean>(false);
   const [modalTitle, setModalTitle] = useState<string>('전자 서명');
 
-  const [papers, setPapers] = useState<EmploymentContractListGetResponse[]>([]);
+  const [workPlaceList, setWorkPlaceList] = useState<EmployeeWorkPlaceList>([]);
 
   const refHandler = useRef<SignPadHandler>(null);
 
@@ -30,17 +30,6 @@ const WorkTime = () => {
     return 'true';
   };
 
-  const fetchPaperList = async () => {
-    try {
-      const response: EmploymentContractListGetResponse[] =
-        await ApiClient.getInstance().getPaperList();
-
-      setPapers(response);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   const getConfirmList = async () => {
     try {
       const response: ConfirmReqResponse =
@@ -52,9 +41,21 @@ const WorkTime = () => {
     }
   };
 
+  const getWorkPlaceList = async () => {
+    try {
+      const response: EmployeeWorkPlaceList =
+        await ApiClient.getInstance().employeeGetWorkPlaceList();
+      console.log(response);
+
+      setWorkPlaceList(response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     getConfirmList();
-    fetchPaperList();
+    getWorkPlaceList();
   }, []);
 
   return (
@@ -84,12 +85,12 @@ const WorkTime = () => {
 
       {/* 사장님과 연동 */}
       <Wrapper title='사장님과 연동' className='flex flex-col gap-1'>
-        {papers?.map((item) => (
+        {workPlaceList.connectedWorkPlaceList?.map((item) => (
           <WhiteBox className='py-3' border key={item.employmentContractId}>
             <div className='flex justify-between items-center'>
               <WorkPlaceName
-                name={item.workPlaceNm}
-                colorType={item.colorTypeCd}
+                name={item.workPlaceName}
+                colorType={item.colorCodeType}
               />
               <BtnBorder color='gray' text='계약 완료' onClick={() => {}} />
             </div>
@@ -104,12 +105,19 @@ const WorkTime = () => {
         buttonText='수동 등록'
         onButtonClick={() => navigation('manual/addition')}
       >
-        <WhiteBox className='py-3' border>
-          <div className='flex justify-between items-center'>
-            <WorkPlaceName name='롯데리아' colorType='02' />
-            <BtnBorder color='green' text='서명 요청' onClick={() => {}} />
-          </div>
-        </WhiteBox>
+        <div className='flex flex-col gap-1'>
+          {workPlaceList.customWorkPlaceList?.map((item) => (
+            <WhiteBox key={item.customWorkPlaceId} className='py-3' border>
+              <div className='flex justify-between items-center'>
+                <WorkPlaceName
+                  name={item.workPlaceName}
+                  colorType={item.colorCodeType}
+                />
+                <BtnBorder color='green' text='서명 요청' onClick={() => {}} />
+              </div>
+            </WhiteBox>
+          ))}
+        </div>
       </Wrapper>
 
       {isModalOpen && (
