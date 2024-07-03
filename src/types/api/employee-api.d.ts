@@ -150,3 +150,10 @@ type EmployeeTodayAttendancesResponse = {
   works: AttendanceTodayWork[];
   totalWorks: AttendanceWork[];
 };
+
+//대표 계좌 조회 (내 정보 조회)
+type MyInfo = {
+  accountNumber: string;
+  phoneNumber: string; //전화번호
+  username: string; //성명
+};
