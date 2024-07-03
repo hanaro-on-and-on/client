@@ -23,9 +23,10 @@ type ConfirmReqResponse = {
 
 //급여내역 월별 조회
 type EmployeeSalaryGetResponseList = {
-  isConnected: boolean;
   id: number | null;
+  isConnected: boolean;
   isQuit: boolean;
+  payStubId: number | null;
   workPlaceName: string;
   workPlaceColor: string;
   payment: number;
@@ -35,7 +36,7 @@ type MonthlyPayment = {
   year: number;
   month: number;
   totalPayment: number;
-  employeeSalaryGetResponseList: EmployeeSalaryGetResponseList[];
+  list: EmployeeSalaryGetResponseList[];
 };
 
 //서류 조회
@@ -134,7 +135,7 @@ type AttendanceWorkTime = {
 type AttendanceTodayWork = {
   workPlaceEmployeeId: number;
   workPlaceName: string;
-  colorTypeCode: string;
+  colorTypeCd: string;
   workTime: AttendanceWorkTime[];
   notice: Notice[]; // <- 차이점! 밑의 totalWorks 에는 없음
 };
@@ -142,11 +143,18 @@ type AttendanceTodayWork = {
 type AttendanceWork = {
   workPlaceEmployeeId: number;
   workPlaceName: string;
-  colorTypeCode: string;
+  colorTypeCd: string;
   workTime: AttendanceWorkTime[];
 };
 
 type EmployeeTodayAttendancesResponse = {
   works: AttendanceTodayWork[];
   totalWorks: AttendanceWork[];
+};
+
+//대표 계좌 조회 (내 정보 조회)
+type MyInfo = {
+  accountNumber: string;
+  phoneNumber: string; //전화번호
+  username: string; //성명
 };

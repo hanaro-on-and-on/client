@@ -9,17 +9,7 @@ import InputBorder from '../../components/InputBorder';
 import InputBorderSelect from '../../components/InputBorderSelect';
 import ModalCenter from '../../components/ModalCenter';
 import ApiClient from '../../api/apiClient';
-
-export const BankList: SelectionProp[] = [
-  { text: '하나은행', value: 'HANA' },
-  { text: '신한은행', value: 'SHIN_HAN' },
-  { text: '국민은행', value: 'KUK_MIN' },
-  { text: '우리은행', value: 'URI' },
-  { text: 'IBK기업은행', value: 'IBK' },
-  { text: '농협은행', value: 'NONG_HYEOP' },
-  { text: '수협은행', value: 'SU_HYEOP' },
-  { text: '부산은행', value: 'BUSAN' },
-];
+import { BankList } from '../employee/datas';
 
 const EmployeeAddMainAccount = () => {
   const [isModalOpen, setIsModal] = useState(false);
