@@ -26,6 +26,7 @@ const textConvert = (status: string): string => {
 };
 
 const PayStub = ({ monthList, year, month, id }: Prop) => {
+  const [workPlaceInfo, setWorkPlaceInfo] = useState<WorkPlaceInfo>(null);
   const [payStubId, setPayStubId] = useState<number | null>(() => id);
   const { date, setYear, setMonth, setYearMonth, getYear, getMonth } =
     useDate();
@@ -52,6 +53,7 @@ const PayStub = ({ monthList, year, month, id }: Prop) => {
     setIsModalOpen(true);
   };
 
+  //서명 요청
   const signature = async (payStubId: number) => {
     const sign: [] = signRef.current?.canvasRef.current.toData();
     if (!sign) return;
@@ -66,6 +68,7 @@ const PayStub = ({ monthList, year, month, id }: Prop) => {
     }
   };
 
+  //급여 명세서 정보 가져오기
   const getData = async () => {
     if (!payStubId) return;
     console.log('payStubId', payStubId);
@@ -82,6 +85,16 @@ const PayStub = ({ monthList, year, month, id }: Prop) => {
       }
     } catch (err) {
       setPayStub(null);
+    }
+  };
+
+  const getWorkPlaceData = async () => {
+    try {
+      const response =
+        await ApiClient.getInstance().employeeGetWorkPlaceInfo(id);
+      setWorkPlaceInfo(response);
+    } catch (err) {
+      console.log(err);
     }
   };
 

@@ -11,6 +11,7 @@ import PayStub from './PayStub';
 import WorkHourManagement from './WorkHourManagement';
 import generateMonthList from '../../../utils/generateMonthList';
 import { useDate } from '../../../contexts/Date-Context';
+import ApiClient from '../../../api/apiClient';
 
 enum ToggleStatus {
   PAYMENT = 'payment',
@@ -18,6 +19,9 @@ enum ToggleStatus {
 }
 
 const PaymentDetail = () => {
+  const [workPlaceInfo, setWorkPlaceInfo] = useState<WorkPlaceInfo | null>(
+    null
+  );
   const today = new Date();
   const { workPlace, yearMonth, id } = useParams();
   const [selectedToggle, setSelectedToggle] = useState<ToggleStatus>(
@@ -28,6 +32,22 @@ const PaymentDetail = () => {
     useDate();
 
   const [monthList, setMonthList] = useState<Date[]>(() => generateMonthList());
+
+  //매장 정보
+  const getWorkPlaceData = async () => {
+    try {
+      const response = await ApiClient.getInstance().employeeGetWorkPlaceInfo(
+        +id!
+      );
+      setWorkPlaceInfo(response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getWorkPlaceData();
+  }, []);
 
   return (
     <Frame navTitle='알바ON'>
@@ -40,10 +60,17 @@ const PaymentDetail = () => {
             {/* 매장명 */}
             <WhiteBox className='py-3 px-3 w-full border '>
               <div className='flex justify-between items-center'>
-                <WorkPlaceName name={workPlace} colorType='01' />
-                <div className='flex gap-2'>
+                {workPlaceInfo && (
+                  <WorkPlaceName
+                    name={workPlaceInfo.workPlaceNm}
+                    colorType={workPlaceInfo.colorTypeCd}
+                  />
+                )}
+                <div className='flex gap-2 text-[12px]'>
                   근무 시작일
-                  <div>101010</div>
+                  <div className='text-[12px]'>
+                    {workPlaceInfo?.workStartDate}
+                  </div>
                 </div>
               </div>
             </WhiteBox>
