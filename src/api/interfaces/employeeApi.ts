@@ -27,6 +27,8 @@ interface employeeApi {
   employeeSignature(payStubId: number): Promise<EmployeeSignatureResponse>;
 
   employeeGetAttendanceList(): Promise<EmployeeTodayAttendancesResponse>;
+
+  employeeGetMyInfo(): Promise<MyInfo>;
 }
 
 export default employeeApi;
