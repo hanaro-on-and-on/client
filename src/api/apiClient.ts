@@ -109,7 +109,7 @@ class ApiClient implements employeeApi {
 
   //알바생 - 월별 급여 명세서 조회
   public async employeeGetPayStub(
-    workPlaceEmployeeId: string,
+    workPlaceEmployeeId: number,
     year: number,
     month: number
   ): Promise<EmployeePayStubGetResponse> {
@@ -159,14 +159,9 @@ class ApiClient implements employeeApi {
   //==========================
   // 생성 메소드
   private static createAxiosInstance() {
-    const headers = {
-      'content-type': 'application/json',
-    };
-
     const newInstance = axios.create({
       baseURL: import.meta.env.VITE_BASE_URL,
       timeout: 100000,
-      headers,
     });
 
     newInstance.interceptors.request.use((config) => {

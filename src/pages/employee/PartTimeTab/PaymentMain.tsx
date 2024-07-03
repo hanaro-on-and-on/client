@@ -1,13 +1,13 @@
 import Frame from '../../../components/Frame';
 import NavToggle from '../../../components/NavToggle';
 
-import { useNavigate } from 'react-router-dom';
 import ToolBarLink from '../../../components/ui/ToolBarLink';
 import { EmployeeMenuList } from '../datas';
 import { useEffect, useState } from 'react';
 import generateMonthList from '../../../utils/generateMonthList';
 import Payment from './Payment';
 import WorkTime from './WorkTime';
+import { useDate } from '../../../contexts/Date-Context';
 
 enum SELECTED_TAB {
   PAYMENT = 'payment',
@@ -17,7 +17,7 @@ enum SELECTED_TAB {
 const PaymentMain = () => {
   const today = new Date();
   const [monthList, setMonthList] = useState<Date[]>(() => generateMonthList());
-  const [selectedYearMonth, setSelectedYearMonth] = useState<Date>(today);
+  const { setYearMonth } = useDate();
 
   const [selectedTab, setSelectedTab] = useState<SELECTED_TAB>(
     SELECTED_TAB.PAYMENT
@@ -35,16 +35,15 @@ const PaymentMain = () => {
           <NavToggle
             first='급여관리'
             second='근무 관리'
-            firstSelected={selectPayment}
+            firstSelected={() => {
+              selectPayment();
+              setYearMonth(today);
+            }}
             secondSelected={selectWorktime}
           />
 
           {selectedTab === SELECTED_TAB.PAYMENT && (
-            <Payment
-              monthList={monthList}
-              selectedDate={selectedYearMonth}
-              selectDate={setSelectedYearMonth}
-            />
+            <Payment monthList={monthList} />
           )}
           {selectedTab === SELECTED_TAB.WORKTIME && <WorkTime />}
         </div>

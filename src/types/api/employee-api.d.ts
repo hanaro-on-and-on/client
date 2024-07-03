@@ -128,15 +128,16 @@ type AttendanceWorkTime = {
   workDayOfWeek: string;
   workStartTime: string;
   workEndTime: string;
-  restStartTime: string;
-  restEndTime: string;
 };
 
 type AttendanceTodayWork = {
+  colorTypeCd: string;
+  endTime: Date;
   workPlaceEmployeeId: number;
   workPlaceName: string;
-  colorTypeCd: string;
-  workTime: AttendanceWorkTime[];
+  startTime: Date;
+  realStartTime: Date;
+  realEndTime: Date;
   notice: Notice[]; // <- 차이점! 밑의 totalWorks 에는 없음
 };
 

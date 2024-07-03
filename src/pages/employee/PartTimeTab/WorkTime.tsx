@@ -46,41 +46,40 @@ const WorkTime = () => {
       const response: ConfirmReqResponse =
         await ApiClient.getInstance().getConfirmReq();
 
-      console.log(response);
       setConfirmList(response.workPlacesInvitaionsGetResponseList);
     } catch (err) {
-      console.error(err);
+      console.log('요청사항 없음');
     }
   };
 
   useEffect(() => {
     getConfirmList();
     fetchPaperList();
-    console.log(papers);
   }, []);
-
-  useEffect(() => {
-    console.log(papers);
-  }, [papers]);
 
   return (
     // 연동 요청
     <div className='w-full flex flex-col gap-10'>
       <Wrapper title='연동 요청'>
-        {confirmList?.map((item) => {
-          return (
-            <WhiteBox className='py-3' border key={item.workPlaceName}>
-              <div className='flex justify-between items-center'>
-                <WorkPlaceName name='롯데리아' colorType={item.colorCodeType} />
-                <BtnBorder
-                  color='green'
-                  text='서명 요청'
-                  onClick={() => setModalOpen(true)}
-                />
-              </div>
-            </WhiteBox>
-          );
-        })}
+        {confirmList.length > 0
+          ? confirmList.map((item) => {
+              return (
+                <WhiteBox className='py-3' border key={item.workPlaceName}>
+                  <div className='flex justify-between items-center'>
+                    <WorkPlaceName
+                      name='롯데리아'
+                      colorType={item.colorCodeType}
+                    />
+                    <BtnBorder
+                      color='green'
+                      text='서명 요청'
+                      onClick={() => setModalOpen(true)}
+                    />
+                  </div>
+                </WhiteBox>
+              );
+            })
+          : '연동된 매장이 없습니다'}
       </Wrapper>
 
       {/* 사장님과 연동 */}

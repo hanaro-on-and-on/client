@@ -5,14 +5,13 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { FaAngleRight } from 'react-icons/fa6';
 import WorkPlaceName from '../../../components/ui/WorkPlaceName';
 import ApiClient from '../../../api/apiClient';
+import { useDate } from '../../../contexts/Date-Context';
 
 type Prop = {
   monthList: Date[];
-  selectedDate: Date;
-  selectDate: React.Dispatch<Date>;
 };
 
-const Payment = ({ monthList, selectedDate, selectDate }: Prop) => {
+const Payment = ({ monthList }: Prop) => {
   const today = new Date();
   const navigate = useNavigate();
 
@@ -21,17 +20,18 @@ const Payment = ({ monthList, selectedDate, selectDate }: Prop) => {
     EmployeeSalaryGetResponseList[]
   >([]);
 
+  const { date, setYear, setMonth, setYearMonth, getYear, getMonth } =
+    useDate();
+
   const fetchData = async (year: number, month: number) => {
-    console.log(year, month);
     try {
       const response: MonthlyPayment =
         await ApiClient.getInstance().getMonthlyPayment(year, month);
 
       if (response) {
+        console.log(response.list);
         setTotalMonthlyPayment(response.totalPayment);
         setPaymentList(response.list);
-        console.log(response);
-        console.log('paymentList', paymentList);
       }
     } catch (err) {
       console.error(err);
@@ -39,30 +39,32 @@ const Payment = ({ monthList, selectedDate, selectDate }: Prop) => {
   };
 
   useEffect(() => {
-    if (selectedDate) {
-      fetchData(selectedDate.getFullYear(), selectedDate.getMonth() + 1);
+    if (date) {
+      fetchData(getYear(), getMonth());
     }
-  }, [selectedDate]);
+  }, [date]);
 
   return (
     <>
       {/* 총금액, 날짜 */}
       <WhiteBox className='w-full py-5' border>
-        {selectedDate.getMonth() + 1 && (
+        {getMonth() + 1 && (
           <div>
             <select
-              value={selectedDate.toString()}
+              defaultChecked
+              value={date.toString()}
               onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-                selectDate(new Date(e.target.value));
+                setYearMonth(new Date(e.target.value));
+                // selectDate(new Date(e.target.value));
               }}
             >
-              {monthList.map((date) => (
+              {monthList.map((dat) => (
                 <option
-                  selected={selectedDate === date}
-                  key={date.toISOString()}
-                  value={date.toString()}
+                  selected={date === dat}
+                  key={dat.toISOString()}
+                  value={dat.toString()}
                 >
-                  {`${styleMonths(formatMonths(date))} 총 급여`}
+                  {`${styleMonths(formatMonths(dat))} 총 급여`}
                 </option>
               ))}
             </select>
@@ -74,37 +76,34 @@ const Payment = ({ monthList, selectedDate, selectDate }: Prop) => {
       </WhiteBox>
       <div className='w-full flex flex-col gap-1'>
         {/* 매장 목록 */}
-        {paymentList
-          ?.filter((item) => item.payment > 0)
-          .map((item, index) => {
-            return (
-              <WhiteBox
-                key={item.workPlaceName + String(index)}
-                border
-                className='w-full py-3'
+        {paymentList.map((item, index) => {
+          return (
+            <WhiteBox
+              key={item.workPlaceName + String(index)}
+              border
+              className='w-full '
+            >
+              <button
+                type='button'
+                onClick={() =>
+                  navigate(
+                    `/part-time/payment/detail/${getYear()}-${getMonth()}/${item.workPlaceName}/${item.id}`
+                  )
+                }
+                className='flex justify-between items-center w-full bg-transparent py-4'
               >
-                <button
-                  type='button'
-                  onClick={() =>
-                    navigate(
-                      `/part-time/payment/detail/${selectedDate.getFullYear()}-${selectedDate.getMonth()}` +
-                        `/${item.workPlaceName}`
-                    )
-                  }
-                  className='flex justify-between items-center w-full bg-transparent'
-                >
-                  <WorkPlaceName
-                    name={item.workPlaceName}
-                    colorType={item.workPlaceColor}
-                  />
-                  <div className='flex items-center gap-1'>
-                    {item.payment.toLocaleString()}
-                    <FaAngleRight />
-                  </div>
-                </button>
-              </WhiteBox>
-            );
-          })}
+                <WorkPlaceName
+                  name={item.workPlaceName}
+                  colorType={item.workPlaceColor}
+                />
+                <div className='flex items-center gap-1'>
+                  {item.payment.toLocaleString()}
+                  <FaAngleRight />
+                </div>
+              </button>
+            </WhiteBox>
+          );
+        })}
       </div>
     </>
   );
