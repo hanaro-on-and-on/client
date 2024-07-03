@@ -33,6 +33,10 @@ interface employeeApi {
   employeeGetWorkPlaceInfo(workPlaceEmployeeId: number): Promise<WorkPlaceInfo>;
 
   employeeGetWorkPlaceList(): Promise<EmployeeWorkPlaceList>;
+
+  employeeGetAttendanceDetail(
+    workPlaceId: number
+  ): Promise<EmployeeAttendanceDetail>;
 }
 
 export default employeeApi;
