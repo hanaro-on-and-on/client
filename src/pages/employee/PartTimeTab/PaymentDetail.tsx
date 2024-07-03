@@ -7,25 +7,30 @@ import Frame from '../../../components/Frame';
 
 import NavToggle from '../../../components/NavToggle';
 import PayStub from './PayStub';
-import generateMonthList from '../../../utils/generateMonthList';
-import useToggle from '../../../hooks/toggle';
+
+import WorkHourManagement from './WorkHourManagement';
 
 enum ToggleStatus {
   PAYMENT = 'payment',
   WORKTIME = 'worktime',
 }
 
+type Prop = {
+  monthList: Date[];
+  selectedDate: Date;
+  selectDate: React.Dispatch<Date>;
+};
+
 const PaymentDetail = () => {
   const today = new Date();
-  const { workPlace, dayMonth } = useParams();
-  const [monthList, setMonthList] = useState<Date[]>([]);
-  const [selectedMonth, setSelectedMonth] = useState<Date>(today);
+  const { workPlace, yearMonth } = useParams();
   const [selectedToggle, setSelectedToggle] = useState<ToggleStatus>(
     ToggleStatus.PAYMENT
   );
-  useEffect(() => {
-    setMonthList(generateMonthList());
-  }, []);
+
+  const comp: number[] = yearMonth?.split('-').map((item) => +item) ?? [];
+  const year = comp[0];
+  const month = comp[1] ?? -1;
 
   return (
     <Frame navTitle='알바ON'>
@@ -56,12 +61,11 @@ const PaymentDetail = () => {
 
             {/* 급여명세서 */}
             {selectedToggle === ToggleStatus.PAYMENT && (
-              <PayStub
-                year={selectedMonth.getFullYear()}
-                month={selectedMonth.getMonth()}
-              />
+              <PayStub year={year} month={month} />
             )}
-            {selectedToggle === ToggleStatus.WORKTIME && <div></div>}
+            {selectedToggle === ToggleStatus.WORKTIME && (
+              <WorkHourManagement year={year} month={month} />
+            )}
           </div>
         )}
       </div>
