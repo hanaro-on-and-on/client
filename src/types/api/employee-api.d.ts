@@ -23,9 +23,10 @@ type ConfirmReqResponse = {
 
 //급여내역 월별 조회
 type EmployeeSalaryGetResponseList = {
-  isConnected: boolean;
   id: number | null;
+  isConnected: boolean;
   isQuit: boolean;
+  payStubId: number | null;
   workPlaceName: string;
   workPlaceColor: string;
   payment: number;
@@ -35,7 +36,7 @@ type MonthlyPayment = {
   year: number;
   month: number;
   totalPayment: number;
-  employeeSalaryGetResponseList: EmployeeSalaryGetResponseList[];
+  list: EmployeeSalaryGetResponseList[];
 };
 
 //서류 조회
