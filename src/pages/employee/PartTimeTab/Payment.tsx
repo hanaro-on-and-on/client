@@ -1,31 +1,28 @@
 import { useNavigate } from 'react-router-dom';
 import WhiteBox from '../../../components/ui/WhiteBox';
 import { formatMonths, styleMonths } from '../../../utils/format-date';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { FaAngleRight } from 'react-icons/fa6';
 import WorkPlaceName from '../../../components/ui/WorkPlaceName';
 import ApiClient from '../../../api/apiClient';
-import generateMonthList from '../../../utils/generateMonthList';
 
-type Payment = {
-  name: string;
-  payment: number;
+type Prop = {
+  monthList: Date[];
+  selectedDate: Date;
+  selectDate: React.Dispatch<Date>;
 };
 
-const Payment = () => {
+const Payment = ({ monthList, selectedDate, selectDate }: Prop) => {
   const today = new Date();
   const navigate = useNavigate();
-  const [monthList, setMonthList] = useState<Date[]>([]);
-  const [selectedMonth, setSelectedMonth] = useState<number>(
-    today.getMonth() + 1
-  );
-  const [selectedYear, setSelectedYear] = useState<number>(today.getFullYear());
+
   const [totalMonthlyPayment, setTotalMonthlyPayment] = useState<number>(0);
   const [paymentList, setPaymentList] = useState<
     EmployeeSalaryGetResponseList[]
   >([]);
 
   const fetchData = async (year: number, month: number) => {
+    console.log(year, month);
     try {
       const response: MonthlyPayment =
         await ApiClient.getInstance().getMonthlyPayment(year, month);
@@ -40,34 +37,35 @@ const Payment = () => {
   };
 
   useEffect(() => {
-    fetchData(selectedYear, selectedMonth);
-
-    setMonthList(generateMonthList());
-  }, [selectedYear, selectedMonth]);
+    if (selectedDate) {
+      fetchData(selectedDate.getFullYear(), selectedDate.getMonth() + 1);
+    }
+  }, [selectedDate]);
 
   return (
     <>
       {/* 총금액, 날짜 */}
       <WhiteBox className='w-full py-5' border>
-        <div>
-          <select
-            value={`${selectedYear}-${selectedMonth}`}
-            onChange={(e) => {
-              const [year, month] = e.target.value.split('-');
-              setSelectedYear(Number(year));
-              setSelectedMonth(Number(month));
-            }}
-          >
-            {monthList.map((date) => (
-              <option
-                key={date.toISOString()}
-                value={`${date.getFullYear()}-${date.getMonth() + 1}`}
-              >
-                {`${styleMonths(formatMonths(date))} 총 급여`}
-              </option>
-            ))}
-          </select>
-        </div>
+        {selectedDate.getMonth() + 1 && (
+          <div>
+            <select
+              value={selectedDate.toString()}
+              onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+                selectDate(new Date(e.target.value));
+              }}
+            >
+              {monthList.map((date) => (
+                <option
+                  selected={selectedDate === date}
+                  key={date.toISOString()}
+                  value={date.toString()}
+                >
+                  {`${styleMonths(formatMonths(date))} 총 급여`}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
         <div className='font-bold text-2xl pt-5'>
           {totalMonthlyPayment.toLocaleString()} 원
         </div>
@@ -87,7 +85,7 @@ const Payment = () => {
                   type='button'
                   onClick={() =>
                     navigate(
-                      `detail/${selectedYear}-${selectedMonth}` +
+                      `/part-time/payment/detail/${selectedDate.getFullYear()}-${selectedDate.getMonth()}` +
                         `/${item.workPlaceName}`
                     )
                   }

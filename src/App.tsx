@@ -40,7 +40,6 @@ function App() {
         {/* <Route path='/owner-calendar' element={<OwnerCalendarPage />} /> */}
         <Route path='/part-time/*' element={<PaymentMain />}>
           <Route path='worktime' element={<WorkTime />} />
-          <Route path='payment' element={<Payment />} />
         </Route>
         <Route
           path='/part-time/payment/detail/:dayMonth/:workPlace'
