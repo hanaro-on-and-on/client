@@ -29,6 +29,8 @@ interface employeeApi {
   employeeGetAttendanceList(): Promise<EmployeeTodayAttendancesResponse>;
 
   employeeGetMyInfo(): Promise<MyInfo>;
+
+  employeeGetWorkPlaceInfo(workPlaceEmployeeId: number): Promise<WorkPlaceInfo>;
 }
 
 export default employeeApi;
