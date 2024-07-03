@@ -28,7 +28,7 @@ type EmployeeSalaryGetResponseList = {
   isQuit: boolean;
   payStubId: number | null;
   workPlaceName: string;
-  workPlaceColor: string;
+  workPlaceColorCode: string;
   payment: number;
 };
 

@@ -94,7 +94,7 @@ const Payment = ({ monthList }: Prop) => {
               >
                 <WorkPlaceName
                   name={item.workPlaceName}
-                  colorType={item.workPlaceColor}
+                  colorType={item.workPlaceColorCode}
                 />
                 <div className='flex items-center gap-1'>
                   {item.payment.toLocaleString()}
