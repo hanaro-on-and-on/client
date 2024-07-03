@@ -26,10 +26,6 @@ const PaymentMain = () => {
   const selectPayment = () => setSelectedTab(SELECTED_TAB.PAYMENT);
   const selectWorktime = () => setSelectedTab(SELECTED_TAB.WORKTIME);
 
-  const selectDate = (date: Date) => {
-    setSelectedYearMonth(date);
-  };
-
   return (
     <>
       <Frame navTitle='알바ON'>
