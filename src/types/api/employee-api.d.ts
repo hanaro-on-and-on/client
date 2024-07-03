@@ -167,3 +167,37 @@ type WorkPlaceInfo = {
   colorTypeCd: string;
   workStartDate: string;
 };
+
+//근무지 목록 조회
+type invitatedWorkPlace = {
+  isQuit: null | boolean;
+  employmentContractId: number;
+  customWorkPlaceId: number | null;
+  workPlaceName: string;
+  colorCodeType: string;
+  ownerName: string;
+};
+
+type connectedWorkPlace = {
+  isQuit: boolean | null;
+  employmentContractId: null | number;
+  customWorkPlaceId: null | number;
+  workPlaceName: string;
+  colorCodeType: string;
+  ownerName: string;
+};
+
+type customWorkPlace = {
+  isQuit: boolean | null;
+  employmentContractId: null | number;
+  customWorkPlaceId: 1;
+  workPlaceName: string;
+  colorCodeType: string;
+  ownerName: null;
+};
+
+type EmployeeWorkPlaceList = {
+  invitatedWorkPlaceList: invitatedWorkPlace[];
+  connectedWorkPlaceList: connectedWorkPlace[];
+  customWorkPlaceList: customWorkPlace[];
+};

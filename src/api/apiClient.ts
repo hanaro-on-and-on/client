@@ -168,6 +168,17 @@ class ApiClient implements employeeApi {
     return response.data;
   }
 
+  //알바생 - 근무지 목록 조회
+  public async employeeGetWorkPlaceList(): Promise<EmployeeWorkPlaceList> {
+    const response: BaseResponse<EmployeeWorkPlaceList> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: 'employee/work-places',
+      });
+
+    return response.data;
+  }
+
   //==========================
   // 생성 메소드
   private static createAxiosInstance() {
