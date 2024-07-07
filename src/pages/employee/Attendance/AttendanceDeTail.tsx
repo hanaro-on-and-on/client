@@ -1,7 +1,6 @@
 import { useParams } from 'react-router-dom';
 import Frame from '../../../components/Frame';
 import Wrapper from '../../../components/Wrapper';
-import ToolBar2 from '../../../components/ui/ToolBar2';
 import WhiteBox from '../../../components/ui/WhiteBox';
 import ReturnArrow from '../../../components/ui/ReturnArrow';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
@@ -138,7 +137,6 @@ const AttendanceDetail = () => {
     <>
       {attendanceDetail && (
         <Frame navTitle='알바ON'>
-          <ToolBar2 isEmployee />
           <div className='w-full flex flex-col mt-5 pb-10'>
             <ReturnArrow To='/attendance' />
             <Wrapper className='gap-3'>
