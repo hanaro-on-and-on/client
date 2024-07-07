@@ -99,8 +99,6 @@ const PayStub = ({ monthList, year, month, id }: Prop) => {
   };
 
   useEffect(() => {
-    console.log(payStubId);
-    console.log(id);
     getData();
   }, [date]);
 

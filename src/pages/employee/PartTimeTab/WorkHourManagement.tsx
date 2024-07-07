@@ -52,48 +52,46 @@ const WorkHourManagement = ({ year, month, id, monthList }: Prop) => {
 
   useEffect(() => {
     fetchConnData();
-  }, []);
+  }, [year, month]);
 
   return (
     <>
-      {month && (
-        <>
-          <WhiteBox className='py-3 px-3 w-full border'>
-            <div>
-              <select
-                defaultValue={date.toString()}
-                onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-                  const sel = new Date(e.target.value);
-                  setYearMonth(sel);
-                }}
+      <WhiteBox className='py-3 px-3 w-full border'>
+        <div>
+          <select
+            defaultValue={date.toString()}
+            onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+              const sel = new Date(e.target.value);
+              setYearMonth(sel);
+            }}
+          >
+            {monthList.map((dat) => (
+              <option
+                selected={date === dat}
+                key={dat.toISOString()}
+                value={dat.toString()}
               >
-                {monthList.map((dat) => (
-                  <option
-                    selected={date === dat}
-                    key={dat.toISOString()}
-                    value={dat.toString()}
-                  >
-                    {`${styleMonths(formatMonths(dat))} 근무 내역`}
-                  </option>
-                ))}
-              </select>
-              {connectedList && (
-                <div className='text-2xl font-bold pt-3'>
-                  {formatTime(getTotalWorktime())}
-                </div>
-              )}
+                {`${styleMonths(formatMonths(dat))} 근무 내역`}
+              </option>
+            ))}
+          </select>
+          {connectedList?.works.length ? (
+            <div className='text-2xl font-bold pt-3'>
+              {formatTime(getTotalWorktime())}
             </div>
-          </WhiteBox>
-          {connectedList && (
-            <WorkTimeList
-              key={connectedList.PlaceId}
-              PlaceId={connectedList.PlaceId}
-              workPlaceNm={connectedList.workPlaceNm}
-              colorTypeCd={connectedList.workPlaceColor}
-              works={connectedList.works}
-            />
+          ) : (
+            <div className='text-gray-300 mt-10'>근무가 존재하지 않습니다</div>
           )}
-        </>
+        </div>
+      </WhiteBox>
+      {connectedList && (
+        <WorkTimeList
+          key={connectedList.PlaceId}
+          PlaceId={connectedList.PlaceId}
+          workPlaceNm={connectedList.workPlaceNm}
+          colorTypeCd={connectedList.workPlaceColor}
+          works={connectedList.works}
+        />
       )}
     </>
   );
