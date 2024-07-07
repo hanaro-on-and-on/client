@@ -87,7 +87,7 @@ const Payment = ({ monthList }: Prop) => {
                 type='button'
                 onClick={() =>
                   navigate(
-                    `/part-time/payment/detail/${getYear()}-${getMonth()}/${item.workPlaceName}/${item.id}`
+                    `/part-time/payment/detail/${getYear()}-${getMonth()}/${item.workPlaceName}/${item.id}/${item.isConnected}`
                   )
                 }
                 className='flex justify-between items-center w-full bg-transparent py-4'
