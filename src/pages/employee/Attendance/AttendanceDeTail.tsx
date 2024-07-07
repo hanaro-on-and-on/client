@@ -124,7 +124,7 @@ const AttendanceDetail = () => {
   };
 
   useEffect(() => {
-    getDetail();
+    if (!attendanceDetail) getDetail();
     navigator.geolocation.getCurrentPosition(
       successHandler,
       (err) => {
@@ -132,7 +132,7 @@ const AttendanceDetail = () => {
       },
       { maximumAge: 60000, timeout: 5000, enableHighAccuracy: true }
     );
-  }, []);
+  }, [attendanceDetail]);
 
   return (
     <>
@@ -151,14 +151,37 @@ const AttendanceDetail = () => {
                 <Map
                   center={{ lat: location.latitude, lng: location.longitude }}
                   style={{ width: '100%', height: '100%' }}
+                  level={3}
+                  onCreate={(map) => {
+                    const bounds = new kakao.maps.LatLngBounds();
+                    bounds.extend(
+                      new kakao.maps.LatLng(
+                        location.latitude,
+                        location.longitude
+                      )
+                    );
+                    bounds.extend(
+                      new kakao.maps.LatLng(
+                        attendanceDetail.location.lat,
+                        attendanceDetail.location.lng
+                      )
+                    );
+                    map.setBounds(bounds);
+                  }}
                 >
                   <MapMarker
                     position={{
                       lat: location.latitude,
                       lng: location.longitude,
                     }}
+                  ></MapMarker>
+                  <MapMarker
+                    position={{
+                      lat: attendanceDetail.location.lat,
+                      lng: attendanceDetail.location.lng,
+                    }}
                   >
-                    <div>안녕</div>
+                    <div>{attendanceDetail.workPlaceName}</div>
                   </MapMarker>
                 </Map>
               </div>
