@@ -16,7 +16,24 @@ const WorkHourManagement = ({ year, month, id, monthList }: Prop) => {
   const navigate = useNavigate();
   const { date, setYearMonth } = useDate();
 
-  const [contractList, setContractList] = useState<WorkListWorkTime[]>([]);
+  const [connectedList, setConnectedList] = useState<WorkListWorkTime[]>([]);
+  const [worktimeList, setWorkTimeList] = useState<WorkListWorkTime[]>([]);
+
+  const fetchConnData = async () => {
+    try {
+      const response =
+        await ApiClient.getInstance().employeeGetWorkTimeListConnected(
+          id,
+          year,
+          month
+        );
+      console.log('conn res', response);
+
+      setConnectedList(response.works);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const fetchData = async () => {
     try {
@@ -27,13 +44,14 @@ const WorkHourManagement = ({ year, month, id, monthList }: Prop) => {
       );
       console.log('res', response);
 
-      setContractList(response.works);
+      setWorkTimeList(response.works);
     } catch (err) {
       console.log(err);
     }
   };
 
   useEffect(() => {
+    fetchConnData();
     fetchData();
   }, []);
 

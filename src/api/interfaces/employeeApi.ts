@@ -38,6 +38,12 @@ interface employeeApi {
     workPlaceId: number
   ): Promise<EmployeeAttendanceDetail>;
 
+  employeeGetWorkTimeListConnected(
+    workPlaceEmployeeId: number,
+    year: number,
+    month: number
+  ): Promise<EmployeeWorkTimeListConnected>;
+
   employeeGetWorkTimeList(
     workPlaceEmployeeId: number,
     year: number,

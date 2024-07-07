@@ -192,6 +192,21 @@ class ApiClient implements employeeApi {
   }
 
   //알바생 - 근무 목록 연결O
+  public async employeeGetWorkTimeListConnected(
+    workPlaceEmployeeId: number,
+    year: number,
+    month: number
+  ): Promise<EmployeeWorkTimeListConnected> {
+    const response: BaseResponse<EmployeeWorkTimeListConnected> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `papers/${workPlaceEmployeeId}/attendance?year=${year}&month=${month}`,
+      });
+
+    return response.data;
+  }
+
+  //알바생 - 근무 목록 연결x
   public async employeeGetWorkTimeList(
     workPlaceEmployeeId: number,
     year: number,

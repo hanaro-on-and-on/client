@@ -226,10 +226,21 @@ type WorkListWorkTime = {
   totalPayDayMonth: number;
 };
 
-type EmployeeWorkTimeList = {
+type EmployeeWorkTimeListConnected = {
   year: number;
   month: number;
   PlaceId: number;
+  workPlaceNm: string;
+  workPlaceColor: number;
+  totalPayPerMonth: number;
+  works: WorkListWorkTime[];
+};
+
+//근무 목록 - 연결 X
+type EmployeeWorkTimeList = {
+  year: number;
+  month: number;
+  workPlaceId: number;
   workPlaceNm: string;
   workPlaceColor: number;
   totalPayPerMonth: number;
