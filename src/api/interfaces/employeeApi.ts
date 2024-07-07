@@ -42,7 +42,7 @@ interface employeeApi {
     workPlaceEmployeeId: number,
     year: number,
     month: number
-  ): Promise<EmployeeWorkTimeListConnected>;
+  ): Promise<EmployeeWorkTimeList>;
 
   employeeGetWorkTimeList(
     workPlaceEmployeeId: number,
