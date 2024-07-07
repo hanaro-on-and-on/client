@@ -10,14 +10,20 @@ type Prop = {
   year: number;
   month: number;
   id: number;
+  isConnected: string;
   monthList: Date[];
 };
 
-const WorkHourManagement = ({ year, month, id, monthList }: Prop) => {
+const WorkHourManagement = ({
+  year,
+  month,
+  id,
+  isConnected,
+  monthList,
+}: Prop) => {
   const { date, setYearMonth } = useDate();
 
-  const [connectedList, setConnectedList] =
-    useState<EmployeeWorkTimeListConnected | null>(null);
+  const [list, setList] = useState<EmployeeWorkTimeList | null>(null);
 
   const fetchConnData = async () => {
     try {
@@ -27,9 +33,22 @@ const WorkHourManagement = ({ year, month, id, monthList }: Prop) => {
           year,
           month
         );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const fetchCustomData = async () => {
+    try {
+      const response = await ApiClient.getInstance().employeeGetWorkTimeList(
+        id,
+        year,
+        month
+      );
+
       console.log('conn res', response);
 
-      setConnectedList(response);
+      setList(response);
     } catch (err) {
       console.log(err);
     }
@@ -37,7 +56,7 @@ const WorkHourManagement = ({ year, month, id, monthList }: Prop) => {
 
   const getTotalWorktime = (): number => {
     let total = 0;
-    connectedList?.works?.forEach(
+    list?.works?.forEach(
       (item) => (total += getTimeGap(item.startTime, item.endTime))
     );
 
@@ -51,8 +70,13 @@ const WorkHourManagement = ({ year, month, id, monthList }: Prop) => {
   };
 
   useEffect(() => {
-    fetchConnData();
-  }, [year, month]);
+    if (isConnected === 'true') {
+      fetchConnData();
+    }
+    if (isConnected === 'false') {
+      fetchCustomData();
+    }
+  }, [year, month, isConnected]);
 
   return (
     <>
@@ -75,7 +99,7 @@ const WorkHourManagement = ({ year, month, id, monthList }: Prop) => {
               </option>
             ))}
           </select>
-          {connectedList?.works.length ? (
+          {list?.works.length ? (
             <div className='text-2xl font-bold pt-3'>
               {formatTime(getTotalWorktime())}
             </div>
@@ -84,15 +108,16 @@ const WorkHourManagement = ({ year, month, id, monthList }: Prop) => {
           )}
         </div>
       </WhiteBox>
-      {connectedList && (
+      {list && (
         <WorkTimeList
-          key={connectedList.PlaceId}
-          PlaceId={connectedList.PlaceId}
-          workPlaceNm={connectedList.workPlaceNm}
-          colorTypeCd={connectedList.workPlaceColor}
-          works={connectedList.works}
+          key={list.workPlaceId}
+          PlaceId={list.workPlaceId}
+          workPlaceNm={list.workPlaceNm}
+          colorTypeCd={list.workPlaceColor}
+          works={list.works}
         />
       )}
+      {}
     </>
   );
 };

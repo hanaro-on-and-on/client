@@ -23,7 +23,7 @@ const PaymentDetail = () => {
     null
   );
   const today = new Date();
-  const { workPlace, yearMonth, id } = useParams();
+  const { workPlace, yearMonth, id, connected } = useParams();
   const [selectedToggle, setSelectedToggle] = useState<ToggleStatus>(
     ToggleStatus.PAYMENT
   );
@@ -98,6 +98,7 @@ const PaymentDetail = () => {
                 month={getMonth()}
                 id={Number(id)}
                 monthList={monthList}
+                isConnected={connected}
               />
             )}
           </div>
