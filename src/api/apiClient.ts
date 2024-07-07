@@ -107,7 +107,7 @@ class ApiClient implements employeeApi {
     return response.data;
   }
 
-  //알바생 - 월별 급여 명세서 조회
+  //알바생 - 월별 급여 명세서 조회 연결O
   public async employeeGetPayStub(
     workPlaceEmployeeId: number,
     year: number,
@@ -117,6 +117,21 @@ class ApiClient implements employeeApi {
       await this.axiosInstance.request({
         method: 'get',
         url: `papers/${workPlaceEmployeeId}/pay-stubs?year=${year}&month=${month}`,
+      });
+
+    return response.data;
+  }
+
+  //알바생 - 월별 급여 명세서 조회 연결X
+  public async employeeGetCustomPayStub(
+    customWorkPlaceId: number,
+    year: number,
+    month: number
+  ): Promise<EmployeePayStubGetResponse> {
+    const response: BaseResponse<EmployeePayStubGetResponse> =
+      await ApiClient.getInstance().axiosInstance.request({
+        method: 'get',
+        url: `papers/custom/${customWorkPlaceId}/pay-stubs?year=${year}&month=${month}`,
       });
 
     return response.data;
@@ -165,6 +180,19 @@ class ApiClient implements employeeApi {
         method: 'get',
         url: `papers/${workPlaceEmployeeId}`,
       });
+    return response.data;
+  }
+
+  //알바생 - 매장명 간략 조회 연결X
+  public async employeeGetCustomWorkPlaceInfo(
+    customWorkPlaceId: number
+  ): Promise<CustomWorkPlaceInfo> {
+    const response: BaseResponse<CustomWorkPlaceInfo> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `papers/custom/${customWorkPlaceId}`,
+      });
+
     return response.data;
   }
 

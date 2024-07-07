@@ -33,6 +33,7 @@ const WorkHourManagement = ({
           year,
           month
         );
+      setList(response);
     } catch (err) {
       console.log(err);
     }
@@ -45,8 +46,6 @@ const WorkHourManagement = ({
         year,
         month
       );
-
-      console.log('conn res', response);
 
       setList(response);
     } catch (err) {

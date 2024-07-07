@@ -45,8 +45,28 @@ const PaymentDetail = () => {
     }
   };
 
+  const getCustomWorkPlaceData = async () => {
+    try {
+      const response =
+        await ApiClient.getInstance().employeeGetCustomWorkPlaceInfo(+id!);
+
+      if (response)
+        setWorkPlaceInfo({
+          workPlaceEmployeeId: null,
+          workPlaceNm: response.workPlaceNm,
+          colorTypeCd: response.colorTypeCd,
+          workStartDate: null,
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
-    getWorkPlaceData();
+    if (connected != undefined) {
+      if (connected === 'true') getWorkPlaceData();
+      else getCustomWorkPlaceData();
+    }
   }, []);
 
   return (
@@ -67,10 +87,14 @@ const PaymentDetail = () => {
                   />
                 )}
                 <div className='flex gap-2 text-[12px]'>
-                  근무 시작일
-                  <div className='text-[12px]'>
-                    {workPlaceInfo?.workStartDate}
-                  </div>
+                  {workPlaceInfo?.workStartDate && (
+                    <div>
+                      근무 시작일
+                      <div className='text-[12px]'>
+                        {workPlaceInfo?.workStartDate}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </WhiteBox>
@@ -84,23 +108,26 @@ const PaymentDetail = () => {
             />
 
             {/* 급여명세서 */}
-            {selectedToggle === ToggleStatus.PAYMENT && (
-              <PayStub
-                year={getYear()}
-                month={getMonth()}
-                id={Number(id)}
-                monthList={monthList}
-              />
-            )}
-            {selectedToggle === ToggleStatus.WORKTIME && (
-              <WorkHourManagement
-                year={getYear()}
-                month={getMonth()}
-                id={Number(id)}
-                monthList={monthList}
-                isConnected={connected}
-              />
-            )}
+            {selectedToggle === ToggleStatus.PAYMENT &&
+              connected != undefined && (
+                <PayStub
+                  year={getYear()}
+                  month={getMonth()}
+                  id={Number(id)}
+                  monthList={monthList}
+                  isConnected={connected}
+                />
+              )}
+            {selectedToggle === ToggleStatus.WORKTIME &&
+              connected != undefined && (
+                <WorkHourManagement
+                  year={getYear()}
+                  month={getMonth()}
+                  id={Number(id)}
+                  monthList={monthList}
+                  isConnected={connected}
+                />
+              )}
           </div>
         )}
       </div>
