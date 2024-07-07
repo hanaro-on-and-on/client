@@ -53,6 +53,16 @@ interface employeeApi {
   employeeDeleteCustomWorkPlace(
     customWorkPlaceId: number
   ): Promise<EmployeeDeleteWorkPlaceResponse>;
+
+  employeeGetCustomPayStub(
+    customWorkPlaceId: number,
+    yearn: number,
+    month: number
+  ): Promise<EmployeePayStubGetResponse>;
+
+  employeeGetCustomWorkPlaceInfo(
+    customWorkPlaceId: number
+  ): Promise<CustomWorkPlaceInfo>;
 }
 
 export default employeeApi;
