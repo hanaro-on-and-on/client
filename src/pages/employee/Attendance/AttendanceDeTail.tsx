@@ -34,7 +34,6 @@ const AttendanceDetail = () => {
     console.log(response); // coords: GeolocationCoordinates {latitude: 위도, longitude: 경도, …} timestamp: 1673446873903
     const { latitude, longitude } = response.coords;
     setLoacation({ latitude, longitude });
-    console.log(latitude, longitude);
   };
 
   const getDetail = async () => {
