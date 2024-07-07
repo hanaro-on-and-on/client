@@ -196,8 +196,8 @@ class ApiClient implements employeeApi {
     workPlaceEmployeeId: number,
     year: number,
     month: number
-  ): Promise<EmployeeWorkTimeListConnected> {
-    const response: BaseResponse<EmployeeWorkTimeListConnected> =
+  ): Promise<EmployeeWorkTimeList> {
+    const response: BaseResponse<EmployeeWorkTimeList> =
       await this.axiosInstance.request({
         method: 'get',
         url: `papers/${workPlaceEmployeeId}/attendance?year=${year}&month=${month}`,
@@ -215,7 +215,7 @@ class ApiClient implements employeeApi {
     const response: BaseResponse<EmployeeWorkTimeList> =
       await this.axiosInstance.request({
         method: 'get',
-        url: `papers/${workPlaceEmployeeId}/attendance?year=${year}&month=${month}`,
+        url: `papers/custom/${workPlaceEmployeeId}/attendance?year=${year}&month=${month}`,
       });
 
     return response.data;
