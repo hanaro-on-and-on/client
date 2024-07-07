@@ -103,11 +103,15 @@ const WorkTime = () => {
         title='내가 추가한'
         button
         buttonText='수동 등록'
-        onButtonClick={() => navigation('manual/addition')}
+        onButtonClick={() => navigation('/manual/addition')}
       >
         <div className='flex flex-col gap-1'>
-          {workPlaceList.customWorkPlaceList?.map((item) => (
-            <WhiteBox key={item.customWorkPlaceId} className='py-3' border>
+          {workPlaceList.customWorkPlaceList?.map((item, index) => (
+            <WhiteBox
+              key={item.customWorkPlaceId || index * 2}
+              className='py-3'
+              border
+            >
               <div className='flex justify-between items-center'>
                 <WorkPlaceName
                   name={item.workPlaceName}
