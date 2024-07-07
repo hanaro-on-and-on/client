@@ -65,7 +65,7 @@ type EmployeeAccountUpdate = {
 //급여명세서 월별 조회
 type EmployeePayStubGetResponse = {
   payStubId: number;
-  wokrPlaceEmployeeId: number;
+  workPlaceEmployeeId: number;
   year: number;
   month: number;
   status: string; // 급여 지급 상태,
@@ -244,5 +244,16 @@ type EmployeeWorkTimeList = {
 
 //수동 근무 삭제
 type EmployeeDeleteWorkPlaceResponse = {
+  success: boolean;
+};
+
+//출근 등록
+type EmployeeCheckInRequest = {
+  workPlaceEmployeeId: number;
+  location: { lng: number; lat: number };
+};
+
+type EmployeeCheckInResponse = {
+  attendanceId: long;
   success: boolean;
 };

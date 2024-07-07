@@ -262,6 +262,20 @@ class ApiClient implements employeeApi {
     return response.data;
   }
 
+  //알바생 - 출근 등록
+  public async employeeCheckIn(
+    workPlaceEmployeeId: EmployeeCheckInRequest
+  ): Promise<EmployeeCheckInResponse> {
+    const response: BaseResponse<EmployeeCheckInResponse> =
+      await this.axiosInstance.request({
+        method: 'post',
+        url: 'attendances/check-in',
+        data: workPlaceEmployeeId,
+      });
+
+    return response.data;
+  }
+
   //==========================
   // 생성 메소드
   private static createAxiosInstance() {
