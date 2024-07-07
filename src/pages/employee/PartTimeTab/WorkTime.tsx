@@ -53,6 +53,17 @@ const WorkTime = () => {
     }
   };
 
+  const deleteCustomWorkPlace = async (id: number) => {
+    try {
+      const response =
+        await ApiClient.getInstance().employeeDeleteCustomWorkPlace(id);
+      console.log('delete res', response);
+      if (response.success) window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     getConfirmList();
     getWorkPlaceList();
@@ -117,7 +128,11 @@ const WorkTime = () => {
                   name={item.workPlaceName}
                   colorType={item.colorCodeType}
                 />
-                <BtnBorder color='green' text='서명 요청' onClick={() => {}} />
+                <BtnBorder
+                  color='green'
+                  text='삭제'
+                  onClick={() => deleteCustomWorkPlace(item.customWorkPlaceId)}
+                />
               </div>
             </WhiteBox>
           ))}

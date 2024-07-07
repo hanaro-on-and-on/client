@@ -221,6 +221,19 @@ class ApiClient implements employeeApi {
     return response.data;
   }
 
+  //알바생 - 수동 근무지 삭제
+  public async employeeDeleteCustomWorkPlace(
+    customWorkPlaceId: number
+  ): Promise<EmployeeDeleteWorkPlaceResponse> {
+    const response: BaseResponse<EmployeeDeleteWorkPlaceResponse> =
+      await this.axiosInstance.request({
+        method: 'delete',
+        url: `employee/work-places/${customWorkPlaceId}/custom`,
+      });
+
+    return response.data;
+  }
+
   //==========================
   // 생성 메소드
   private static createAxiosInstance() {

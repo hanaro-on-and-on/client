@@ -49,6 +49,10 @@ interface employeeApi {
     year: number,
     month: number
   ): Promise<EmployeeWorkTimeList>;
+
+  employeeDeleteCustomWorkPlace(
+    customWorkPlaceId: number
+  ): Promise<EmployeeDeleteWorkPlaceResponse>;
 }
 
 export default employeeApi;

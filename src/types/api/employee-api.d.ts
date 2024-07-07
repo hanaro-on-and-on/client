@@ -246,3 +246,8 @@ type EmployeeWorkTimeList = {
   totalPayPerMonth: number;
   works: WorkListWorkTime[];
 };
+
+//수동 근무 삭제
+type EmployeeDeleteWorkPlaceResponse = {
+  success: boolean;
+};
