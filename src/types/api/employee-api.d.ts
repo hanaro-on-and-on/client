@@ -217,3 +217,21 @@ type EmployeeAttendanceDetail = {
   workTime: AttendanceWorkTime[];
   notice: Notice[];
 };
+
+//근무 목록 - 연결O
+type WorkListWorkTime = {
+  workDay: string;
+  startTime: string;
+  endTime: string;
+  totalPayDayMonth: number;
+};
+
+type EmployeeWorkTimeList = {
+  year: number;
+  month: number;
+  PlaceId: number;
+  workPlaceNm: string;
+  workPlaceColor: number;
+  totalPayPerMonth: number;
+  works: WorkListWorkTime[];
+};

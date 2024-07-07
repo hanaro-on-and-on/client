@@ -179,6 +179,7 @@ class ApiClient implements employeeApi {
     return response.data;
   }
 
+  //알바생 - 출퇴근 상세
   public async employeeGetAttendanceDetail(
     workPlaceId: number
   ): Promise<EmployeeAttendanceDetail> {
@@ -186,6 +187,21 @@ class ApiClient implements employeeApi {
       method: 'get',
       url: `attendances/${workPlaceId}`,
     });
+
+    return response.data;
+  }
+
+  //알바생 - 근무 목록 연결O
+  public async employeeGetWorkTimeList(
+    workPlaceEmployeeId: number,
+    year: number,
+    month: number
+  ): Promise<EmployeeWorkTimeList> {
+    const response: BaseResponse<EmployeeWorkTimeList> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `papers/${workPlaceEmployeeId}/attendance?year=${year}&month=${month}`,
+      });
 
     return response.data;
   }
