@@ -14,6 +14,7 @@ type Prop = {
   year: number;
   month: number;
   id: number;
+  isConnected: string;
 };
 
 const textConvert = (status: string): string => {
@@ -22,12 +23,13 @@ const textConvert = (status: string): string => {
   if (status === 'WAITING') return '수령 대기';
   if (status === 'COMPLETED') return '수령 완료';
 
-  return '';
+  return '수령 불가';
 };
 
-const PayStub = ({ monthList, year, month, id }: Prop) => {
-  const [workPlaceInfo, setWorkPlaceInfo] = useState<WorkPlaceInfo>(null);
-  const [payStubId, setPayStubId] = useState<number | null>(() => id);
+const PayStub = ({ monthList, year, month, id, isConnected }: Prop) => {
+  const [workPlaceInfo, setWorkPlaceInfo] = useState<WorkPlaceInfo | null>(
+    null
+  );
   const { date, setYear, setMonth, setYearMonth, getYear, getMonth } =
     useDate();
 
@@ -54,12 +56,12 @@ const PayStub = ({ monthList, year, month, id }: Prop) => {
   };
 
   //서명 요청
-  const signature = async (payStubId: number) => {
+  const signature = async (id: number) => {
     const sign: [] = signRef.current?.canvasRef.current.toData();
     if (!sign) return;
     try {
       const response: EmployeeSignatureResponse =
-        await ApiClient.getInstance().employeeSignature(payStubId);
+        await ApiClient.getInstance().employeeSignature(id);
       if (response) {
         window.location.reload();
       }
@@ -70,31 +72,29 @@ const PayStub = ({ monthList, year, month, id }: Prop) => {
 
   //급여 명세서 정보 가져오기
   const getData = async () => {
-    if (!payStubId) return;
-    console.log('payStubId', payStubId);
+    if (!id) return;
+    console.log('id', id);
     try {
-      const response = await ApiClient.getInstance().employeeGetPayStub(
-        payStubId,
-        getYear(),
-        getMonth()
-      );
+      const response =
+        isConnected === 'true'
+          ? await ApiClient.getInstance().employeeGetPayStub(
+              id,
+              getYear(),
+              getMonth()
+            )
+          : await ApiClient.getInstance().employeeGetCustomPayStub(
+              id,
+              getYear(),
+              getMonth()
+            );
 
       console.log('res', response);
       if (response) {
         setPayStub(response);
       }
     } catch (err) {
-      setPayStub(null);
-    }
-  };
-
-  const getWorkPlaceData = async () => {
-    try {
-      const response =
-        await ApiClient.getInstance().employeeGetWorkPlaceInfo(id);
-      setWorkPlaceInfo(response);
-    } catch (err) {
       console.log(err);
+      setPayStub(null);
     }
   };
 
@@ -146,8 +146,12 @@ const PayStub = ({ monthList, year, month, id }: Prop) => {
         {payStub && (
           <div className='flex justify-between items-end mt-5'>
             <div className='flex flex-col text-sm text-gray-300 text-start'>
-              <span>월급일</span>
-              <span>{payStub.paymentDay}일</span>
+              {payStub.paymentDay && (
+                <>
+                  <span>월급일</span>
+                  <span>{payStub.paymentDay}일</span>
+                </>
+              )}
             </div>
             <div className='text-xl font-bold'>
               총 {payStub.totalPay.toLocaleString()}
@@ -165,7 +169,7 @@ const PayStub = ({ monthList, year, month, id }: Prop) => {
         )}
         {payStub && payStub.status !== 'READY' && (
           <BtnGray
-            text={textConvert(payStub?.status || '수령 불가')}
+            text={textConvert(payStub?.status)}
             action={() => {}}
             className='w-full my-2'
             disabled
@@ -210,22 +214,26 @@ const PayStub = ({ monthList, year, month, id }: Prop) => {
                 </div>
               </div>
               {/* 추가 근무 수당 */}
-              <div className='grid grid-cols-12 justify-between items-start'>
-                <div className='col-span-1'>
-                  <Circle color='red' />
-                </div>
-                <div className='col-span-11 flex flex-col justify-start text-start pl-3'>
-                  <div>추가수당</div>
-                  <div className='flex justify-between  text-gray-400'>
-                    <div>
-                      {payStub.overPay.toLocaleString()}원 * {payStub.overHour}H
-                    </div>
-                    <div>
-                      {(payStub.overPay * payStub.overHour).toLocaleString()}원
+              {payStub.overPay && (
+                <div className='grid grid-cols-12 justify-between items-start'>
+                  <div className='col-span-1'>
+                    <Circle color='red' />
+                  </div>
+                  <div className='col-span-11 flex flex-col justify-start text-start pl-3'>
+                    <div>추가수당</div>
+                    <div className='flex justify-between  text-gray-400'>
+                      <div>
+                        {payStub.overPay.toLocaleString()}원 *{' '}
+                        {payStub.overHour}H
+                      </div>
+                      <div>
+                        {(payStub.overPay * payStub.overHour).toLocaleString()}
+                        원
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              )}
               {/* 주휴 수당 */}
               {payStub.weeklyHolidayTime > 0 && (
                 <div className='grid grid-cols-12 justify-between items-start'>
