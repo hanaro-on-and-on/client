@@ -220,10 +220,9 @@ type EmployeeAttendanceDetail = {
 
 //근무 목록 - 연결O
 type WorkListWorkTime = {
+  endTime: Date | string;
+  startTime: Date | string;
   workDay: string;
-  startTime: string;
-  endTime: string;
-  totalPayDayMonth: number;
 };
 
 type EmployeeWorkTimeListConnected = {
@@ -231,7 +230,7 @@ type EmployeeWorkTimeListConnected = {
   month: number;
   PlaceId: number;
   workPlaceNm: string;
-  workPlaceColor: number;
+  workPlaceColor: string;
   totalPayPerMonth: number;
   works: WorkListWorkTime[];
 };
@@ -242,7 +241,7 @@ type EmployeeWorkTimeList = {
   month: number;
   workPlaceId: number;
   workPlaceNm: string;
-  workPlaceColor: number;
+  workPlaceColor: string;
   totalPayPerMonth: number;
   works: WorkListWorkTime[];
 };
