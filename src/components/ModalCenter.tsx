@@ -26,10 +26,10 @@ const ModalCenter = ({
   return (
     <>
       <div className='fixed w-[390px] h-screen bg-black bg-opacity-50 z-40 flex justify-center items-center'>
-        <div className='flex flex-col items-center justify-between py-7 bg-white w-[60%] min-h-[200px] rounded-3xl'>
+        <div className='flex flex-col gap-3 items-center justify-between py-7 px-5 bg-white w-[70%] min-h-[230px] rounded-3xl text-clip'>
           <div className='font-bold'>{title}</div>
           <div>{children}</div>
-          <div className='flex gap-5'>
+          <div className='flex gap-5 w-full'>
             {hasDecline && (
               <BtnGray
                 text={declineText}
@@ -40,6 +40,7 @@ const ModalCenter = ({
               />
             )}
             <BtnPrimary
+              className='w-full'
               text={confirmText}
               action={() => {
                 confirmAction();
