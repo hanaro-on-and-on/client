@@ -63,6 +63,10 @@ interface employeeApi {
   employeeGetCustomWorkPlaceInfo(
     customWorkPlaceId: number
   ): Promise<CustomWorkPlaceInfo>;
+
+  employeeCheckIn(
+    prop: EmployeeCheckInRequest
+  ): Promise<EmployeeCheckInResponse>;
 }
 
 export default employeeApi;
