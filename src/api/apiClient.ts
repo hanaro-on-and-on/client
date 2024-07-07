@@ -179,6 +179,7 @@ class ApiClient implements employeeApi {
     return response.data;
   }
 
+  //알바생 - 출퇴근 상세
   public async employeeGetAttendanceDetail(
     workPlaceId: number
   ): Promise<EmployeeAttendanceDetail> {
@@ -186,6 +187,49 @@ class ApiClient implements employeeApi {
       method: 'get',
       url: `attendances/${workPlaceId}`,
     });
+
+    return response.data;
+  }
+
+  //알바생 - 근무 목록 연결O
+  public async employeeGetWorkTimeListConnected(
+    workPlaceEmployeeId: number,
+    year: number,
+    month: number
+  ): Promise<EmployeeWorkTimeListConnected> {
+    const response: BaseResponse<EmployeeWorkTimeListConnected> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `papers/${workPlaceEmployeeId}/attendance?year=${year}&month=${month}`,
+      });
+
+    return response.data;
+  }
+
+  //알바생 - 근무 목록 연결x
+  public async employeeGetWorkTimeList(
+    workPlaceEmployeeId: number,
+    year: number,
+    month: number
+  ): Promise<EmployeeWorkTimeList> {
+    const response: BaseResponse<EmployeeWorkTimeList> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `papers/${workPlaceEmployeeId}/attendance?year=${year}&month=${month}`,
+      });
+
+    return response.data;
+  }
+
+  //알바생 - 수동 근무지 삭제
+  public async employeeDeleteCustomWorkPlace(
+    customWorkPlaceId: number
+  ): Promise<EmployeeDeleteWorkPlaceResponse> {
+    const response: BaseResponse<EmployeeDeleteWorkPlaceResponse> =
+      await this.axiosInstance.request({
+        method: 'delete',
+        url: `employee/work-places/${customWorkPlaceId}/custom`,
+      });
 
     return response.data;
   }

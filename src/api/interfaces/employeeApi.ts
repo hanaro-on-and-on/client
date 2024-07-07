@@ -37,6 +37,22 @@ interface employeeApi {
   employeeGetAttendanceDetail(
     workPlaceId: number
   ): Promise<EmployeeAttendanceDetail>;
+
+  employeeGetWorkTimeListConnected(
+    workPlaceEmployeeId: number,
+    year: number,
+    month: number
+  ): Promise<EmployeeWorkTimeListConnected>;
+
+  employeeGetWorkTimeList(
+    workPlaceEmployeeId: number,
+    year: number,
+    month: number
+  ): Promise<EmployeeWorkTimeList>;
+
+  employeeDeleteCustomWorkPlace(
+    customWorkPlaceId: number
+  ): Promise<EmployeeDeleteWorkPlaceResponse>;
 }
 
 export default employeeApi;

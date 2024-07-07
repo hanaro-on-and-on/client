@@ -66,7 +66,7 @@ function App() {
           path='/greeting/employee/account'
           element={<EmployeeAddMainAccount />}
         />
-        <Route path='/hi' element={<ManualWorkPlaceAddition />} />
+        <Route path='/manual/addition' element={<ManualWorkPlaceAddition />} />
       </Routes>
     </>
   );

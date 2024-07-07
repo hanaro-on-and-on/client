@@ -217,3 +217,37 @@ type EmployeeAttendanceDetail = {
   workTime: AttendanceWorkTime[];
   notice: Notice[];
 };
+
+//근무 목록 - 연결O
+type WorkListWorkTime = {
+  workDay: string;
+  startTime: string;
+  endTime: string;
+  totalPayDayMonth: number;
+};
+
+type EmployeeWorkTimeListConnected = {
+  year: number;
+  month: number;
+  PlaceId: number;
+  workPlaceNm: string;
+  workPlaceColor: number;
+  totalPayPerMonth: number;
+  works: WorkListWorkTime[];
+};
+
+//근무 목록 - 연결 X
+type EmployeeWorkTimeList = {
+  year: number;
+  month: number;
+  workPlaceId: number;
+  workPlaceNm: string;
+  workPlaceColor: number;
+  totalPayPerMonth: number;
+  works: WorkListWorkTime[];
+};
+
+//수동 근무 삭제
+type EmployeeDeleteWorkPlaceResponse = {
+  success: boolean;
+};

@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import WhiteBox from '../../../components/ui/WhiteBox';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useDate } from '../../../contexts/Date-Context';
 import { formatMonths, styleMonths } from '../../../utils/format-date';
+import ApiClient from '../../../api/apiClient';
 
 type Prop = {
   year: number;
@@ -14,6 +15,45 @@ type Prop = {
 const WorkHourManagement = ({ year, month, id, monthList }: Prop) => {
   const navigate = useNavigate();
   const { date, setYearMonth } = useDate();
+
+  const [connectedList, setConnectedList] = useState<WorkListWorkTime[]>([]);
+  const [worktimeList, setWorkTimeList] = useState<WorkListWorkTime[]>([]);
+
+  const fetchConnData = async () => {
+    try {
+      const response =
+        await ApiClient.getInstance().employeeGetWorkTimeListConnected(
+          id,
+          year,
+          month
+        );
+      console.log('conn res', response);
+
+      setConnectedList(response.works);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const fetchData = async () => {
+    try {
+      const response = await ApiClient.getInstance().employeeGetWorkTimeList(
+        id,
+        year,
+        month
+      );
+      console.log('res', response);
+
+      setWorkTimeList(response.works);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchConnData();
+    fetchData();
+  }, []);
 
   return (
     <>
