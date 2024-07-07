@@ -1,76 +1,40 @@
-import { FaAngleDown, FaAngleRight } from 'react-icons/fa6';
+import { FaAngleRight } from 'react-icons/fa6';
 import Frame from '../../../components/Frame';
 import Wrapper from '../../../components/Wrapper';
 import WhiteBox from '../../../components/ui/WhiteBox';
 import WorkPlaceName from '../../../components/ui/WorkPlaceName';
 import BtnPrimary from '../../../components/BtnPrimary';
-import ToolBar2 from '../../../components/ui/ToolBar2';
 import { useNavigate } from 'react-router-dom';
 import ApiClient from '../../../api/apiClient';
 import { useEffect, useState } from 'react';
 import BtnGray from '../../../components/BtnGray';
 import ToolBarLink from '../../../components/ui/ToolBarLink';
 import { EmployeeMenuList } from '../datas';
-
-const today = new Date();
-const day = today.getDay();
-const month = today.getMonth() + 1;
-const currentTime = today.getHours();
-const currentTimeMin = today.getMinutes();
-
-const days = ['일', '월', '화', '수', '목', '금', '토'];
+import ModalCenter from '../../../components/ModalCenter';
 
 const Attendance = () => {
   const navigation = useNavigate();
+  const [isModalCenterOpen, setModalCenterOpen] = useState<boolean>(false);
+  const [modalMsg, setModalMsg] = useState<string>('');
+  const [location, setLoacation] = useState<{
+    latitude: number;
+    longitude: number;
+  }>({ longitude: 0, latitude: 0 });
 
+  const successHandler = (response: any) => {
+    console.log(response); // coords: GeolocationCoordinates {latitude: 위도, longitude: 경도, …} timestamp: 1673446873903
+    const { latitude, longitude } = response.coords;
+    setLoacation({ latitude, longitude });
+  };
   const [attendances, setAttendances] =
     useState<EmployeeTodayAttendancesResponse | null>(null);
 
-  // const isActivated = (target: AttendanceTodayWork): boolean => {
-  //   const index = target.workTime.findIndex(
-  //     (item) => item.workDayOfWeek === days[day]
-  //   );
-  //   if (!index) return false;
-
-  //   const startTime = target.workTime[index].workStartTime;
-  //   const sh = startTime.substring(0, startTime.indexOf(':'));
-  //   const smin = startTime.substring(startTime.indexOf(':') + 1);
-
-  //   const endTime = target.workTime[index].workEndTime;
-  //   const eh = endTime.substring(0, startTime.indexOf(':'));
-  //   const emin = endTime.substring(startTime.indexOf(':') + 1);
-
-  //   const start = new Date();
-  //   start.setTime(+sh);
-  //   start.setMinutes(+smin);
-
-  //   const end = new Date();
-  //   end.setTime(+eh);
-  //   end.setMinutes(+emin);
-
-  //   if (start < today && start < end) return true;
-
-  //   return false;
-  // };
-
   const isActivated = (target: AttendanceTodayWork): boolean => {
-    const startTime = new Date(target.startTime);
-    const endTime = new Date(target.endTime);
-
     const realStart = target.realStartTime
       ? new Date(target.realStartTime)
       : null;
-    const realEnd = new Date(target.realEndTime) || null;
 
-    const now = new Date();
-
-    if (!realStart) return false;
-    if (startTime.getDate() && endTime.getDate()) {
-      if (endTime < now) return false;
-      if (now.getTime() < startTime.getTime() - 1) return false;
-    }
-
-    return true;
+    return realStart == null ? true : false;
   };
 
   const getAttendanceList = async () => {
@@ -85,12 +49,58 @@ const Attendance = () => {
     }
   };
 
+  const checkIn = async (id: number) => {
+    try {
+      const response: EmployeeCheckInResponse =
+        await ApiClient.getInstance().employeeCheckIn({
+          workPlaceEmployeeId: id,
+          location: { lat: location.latitude, lng: location.longitude },
+        });
+
+      if (response) {
+        console.log('resres', response);
+        if (!response.success) {
+          openModal('출석할 수 없습니다.\n 가까운 위치에서 다시 시도해주세요');
+          return;
+        }
+        window.location.reload();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const openModal = (msg: string = '') => {
+    setModalMsg(msg);
+    setModalCenterOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalCenterOpen(false);
+  };
+
   useEffect(() => {
     getAttendanceList();
+    navigator.geolocation.getCurrentPosition(
+      successHandler,
+      (err) => {
+        console.log(err);
+      },
+      { maximumAge: 60000, timeout: 5000, enableHighAccuracy: true }
+    );
   }, []);
 
   return (
     <>
+      {isModalCenterOpen && (
+        <ModalCenter
+          title='알림'
+          closeModal={closeModal}
+          confirmAction={closeModal}
+        >
+          <div>{modalMsg}</div>
+        </ModalCenter>
+      )}
       {attendances && (
         <Frame navTitle='알바ON'>
           <ToolBarLink options={EmployeeMenuList} />
@@ -130,9 +140,12 @@ const Attendance = () => {
                         </div>
                       )}
                       {isActivated(item) ? (
-                        <BtnPrimary text='출근' action={() => {}} />
+                        <BtnPrimary
+                          text='출근'
+                          action={() => checkIn(item.workPlaceEmployeeId)}
+                        />
                       ) : (
-                        <BtnGray text='출근' action={() => {}} disabled />
+                        <BtnGray text='퇴근' action={() => {}} disabled />
                       )}
                     </div>
                   </WhiteBox>
