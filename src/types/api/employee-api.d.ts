@@ -160,12 +160,18 @@ type MyInfo = {
   username: string; //성명
 };
 
-//근무지 간략 조회
+//근무지 간략 조회 연결O
 type WorkPlaceInfo = {
-  workPlaceEmployeeId: long;
+  workPlaceEmployeeId: long | null;
   workPlaceNm: string;
   colorTypeCd: string;
-  workStartDate: string;
+  workStartDate: string | null;
+};
+
+//근무지 간략 조회 연결X
+type CustomWorkPlaceInfo = {
+  workPlaceNm: string;
+  colorTypeCd: string;
 };
 
 //근무지 목록 조회
