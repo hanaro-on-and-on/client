@@ -1,96 +1,144 @@
-import { FaAngleDown, FaAngleRight } from 'react-icons/fa6';
+import { FaAngleRight } from 'react-icons/fa6';
 import Frame from '../../../components/Frame';
 import Wrapper from '../../../components/Wrapper';
 import WhiteBox from '../../../components/ui/WhiteBox';
 import WorkPlaceName from '../../../components/ui/WorkPlaceName';
 import BtnPrimary from '../../../components/BtnPrimary';
-import ToolBar2 from '../../../components/ui/ToolBar2';
 import { useNavigate } from 'react-router-dom';
 import ApiClient from '../../../api/apiClient';
 import { useEffect, useState } from 'react';
 import BtnGray from '../../../components/BtnGray';
 import ToolBarLink from '../../../components/ui/ToolBarLink';
 import { EmployeeMenuList } from '../datas';
+import ModalCenter from '../../../components/ModalCenter';
+import BtnDanger from '../../../components/\bBtnDanger';
 
-const today = new Date();
-const day = today.getDay();
-const month = today.getMonth() + 1;
-const currentTime = today.getHours();
-const currentTimeMin = today.getMinutes();
-
-const days = ['일', '월', '화', '수', '목', '금', '토'];
-
+enum AttendanceStatus {
+  WORKING = 'working',
+  COMPLETED = 'completed',
+  PREPARING = 'preparing',
+}
 const Attendance = () => {
   const navigation = useNavigate();
+  const [isModalCenterOpen, setModalCenterOpen] = useState<boolean>(false);
+  const [modalMsg, setModalMsg] = useState<string>('');
+  const [attendanceStatus, setAttendanceStatus] = useState<AttendanceStatus[]>(
+    []
+  );
 
+  const [location, setLoacation] = useState<{
+    latitude: number;
+    longitude: number;
+  }>({ longitude: 0, latitude: 0 });
+
+  const successHandler = (response: any) => {
+    console.log(response); // coords: GeolocationCoordinates {latitude: 위도, longitude: 경도, …} timestamp: 1673446873903
+    const { latitude, longitude } = response.coords;
+    setLoacation({ latitude, longitude });
+  };
   const [attendances, setAttendances] =
     useState<EmployeeTodayAttendancesResponse | null>(null);
-
-  // const isActivated = (target: AttendanceTodayWork): boolean => {
-  //   const index = target.workTime.findIndex(
-  //     (item) => item.workDayOfWeek === days[day]
-  //   );
-  //   if (!index) return false;
-
-  //   const startTime = target.workTime[index].workStartTime;
-  //   const sh = startTime.substring(0, startTime.indexOf(':'));
-  //   const smin = startTime.substring(startTime.indexOf(':') + 1);
-
-  //   const endTime = target.workTime[index].workEndTime;
-  //   const eh = endTime.substring(0, startTime.indexOf(':'));
-  //   const emin = endTime.substring(startTime.indexOf(':') + 1);
-
-  //   const start = new Date();
-  //   start.setTime(+sh);
-  //   start.setMinutes(+smin);
-
-  //   const end = new Date();
-  //   end.setTime(+eh);
-  //   end.setMinutes(+emin);
-
-  //   if (start < today && start < end) return true;
-
-  //   return false;
-  // };
-
-  const isActivated = (target: AttendanceTodayWork): boolean => {
-    const startTime = new Date(target.startTime);
-    const endTime = new Date(target.endTime);
-
-    const realStart = target.realStartTime
-      ? new Date(target.realStartTime)
-      : null;
-    const realEnd = new Date(target.realEndTime) || null;
-
-    const now = new Date();
-
-    if (!realStart) return false;
-    if (startTime.getDate() && endTime.getDate()) {
-      if (endTime < now) return false;
-      if (now.getTime() < startTime.getTime() - 1) return false;
-    }
-
-    return true;
-  };
 
   const getAttendanceList = async () => {
     try {
       const response =
         await ApiClient.getInstance().employeeGetAttendanceList();
 
-      console.log(response);
       setAttendances(response);
+
+      response.works.forEach((item, index) => {
+        if (item.realStartTime) {
+          if (item.realEndTime) {
+            setAttendanceStatus((pre) => {
+              pre[index] = AttendanceStatus.COMPLETED;
+              return [...pre];
+            });
+          }
+          if (!item.realEndTime) {
+            setAttendanceStatus((pre) => {
+              pre[index] = AttendanceStatus.WORKING;
+              return [...pre];
+            });
+          }
+        } else {
+          setAttendanceStatus((pre) => {
+            pre[index] = AttendanceStatus.PREPARING;
+            return [...pre];
+          });
+        }
+      });
     } catch (err) {
       console.error(err);
     }
   };
 
+  const checkIn = async (id: number) => {
+    try {
+      const response: EmployeeCheckInResponse =
+        await ApiClient.getInstance().employeeCheckIn({
+          workPlaceEmployeeId: id,
+          location: { lat: location.latitude, lng: location.longitude },
+        });
+
+      if (response) {
+        if (!response.success) {
+          openModal('출석할 수 없습니다.\n 가까운 위치에서 다시 시도해주세요');
+          return;
+        }
+        window.location.reload();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const checkOut = async (id: number) => {
+    try {
+      const response: EmployeeCheckOutResponse =
+        await ApiClient.getInstance().employeeCheckOut({
+          workPlaceEmployeeId: id,
+          location: { lat: location.latitude, lng: location.longitude },
+        });
+
+      if (response) {
+        getAttendanceList();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const openModal = (msg: string = '') => {
+    setModalMsg(msg);
+    setModalCenterOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalCenterOpen(false);
+  };
+
   useEffect(() => {
     getAttendanceList();
+    navigator.geolocation.getCurrentPosition(
+      successHandler,
+      (err) => {
+        console.log(err);
+      },
+      { maximumAge: 60000, timeout: 5000, enableHighAccuracy: true }
+    );
   }, []);
 
   return (
     <>
+      {isModalCenterOpen && (
+        <ModalCenter
+          title='알림'
+          closeModal={closeModal}
+          confirmAction={closeModal}
+        >
+          <div>{modalMsg}</div>
+        </ModalCenter>
+      )}
       {attendances && (
         <Frame navTitle='알바ON'>
           <ToolBarLink options={EmployeeMenuList} />
@@ -98,7 +146,7 @@ const Attendance = () => {
             {/* 오늘 출근 목록 */}
             <Wrapper title='오늘 출근 목록'>
               <div>
-                {attendances?.works.map((item) => (
+                {attendances?.works.map((item, index) => (
                   <WhiteBox
                     key={item.workPlaceEmployeeId}
                     border
@@ -108,7 +156,9 @@ const Attendance = () => {
                       <button
                         type='button'
                         className='flex justify-between items-center bg-transparent'
-                        onClick={() => navigation('detail/롯데리아')}
+                        onClick={() =>
+                          navigation(`detail/${item.workPlaceEmployeeId}`)
+                        }
                       >
                         <WorkPlaceName
                           name={item.workPlaceName}
@@ -127,10 +177,22 @@ const Attendance = () => {
                           {` ${item?.notice[0].content}`}
                         </div>
                       )}
-                      {isActivated(item) ? (
-                        <BtnPrimary text='출근' action={() => {}} />
-                      ) : (
-                        <BtnGray text='출근' action={() => {}} disabled />
+                      {attendanceStatus[index] ===
+                        AttendanceStatus.PREPARING && (
+                        <BtnPrimary
+                          text='출근'
+                          action={() => checkIn(item.workPlaceEmployeeId)}
+                        />
+                      )}
+                      {attendanceStatus[index] === AttendanceStatus.WORKING && (
+                        <BtnDanger
+                          text='퇴근'
+                          action={() => checkOut(item.workPlaceEmployeeId)}
+                        />
+                      )}
+                      {attendanceStatus[index] ===
+                        AttendanceStatus.COMPLETED && (
+                        <BtnGray text='출근 불가' disabled />
                       )}
                     </div>
                   </WhiteBox>
@@ -141,12 +203,14 @@ const Attendance = () => {
             <Wrapper title='전체 출근 목록'>
               <div className='flex flex-col gap-1'>
                 {attendances?.totalWorks?.map((item) => (
-                  <WhiteBox
-                    key={item.workPlaceEmployeeId}
-                    border
-                    className='py-3'
-                  >
-                    <div className='flex justify justify-between items-center '>
+                  <WhiteBox key={item.workPlaceEmployeeId} border>
+                    <button
+                      type='button'
+                      className='flex justify justify-between items-center w-full h-full py-3 bg-transparent'
+                      onClick={() =>
+                        navigation(`detail/${item.workPlaceEmployeeId}`)
+                      }
+                    >
                       <div className='flex flex-col items-start gap-1'>
                         <WorkPlaceName
                           name={item.workPlaceName}
@@ -156,10 +220,6 @@ const Attendance = () => {
                           <div className='text-gray-400 text-sm'>
                             <span className='font-semibold pr-3'>근무요일</span>
                             {item.workTime?.map((i) => i.workDayOfWeek + ' ')}
-                            {/* {item.workTime[0].workDayOfWeek}{' '}
-                            {item.workTime[0].workStartTime}
-                            {' - '}
-                            {item.workTime[0].workEndTime} */}
                           </div>
                         ) : (
                           <div className='text-gray-400 text-sm'>
@@ -167,7 +227,7 @@ const Attendance = () => {
                           </div>
                         )}
                       </div>
-                    </div>
+                    </button>
                   </WhiteBox>
                 ))}
               </div>

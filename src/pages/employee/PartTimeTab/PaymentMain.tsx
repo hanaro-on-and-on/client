@@ -8,8 +8,9 @@ import generateMonthList from '../../../utils/generateMonthList';
 import Payment from './Payment';
 import WorkTime from './WorkTime';
 import { useDate } from '../../../contexts/Date-Context';
+import { useLocation } from 'react-router-dom';
 
-enum SELECTED_TAB {
+export enum SELECTED_TAB {
   PAYMENT = 'payment',
   WORKTIME = 'worktime',
 }
@@ -23,8 +24,15 @@ const PaymentMain = () => {
     SELECTED_TAB.PAYMENT
   );
 
+  const location = useLocation();
+  const { passedSelectedTab } = location.state || {};
+
   const selectPayment = () => setSelectedTab(SELECTED_TAB.PAYMENT);
   const selectWorktime = () => setSelectedTab(SELECTED_TAB.WORKTIME);
+
+  useEffect(() => {
+    if (passedSelectedTab) setSelectedTab(passedSelectedTab);
+  }, [passedSelectedTab]);
 
   return (
     <>

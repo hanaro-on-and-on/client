@@ -28,7 +28,7 @@ type EmployeeSalaryGetResponseList = {
   isQuit: boolean;
   payStubId: number | null;
   workPlaceName: string;
-  workPlaceColor: string;
+  workPlaceColorCode: string;
   payment: number;
 };
 
@@ -65,7 +65,7 @@ type EmployeeAccountUpdate = {
 //급여명세서 월별 조회
 type EmployeePayStubGetResponse = {
   payStubId: number;
-  wokrPlaceEmployeeId: number;
+  workPlaceEmployeeId: number;
   year: number;
   month: number;
   status: string; // 급여 지급 상태,
@@ -158,4 +158,123 @@ type MyInfo = {
   accountNumber: string;
   phoneNumber: string; //전화번호
   username: string; //성명
+};
+
+//근무지 간략 조회 연결O
+type WorkPlaceInfo = {
+  workPlaceEmployeeId: long | null;
+  workPlaceNm: string;
+  colorTypeCd: string;
+  workStartDate: string | null;
+};
+
+//근무지 간략 조회 연결X
+type CustomWorkPlaceInfo = {
+  workPlaceNm: string;
+  colorTypeCd: string;
+};
+
+//근무지 목록 조회
+type invitatedWorkPlace = {
+  isQuit: null | boolean;
+  employmentContractId: number;
+  customWorkPlaceId: number | null;
+  workPlaceName: string;
+  colorCodeType: string;
+  ownerName: string;
+};
+
+type connectedWorkPlace = {
+  isQuit: boolean | null;
+  employmentContractId: null | number;
+  customWorkPlaceId: null | number;
+  workPlaceName: string;
+  colorCodeType: string;
+  ownerName: string;
+};
+
+type customWorkPlace = {
+  isQuit: boolean | null;
+  employmentContractId: null | number;
+  customWorkPlaceId: 1;
+  workPlaceName: string;
+  colorCodeType: string;
+  ownerName: null;
+};
+
+type EmployeeWorkPlaceList = {
+  invitatedWorkPlaceList: invitatedWorkPlace[];
+  connectedWorkPlaceList: connectedWorkPlace[];
+  customWorkPlaceList: customWorkPlace[];
+};
+
+//출퇴근 상세 조회
+type AttendanceWorkTime = {
+  workDayOfWeek: string;
+  startTime: Date;
+  endTime: Date;
+  date: Date;
+};
+type EmployeeAttendanceDetail = {
+  workPlaceEmployeeId: number;
+  workPlaceName: string;
+  colorTypeCode: string;
+  location: { lat: number; lng: number };
+  workTime: AttendanceWorkTime[];
+  notice: Notice[];
+};
+
+//근무 목록 - 연결O
+type WorkListWorkTime = {
+  endTime: Date | string;
+  startTime: Date | string;
+  workDay: string;
+};
+
+//근무 목록
+type EmployeeWorkTimeList = {
+  year: number;
+  month: number;
+  workPlaceId: number;
+  workPlaceNm: string;
+  colorTypeCd: string;
+  totalPayPerMonth: number;
+  works: WorkListWorkTime[];
+};
+
+//근무 목록 연결X
+type EmployeeCustomWorkTimeList = {
+  year: number;
+  month: number;
+  PlaceId: number;
+  workPlaceNm: string;
+  colorTypeCd: string;
+  totalPayPerMonth: number;
+  works: WorkListWorkTime[];
+};
+
+//수동 근무 삭제
+type EmployeeDeleteWorkPlaceResponse = {
+  success: boolean;
+};
+
+//출근 등록
+type EmployeeCheckInRequest = {
+  workPlaceEmployeeId: number;
+  location: { lng: number; lat: number };
+};
+
+type EmployeeCheckInResponse = {
+  attendanceId: long;
+  success: boolean;
+};
+
+//퇴근 등록
+type EmployeeCheckOutRequest = {
+  workPlaceEmployeeId: number;
+  location: { lng: number; lat: number };
+};
+
+type EmployeeCheckOutResponse = {
+  attendanceId: long;
 };

@@ -12,7 +12,6 @@ type Prop = {
 };
 
 const Payment = ({ monthList }: Prop) => {
-  const today = new Date();
   const navigate = useNavigate();
 
   const [totalMonthlyPayment, setTotalMonthlyPayment] = useState<number>(0);
@@ -29,7 +28,6 @@ const Payment = ({ monthList }: Prop) => {
         await ApiClient.getInstance().getMonthlyPayment(year, month);
 
       if (response) {
-        console.log(response.list);
         setTotalMonthlyPayment(response.totalPayment);
         setPaymentList(response.list);
       }
@@ -87,14 +85,14 @@ const Payment = ({ monthList }: Prop) => {
                 type='button'
                 onClick={() =>
                   navigate(
-                    `/part-time/payment/detail/${getYear()}-${getMonth()}/${item.workPlaceName}/${item.id}`
+                    `/part-time/payment/detail/${getYear()}-${getMonth()}/${item.workPlaceName}/${item.id}/${item.isConnected}`
                   )
                 }
                 className='flex justify-between items-center w-full bg-transparent py-4'
               >
                 <WorkPlaceName
                   name={item.workPlaceName}
-                  colorType={item.workPlaceColor}
+                  colorType={item.workPlaceColorCode}
                 />
                 <div className='flex items-center gap-1'>
                   {item.payment.toLocaleString()}

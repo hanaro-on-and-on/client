@@ -1,8 +1,10 @@
 import axios from 'axios';
 import employeeApi from './interfaces/employeeApi';
 import ownerApi from './interfaces/ownerApi';
+import userApi from './interfaces/userApi';
+import { getToken } from '../utils/token';
 
-class ApiClient implements employeeApi, ownerApi {
+class ApiClient implements employeeApi, userApi, ownerApi {
   //singleton pattern
   private static instance: ApiClient;
   private axiosInstance;
@@ -13,6 +15,19 @@ class ApiClient implements employeeApi, ownerApi {
 
   //=========================
   // 메소드
+
+  //회원 - 로그인
+  public async login(pw: string): Promise<LoginResponse> {
+    const dat: LoginRequest = { password: pw };
+    const response: BaseResponse<LoginResponse> =
+      await this.axiosInstance.request({
+        method: 'post',
+        url: 'users/login',
+        data: dat,
+      });
+
+    return response.data;
+  }
 
   //알바생 - 근무지 수동 추가
   public async manualWorkPlaceAddition(req: ManualWorkPlaceAdditionRequest) {
@@ -108,7 +123,7 @@ class ApiClient implements employeeApi, ownerApi {
     return response.data;
   }
 
-  //알바생 - 월별 급여 명세서 조회
+  //알바생 - 월별 급여 명세서 조회 연결O
   public async employeeGetPayStub(
     workPlaceEmployeeId: number,
     year: number,
@@ -118,6 +133,21 @@ class ApiClient implements employeeApi, ownerApi {
       await this.axiosInstance.request({
         method: 'get',
         url: `papers/${workPlaceEmployeeId}/pay-stubs?year=${year}&month=${month}`,
+      });
+
+    return response.data;
+  }
+
+  //알바생 - 월별 급여 명세서 조회 연결X
+  public async employeeGetCustomPayStub(
+    customWorkPlaceId: number,
+    year: number,
+    month: number
+  ): Promise<EmployeePayStubGetResponse> {
+    const response: BaseResponse<EmployeePayStubGetResponse> =
+      await ApiClient.getInstance().axiosInstance.request({
+        method: 'get',
+        url: `papers/custom/${customWorkPlaceId}/pay-stubs?year=${year}&month=${month}`,
       });
 
     return response.data;
@@ -156,6 +186,142 @@ class ApiClient implements employeeApi, ownerApi {
 
     return response.data;
   }
+  //알바생 - 매장명 간략 조회
+  public async employeeGetWorkPlaceInfo(
+    workPlaceEmployeeId: number
+  ): Promise<WorkPlaceInfo> {
+    const response: BaseResponse<WorkPlaceInfo> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `papers/${workPlaceEmployeeId}`,
+      });
+    return response.data;
+  }
+
+  //알바생 - 매장명 간략 조회 연결X
+  public async employeeGetCustomWorkPlaceInfo(
+    customWorkPlaceId: number
+  ): Promise<CustomWorkPlaceInfo> {
+    const response: BaseResponse<CustomWorkPlaceInfo> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `papers/custom/${customWorkPlaceId}`,
+      });
+
+    return response.data;
+  }
+
+  //알바생 - 근무지 목록 조회
+  public async employeeGetWorkPlaceList(): Promise<EmployeeWorkPlaceList> {
+    const response: BaseResponse<EmployeeWorkPlaceList> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: 'employee/work-places',
+      });
+
+    return response.data;
+  }
+
+  //알바생 - 출퇴근 상세
+  public async employeeGetAttendanceDetail(
+    workPlaceId: number
+  ): Promise<EmployeeAttendanceDetail> {
+    const response = await this.axiosInstance.request({
+      method: 'get',
+      url: `attendances/${workPlaceId}`,
+    });
+
+    return response.data;
+  }
+
+  //알바생 - 근무 목록 연결O
+  public async employeeGetWorkTimeListConnected(
+    workPlaceEmployeeId: number,
+    year: number,
+    month: number
+  ): Promise<EmployeeWorkTimeList> {
+    const response: BaseResponse<EmployeeWorkTimeList> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `papers/${workPlaceEmployeeId}/attendance?year=${year}&month=${month}`,
+      });
+
+    return response.data;
+  }
+
+  //알바생 - 근무 목록 연결x
+  public async employeeGetWorkTimeList(
+    workPlaceEmployeeId: number,
+    year: number,
+    month: number
+  ): Promise<EmployeeWorkTimeList> {
+    const response: BaseResponse<EmployeeCustomWorkTimeList> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `papers/custom/${workPlaceEmployeeId}/attendance?year=${year}&month=${month}`,
+      });
+
+    const converted: EmployeeWorkTimeList = {
+      ...response.data,
+      workPlaceId: response.data.PlaceId,
+    };
+    return converted;
+  }
+
+  //알바생 - 수동 근무지 삭제
+  public async employeeDeleteCustomWorkPlace(
+    customWorkPlaceId: number
+  ): Promise<EmployeeDeleteWorkPlaceResponse> {
+    const response: BaseResponse<EmployeeDeleteWorkPlaceResponse> =
+      await this.axiosInstance.request({
+        method: 'delete',
+        url: `employee/work-places/${customWorkPlaceId}/custom`,
+      });
+
+    return response.data;
+  }
+
+  //알바생 - 출근 등록
+  public async employeeCheckIn(
+    workPlaceEmployeeId: EmployeeCheckInRequest
+  ): Promise<EmployeeCheckInResponse> {
+    const response: BaseResponse<EmployeeCheckInResponse> =
+      await this.axiosInstance.request({
+        method: 'post',
+        url: 'attendances/check-in',
+        data: workPlaceEmployeeId,
+      });
+
+    return response.data;
+  }
+
+  //알바생 - 퇴근 등록
+  public async employeeCheckOut(
+    workPlaceEmployeeId: EmployeeCheckOutRequest
+  ): Promise<EmployeeCheckOutResponse> {
+    const response: BaseResponse<EmployeeCheckOutResponse> =
+      await this.axiosInstance.request({
+        method: 'post',
+        url: 'attendances/check-out',
+        data: workPlaceEmployeeId,
+      });
+
+    return response.data;
+  }
+
+  //사장님 - 대표 계좌 등록
+  public async ownerAddMainAccount(
+    prop: OwnerAddMainAccountRequest
+  ): Promise<OwnerAddMainAccountResponse> {
+    const response: BaseResponse<OwnerAddMainAccountResponse> =
+      await this.axiosInstance.request({
+        method: 'post',
+        url: 'owner/accounts',
+        data: prop,
+      });
+
+    return response.data;
+  }
 
   // 사장님 - 캘린더 데이터
   public async getCalendarData(
@@ -167,10 +333,8 @@ class ApiClient implements employeeApi, ownerApi {
         method: 'get',
         url: `owner/salaries/calendar?year=${year}&month=${month}`,
       });
-
     return response.data;
   }
-
   // 사장님 - 나의 사업장 전체 조회
   public async getMyPlaces(
     year: number,
@@ -207,7 +371,6 @@ class ApiClient implements employeeApi, ownerApi {
         method: 'get',
         url: `/owner/work-places/employees?employeeStatus=${employeeStatus}`,
       });
-
     return response.data;
   }
 
@@ -231,12 +394,42 @@ class ApiClient implements employeeApi, ownerApi {
     });
 
     newInstance.interceptors.request.use((config) => {
+      const token: string = getToken();
+      if (token) {
+        config.headers['Authorization'] = `Bearer ${token}`;
+      }
       config.headers['Content-Type'] = 'application/json';
       config.headers['Authorization'] =
         `Bearer ${import.meta.env.VITE_ACCESS_TOKEN}`;
       // config.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173';
       return config;
     });
+
+    // newInstance.interceptors.response.use(
+    //   (response) => {
+    //     if (response.status === 404) {
+    //       console.log('404 페이지로 넘어가야 함!');
+    //     }
+
+    //     return response;
+    //   },
+    //   async (error) => {
+    //     if (error.response?.status === 401) {
+    //       // if (error.response.data === 'TOKEN_EXPIRED') await tokenRefresh();
+
+    //       const accessToken = getToken();
+
+    //       error.config.headers = {
+    //         'Content-Type': 'application/json',
+    //         Authorization: `Bearer ${accessToken}`,
+    //       };
+
+    //       const response = await axios.request(error.config);
+    //       return response;
+    //     }
+    //     return Promise.reject(error);
+    //   }
+    // );
 
     return newInstance;
   }

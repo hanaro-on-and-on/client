@@ -3,6 +3,7 @@ import { getColor } from '../../utils/get-color';
 import { HStack, VStack } from '../ui/Stack';
 import ColorCircle from '../ui/ColorCircle';
 import { useNavigate } from 'react-router-dom';
+import WorkPlaceName from '../ui/WorkPlaceName';
 
 type MyWorkPlaceListViewProps = {
   workPlaceId: number;

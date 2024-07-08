@@ -2,9 +2,19 @@ import { useNavigate } from 'react-router-dom';
 import Frame from '../../components/Frame';
 import Wrapper from '../../components/Wrapper';
 import WhiteBox from '../../components/ui/WhiteBox';
+import { getCookie } from '../../utils/cookie';
+import { useEffect } from 'react';
+import { getToken } from '../../utils/token';
 
 const LandingPage = () => {
   const navigation = useNavigate();
+  const token: string = getCookie('token');
+
+  useEffect(() => {
+    if (!getToken()) {
+      navigation('/login');
+    }
+  });
 
   return (
     <>
@@ -28,6 +38,9 @@ const LandingPage = () => {
                 <button
                   type='button'
                   className='w-full h-full flex justify-start bg-transparent py-3'
+                  onClick={
+                    token ? () => {} : () => navigation('/greeting/owner')
+                  }
                 >
                   사장님ON
                 </button>
@@ -36,7 +49,9 @@ const LandingPage = () => {
                 <button
                   type='button'
                   className='w-full h-full flex justify-start bg-transparent py-3'
-                  onClick={() => navigation('/greeting/employee')}
+                  onClick={
+                    token ? () => {} : () => navigation('/greeting/owner')
+                  }
                 >
                   알바ON
                 </button>

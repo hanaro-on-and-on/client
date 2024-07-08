@@ -56,7 +56,6 @@ const MyPage = () => {
       const response: EmploymentContractListGetResponse[] =
         await ApiClient.getInstance().getPaperList();
 
-      console.log(response);
       setPapers(response);
     } catch (err) {
       console.error(err);

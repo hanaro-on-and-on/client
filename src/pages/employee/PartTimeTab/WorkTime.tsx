@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ApiClient from '../../../api/apiClient';
 import SignPad from '../../../components/SignPad';
+import useToggle from '../../../hooks/toggle';
 
 const WorkTime = () => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -15,7 +16,8 @@ const WorkTime = () => {
   const [getsign, setGetsign] = useState<boolean>(false);
   const [modalTitle, setModalTitle] = useState<string>('전자 서명');
 
-  const [papers, setPapers] = useState<EmploymentContractListGetResponse[]>([]);
+  const [workPlaceList, setWorkPlaceList] = useState<EmployeeWorkPlaceList>([]);
+  const { flag, toggle } = useToggle();
 
   const refHandler = useRef<SignPadHandler>(null);
 
@@ -30,17 +32,6 @@ const WorkTime = () => {
     return 'true';
   };
 
-  const fetchPaperList = async () => {
-    try {
-      const response: EmploymentContractListGetResponse[] =
-        await ApiClient.getInstance().getPaperList();
-
-      setPapers(response);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   const getConfirmList = async () => {
     try {
       const response: ConfirmReqResponse =
@@ -52,10 +43,33 @@ const WorkTime = () => {
     }
   };
 
+  const getWorkPlaceList = async () => {
+    try {
+      const response: EmployeeWorkPlaceList =
+        await ApiClient.getInstance().employeeGetWorkPlaceList();
+
+      setWorkPlaceList(response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const deleteCustomWorkPlace = async (id: number) => {
+    try {
+      const response =
+        await ApiClient.getInstance().employeeDeleteCustomWorkPlace(id);
+      if (response.success) {
+        toggle();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     getConfirmList();
-    fetchPaperList();
-  }, []);
+    getWorkPlaceList();
+  }, [flag]);
 
   return (
     // 연동 요청
@@ -84,12 +98,12 @@ const WorkTime = () => {
 
       {/* 사장님과 연동 */}
       <Wrapper title='사장님과 연동' className='flex flex-col gap-1'>
-        {papers?.map((item) => (
+        {workPlaceList.connectedWorkPlaceList?.map((item) => (
           <WhiteBox className='py-3' border key={item.employmentContractId}>
             <div className='flex justify-between items-center'>
               <WorkPlaceName
-                name={item.workPlaceNm}
-                colorType={item.colorTypeCd}
+                name={item.workPlaceName}
+                colorType={item.colorCodeType}
               />
               <BtnBorder color='gray' text='계약 완료' onClick={() => {}} />
             </div>
@@ -102,14 +116,29 @@ const WorkTime = () => {
         title='내가 추가한'
         button
         buttonText='수동 등록'
-        onButtonClick={() => navigation('manual/addition')}
+        onButtonClick={() => navigation('/manual/addition')}
       >
-        <WhiteBox className='py-3' border>
-          <div className='flex justify-between items-center'>
-            <WorkPlaceName name='롯데리아' colorType='02' />
-            <BtnBorder color='green' text='서명 요청' onClick={() => {}} />
-          </div>
-        </WhiteBox>
+        <div className='flex flex-col gap-1'>
+          {workPlaceList.customWorkPlaceList?.map((item, index) => (
+            <WhiteBox
+              key={item.customWorkPlaceId || index * 2}
+              className='py-3'
+              border
+            >
+              <div className='flex justify-between items-center'>
+                <WorkPlaceName
+                  name={item.workPlaceName}
+                  colorType={item.colorCodeType}
+                />
+                <BtnBorder
+                  color='green'
+                  text='삭제'
+                  onClick={() => deleteCustomWorkPlace(item.customWorkPlaceId)}
+                />
+              </div>
+            </WhiteBox>
+          ))}
+        </div>
       </Wrapper>
 
       {isModalOpen && (

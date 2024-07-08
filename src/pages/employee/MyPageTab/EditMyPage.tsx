@@ -53,7 +53,6 @@ const EditMyPage = () => {
 
     try {
       const response = await ApiClient.getInstance().employeeUpdateAccount(dat);
-      console.log(response);
       openModalCenter('등록 성공');
     } catch (err) {
       console.error(err);

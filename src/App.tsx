@@ -27,12 +27,16 @@ import WorkEmployeeAddFirst from './components/owner-workplace/WorkEmployeeAdd-F
 import WorkEmployeeAddSecond from './components/owner-workplace/WorkEmployeeAdd-Second';
 import WorkEmployeeAddThird from './components/owner-workplace/WorkEmployeeAdd-Third';
 import WorkEmployeeAddComplete from './components/owner-workplace/WorkEmployeeAdd-Complete';
+import OwnerGreeting from './pages/LandingPage/OwnerGreeting';
+import OwnerAddMainAccount from './pages/LandingPage/OwnerAddMainAccount';
+import LoginPage from './pages/LoginPgae/LoginPage';
 
 function App() {
   return (
     <>
       <Routes>
         <Route path='/' element={<LandingPage />} />
+        <Route path='/login' element={<LoginPage />} />
         <Route path='/test' element={<Test />} />
         {/* <Route path='/ui' element={<UiTest />} /> */}
         {/* <Route path='/owner/myWorkPlaces/add' element={<WorkPlaceAddPage />} /> */}
@@ -75,7 +79,7 @@ function App() {
           <Route path='worktime' element={<WorkTime />} />
         </Route>
         <Route
-          path='/part-time/payment/detail/:yearMonth/:workPlace/:id'
+          path='/part-time/payment/detail/:yearMonth/:workPlace/:id/:connected'
           element={<PaymentDetail />}
         />
         <Route
@@ -86,15 +90,20 @@ function App() {
         <Route path='/my/edit' element={<EditMyPage />} />
         <Route path='/attendance' element={<Attendance />} />
         <Route
-          path='/attendance/detail/:workPlace'
+          path='/attendance/detail/:workPlaceId'
           element={<AttendanceDetail />}
         />
         <Route path='/greeting/employee' element={<EmployeeGreeting />} />
+        <Route path='/greeting/owner' element={<OwnerGreeting />} />
+        <Route
+          path='/greeting/owner/account'
+          element={<OwnerAddMainAccount />}
+        />
         <Route
           path='/greeting/employee/account'
           element={<EmployeeAddMainAccount />}
         />
-        <Route path='/hi' element={<ManualWorkPlaceAddition />} />
+        <Route path='/manual/addition' element={<ManualWorkPlaceAddition />} />
       </Routes>
     </>
   );

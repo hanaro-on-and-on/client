@@ -29,6 +29,48 @@ interface employeeApi {
   employeeGetAttendanceList(): Promise<EmployeeTodayAttendancesResponse>;
 
   employeeGetMyInfo(): Promise<MyInfo>;
+
+  employeeGetWorkPlaceInfo(workPlaceEmployeeId: number): Promise<WorkPlaceInfo>;
+
+  employeeGetWorkPlaceList(): Promise<EmployeeWorkPlaceList>;
+
+  employeeGetAttendanceDetail(
+    workPlaceId: number
+  ): Promise<EmployeeAttendanceDetail>;
+
+  employeeGetWorkTimeListConnected(
+    workPlaceEmployeeId: number,
+    year: number,
+    month: number
+  ): Promise<EmployeeWorkTimeList>;
+
+  employeeGetWorkTimeList(
+    workPlaceEmployeeId: number,
+    year: number,
+    month: number
+  ): Promise<EmployeeWorkTimeList>;
+
+  employeeDeleteCustomWorkPlace(
+    customWorkPlaceId: number
+  ): Promise<EmployeeDeleteWorkPlaceResponse>;
+
+  employeeGetCustomPayStub(
+    customWorkPlaceId: number,
+    yearn: number,
+    month: number
+  ): Promise<EmployeePayStubGetResponse>;
+
+  employeeGetCustomWorkPlaceInfo(
+    customWorkPlaceId: number
+  ): Promise<CustomWorkPlaceInfo>;
+
+  employeeCheckIn(
+    prop: EmployeeCheckInRequest
+  ): Promise<EmployeeCheckInResponse>;
+
+  employeeCheckOut(
+    prop: EmployeeCheckOutRequest
+  ): Promise<EmployeeCheckOutResponse>;
 }
 
 export default employeeApi;

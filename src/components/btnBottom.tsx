@@ -1,6 +1,6 @@
 type Prop = {
   text: string;
-  action: () => void | undefined;
+  action: (() => Promise<void>) | (() => void) | undefined;
 };
 
 const BtnBottom = ({ text, action }: Prop) => {

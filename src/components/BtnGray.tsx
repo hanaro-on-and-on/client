@@ -2,7 +2,7 @@ import clsx from 'clsx';
 
 type Prop = {
   text: string;
-  action: () => void;
+  action?: () => void;
   className?: string;
   disabled?: boolean;
 };

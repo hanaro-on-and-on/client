@@ -11,6 +11,7 @@ import PayStub from './PayStub';
 import WorkHourManagement from './WorkHourManagement';
 import generateMonthList from '../../../utils/generateMonthList';
 import { useDate } from '../../../contexts/Date-Context';
+import ApiClient from '../../../api/apiClient';
 
 enum ToggleStatus {
   PAYMENT = 'payment',
@@ -18,16 +19,53 @@ enum ToggleStatus {
 }
 
 const PaymentDetail = () => {
-  const today = new Date();
-  const { workPlace, yearMonth, id } = useParams();
+  const [workPlaceInfo, setWorkPlaceInfo] = useState<WorkPlaceInfo | null>(
+    null
+  );
+  const { workPlace, yearMonth, id, connected } = useParams();
   const [selectedToggle, setSelectedToggle] = useState<ToggleStatus>(
     ToggleStatus.PAYMENT
   );
 
-  const { date, setYear, setMonth, setYearMonth, getYear, getMonth } =
-    useDate();
+  const { getYear, getMonth } = useDate();
 
   const [monthList, setMonthList] = useState<Date[]>(() => generateMonthList());
+
+  //매장 정보
+  const getWorkPlaceData = async () => {
+    try {
+      const response = await ApiClient.getInstance().employeeGetWorkPlaceInfo(
+        +id!
+      );
+      setWorkPlaceInfo(response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getCustomWorkPlaceData = async () => {
+    try {
+      const response =
+        await ApiClient.getInstance().employeeGetCustomWorkPlaceInfo(+id!);
+
+      if (response)
+        setWorkPlaceInfo({
+          workPlaceEmployeeId: null,
+          workPlaceNm: response.workPlaceNm,
+          colorTypeCd: response.colorTypeCd,
+          workStartDate: null,
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    if (connected != undefined) {
+      if (connected === 'true') getWorkPlaceData();
+      else getCustomWorkPlaceData();
+    }
+  }, []);
 
   return (
     <Frame navTitle='알바ON'>
@@ -40,10 +78,21 @@ const PaymentDetail = () => {
             {/* 매장명 */}
             <WhiteBox className='py-3 px-3 w-full border '>
               <div className='flex justify-between items-center'>
-                <WorkPlaceName name={workPlace} colorType='01' />
-                <div className='flex gap-2'>
-                  근무 시작일
-                  <div>101010</div>
+                {workPlaceInfo && (
+                  <WorkPlaceName
+                    name={workPlaceInfo.workPlaceNm}
+                    colorType={workPlaceInfo.colorTypeCd}
+                  />
+                )}
+                <div className='flex gap-2 text-[12px]'>
+                  {workPlaceInfo?.workStartDate && (
+                    <div>
+                      근무 시작일
+                      <div className='text-[12px]'>
+                        {workPlaceInfo?.workStartDate}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </WhiteBox>
@@ -57,17 +106,26 @@ const PaymentDetail = () => {
             />
 
             {/* 급여명세서 */}
-            {selectedToggle === ToggleStatus.PAYMENT && (
-              <PayStub
-                year={getYear()}
-                month={getMonth()}
-                id={Number(id)}
-                monthList={monthList}
-              />
-            )}
-            {selectedToggle === ToggleStatus.WORKTIME && (
-              <WorkHourManagement year={year} month={month} />
-            )}
+            {selectedToggle === ToggleStatus.PAYMENT &&
+              connected != undefined && (
+                <PayStub
+                  year={getYear()}
+                  month={getMonth()}
+                  id={Number(id)}
+                  monthList={monthList}
+                  isConnected={connected}
+                />
+              )}
+            {selectedToggle === ToggleStatus.WORKTIME &&
+              connected != undefined && (
+                <WorkHourManagement
+                  year={getYear()}
+                  month={getMonth()}
+                  id={Number(id)}
+                  monthList={monthList}
+                  isConnected={connected}
+                />
+              )}
           </div>
         )}
       </div>
