@@ -31,7 +31,7 @@ const PaymentMain = () => {
   const selectWorktime = () => setSelectedTab(SELECTED_TAB.WORKTIME);
 
   useEffect(() => {
-    setSelectedTab(passedSelectedTab);
+    if (passedSelectedTab) setSelectedTab(passedSelectedTab);
   }, [passedSelectedTab]);
 
   return (
