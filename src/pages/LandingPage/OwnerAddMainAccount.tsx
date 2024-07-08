@@ -11,7 +11,7 @@ import ModalCenter from '../../components/ModalCenter';
 import ApiClient from '../../api/apiClient';
 import { BankList } from '../employee/datas';
 
-const EmployeeAddMainAccount = () => {
+const OwnerAddMainAccount = () => {
   const [isModalOpen, setIsModal] = useState(false);
   const [isModalCenterOpen, setIsModalCenter] = useState<boolean>(false);
   const [modalMsg, setModalMsg] = useState<string>('');
@@ -54,12 +54,12 @@ const EmployeeAddMainAccount = () => {
     const account = accountRef.current?.value;
 
     try {
-      const response = await ApiClient.getInstance().registerEmployeeAccount({
+      const response = await ApiClient.getInstance().ownerAddMainAccount({
         accountNumber: account!,
-        employeeNm: name!,
+        ownerNm: name!,
       });
 
-      if (response.employeeId) {
+      if (response.ownerId) {
         setDone(true);
         setModalMsg('등록 성공');
       }
@@ -106,7 +106,7 @@ const EmployeeAddMainAccount = () => {
       )}
       <Frame>
         <div className='flex flex-col justify-between w-full h-full py-5 gap-2'>
-          <Wrapper title='알바생 대표 계좌 등록'>
+          <Wrapper title='사장님 대표 계좌 등록'>
             <div className=' flex flex-col justify-start gap-2'>
               {/* 이름 */}
               <InputBorder
@@ -151,4 +151,4 @@ const EmployeeAddMainAccount = () => {
   );
 };
 
-export default EmployeeAddMainAccount;
+export default OwnerAddMainAccount;
