@@ -1,5 +1,7 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import employeeApi from './interfaces/employeeApi';
+import { getCookie } from '../utils/cookie';
+import getToken from '../utils/get-token';
 
 class ApiClient implements employeeApi {
   //singleton pattern
@@ -294,6 +296,20 @@ class ApiClient implements employeeApi {
     return response.data;
   }
 
+  //사장님 - 대표 계좌 등록
+  public async ownerAddMainAccount(
+    prop: OwnerAddMainAccountRequest
+  ): Promise<OwnerAddMainAccountResponse> {
+    const response: BaseResponse<OwnerAddMainAccountResponse> =
+      await this.axiosInstance.request({
+        method: 'post',
+        url: 'owner/accounts',
+        data: prop,
+      });
+
+    return response.data;
+  }
+
   //==========================
   // 생성 메소드
   private static createAxiosInstance() {
@@ -303,11 +319,41 @@ class ApiClient implements employeeApi {
     });
 
     newInstance.interceptors.request.use((config) => {
+      const token: string = getToken();
+      if (token.length > 0) {
+        config.headers['Authorization'] = `Bearer ${token}`;
+      }
       config.headers['Content-Type'] = 'application/json';
       config.headers['Authorization'] =
         `Bearer ${import.meta.env.VITE_ACCESS_TOKEN}`;
       return config;
     });
+
+    newInstance.interceptors.response.use(
+      (response) => {
+        if (response.status === 404) {
+          console.log('404 페이지로 넘어가야 함!');
+        }
+
+        return response;
+      },
+      async (error) => {
+        if (error.response?.status === 401) {
+          // if (error.response.data === 'TOKEN_EXPIRED') await tokenRefresh();
+
+          const accessToken = getToken();
+
+          error.config.headers = {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          };
+
+          const response = await axios.request(error.config);
+          return response;
+        }
+        return Promise.reject(error);
+      }
+    );
 
     return newInstance;
   }
