@@ -27,11 +27,7 @@ const textConvert = (status: string): string => {
 };
 
 const PayStub = ({ monthList, year, month, id, isConnected }: Prop) => {
-  const [workPlaceInfo, setWorkPlaceInfo] = useState<WorkPlaceInfo | null>(
-    null
-  );
-  const { date, setYear, setMonth, setYearMonth, getYear, getMonth } =
-    useDate();
+  const { date, setYearMonth, getYear, getMonth } = useDate();
 
   //급여 명세서
   const [payStub, setPayStub] = useState<EmployeePayStubGetResponse | null>(

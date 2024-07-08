@@ -3,7 +3,7 @@ import NavToggle from '../../../components/NavToggle';
 
 import ToolBarLink from '../../../components/ui/ToolBarLink';
 import { EmployeeMenuList } from '../datas';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import generateMonthList from '../../../utils/generateMonthList';
 import Payment from './Payment';
 import WorkTime from './WorkTime';

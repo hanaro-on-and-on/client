@@ -22,14 +22,12 @@ const PaymentDetail = () => {
   const [workPlaceInfo, setWorkPlaceInfo] = useState<WorkPlaceInfo | null>(
     null
   );
-  const today = new Date();
   const { workPlace, yearMonth, id, connected } = useParams();
   const [selectedToggle, setSelectedToggle] = useState<ToggleStatus>(
     ToggleStatus.PAYMENT
   );
 
-  const { date, setYear, setMonth, setYearMonth, getYear, getMonth } =
-    useDate();
+  const { getYear, getMonth } = useDate();
 
   const [monthList, setMonthList] = useState<Date[]>(() => generateMonthList());
 
