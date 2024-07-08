@@ -240,13 +240,17 @@ class ApiClient implements employeeApi {
     year: number,
     month: number
   ): Promise<EmployeeWorkTimeList> {
-    const response: BaseResponse<EmployeeWorkTimeList> =
+    const response: BaseResponse<EmployeeCustomWorkTimeList> =
       await this.axiosInstance.request({
         method: 'get',
         url: `papers/custom/${workPlaceEmployeeId}/attendance?year=${year}&month=${month}`,
       });
 
-    return response.data;
+    const converted: EmployeeWorkTimeList = {
+      ...response.data,
+      workPlaceId: response.data.PlaceId,
+    };
+    return converted;
   }
 
   //알바생 - 수동 근무지 삭제
@@ -270,6 +274,20 @@ class ApiClient implements employeeApi {
       await this.axiosInstance.request({
         method: 'post',
         url: 'attendances/check-in',
+        data: workPlaceEmployeeId,
+      });
+
+    return response.data;
+  }
+
+  //알바생 - 퇴근 등록
+  public async employeeCheckOut(
+    workPlaceEmployeeId: EmployeeCheckOutRequest
+  ): Promise<EmployeeCheckOutResponse> {
+    const response: BaseResponse<EmployeeCheckOutResponse> =
+      await this.axiosInstance.request({
+        method: 'post',
+        url: 'attendances/check-out',
         data: workPlaceEmployeeId,
       });
 

@@ -67,6 +67,10 @@ interface employeeApi {
   employeeCheckIn(
     prop: EmployeeCheckInRequest
   ): Promise<EmployeeCheckInResponse>;
+
+  employeeCheckOut(
+    prop: EmployeeCheckOutRequest
+  ): Promise<EmployeeCheckOutResponse>;
 }
 
 export default employeeApi;
