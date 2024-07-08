@@ -237,7 +237,7 @@ type EmployeeWorkTimeList = {
   month: number;
   workPlaceId: number;
   workPlaceNm: string;
-  workPlaceColor: string;
+  colorTypeCd: string;
   totalPayPerMonth: number;
   works: WorkListWorkTime[];
 };
@@ -248,7 +248,7 @@ type EmployeeCustomWorkTimeList = {
   month: number;
   PlaceId: number;
   workPlaceNm: string;
-  workPlaceColor: string;
+  colorTypeCd: string;
   totalPayPerMonth: number;
   works: WorkListWorkTime[];
 };

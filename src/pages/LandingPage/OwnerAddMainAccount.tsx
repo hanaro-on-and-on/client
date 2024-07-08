@@ -54,12 +54,12 @@ const OwnerAddMainAccount = () => {
     const account = accountRef.current?.value;
 
     try {
-      const response = await ApiClient.getInstance().registerEmployeeAccount({
+      const response = await ApiClient.getInstance().ownerAddMainAccount({
         accountNumber: account!,
-        employeeNm: name!,
+        ownerNm: name!,
       });
 
-      if (response.employeeId) {
+      if (response.ownerId) {
         setDone(true);
         setModalMsg('등록 성공');
       }
