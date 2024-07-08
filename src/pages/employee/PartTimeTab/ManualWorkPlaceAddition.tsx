@@ -6,6 +6,7 @@ import BtnBottom from '../../../components/BtnBottom';
 import { useNavigate } from 'react-router-dom';
 import ApiClient from '../../../api/apiClient';
 import ModalCenter from '../../../components/ModalCenter';
+import { SELECTED_TAB } from './PaymentMain';
 
 const ManualWorkPlaceAddition = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -65,7 +66,10 @@ const ManualWorkPlaceAddition = () => {
           closeModal={() => setModalOpen(false)}
           confirmAction={
             done
-              ? () => navigation('/part-time/worktime')
+              ? () =>
+                  navigation('/part-time/payment', {
+                    state: { passedSelectedTab: SELECTED_TAB.WORKTIME },
+                  })
               : () => setModalOpen(false)
           }
         >
