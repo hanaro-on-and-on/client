@@ -13,9 +13,9 @@ const Nav = ({ title = '알바ON' }: Prop) => {
             <FaAngleLeft />
           </div>
           <div className='col-span-1'>{title}</div>
-          <div>
+          {/* <div>
             <Logout />
-          </div>
+          </div> */}
         </div>
       </div>
     </>
