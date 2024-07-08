@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import BtnGray from './BtnGray';
 import BtnPrimary from './BtnPrimary';
+import clsx from 'clsx';
 
 type Prop = {
   title?: string;
@@ -10,6 +11,7 @@ type Prop = {
   declineAction?: () => void;
   confirmAction: () => void;
   closeModal: () => void;
+  className?: string;
   children: ReactNode;
 };
 
@@ -22,13 +24,19 @@ const ModalCenter = ({
   confirmAction = () => {},
   closeModal,
   children,
+  className,
 }: Prop) => {
   return (
     <>
-      <div className='fixed w-[390px] h-screen bg-black bg-opacity-50 z-40 flex justify-center items-center'>
-        <div className='flex flex-col gap-3 items-center justify-between py-7 px-5 bg-white w-[70%] min-h-[230px] rounded-3xl text-clip'>
+      <div className='fixed w-[390px] top-0 h-screen bg-black bg-opacity-50 z-40 flex justify-center items-center'>
+        <div
+          className={clsx(
+            'flex flex-col gap-3 items-center justify-between py-7 px-5 bg-white w-[70%] min-h-[230px] rounded-3xl text-clip',
+            className
+          )}
+        >
           <div className='font-bold'>{title}</div>
-          <div>{children}</div>
+          <div className='max-w-full w-full'>{children}</div>
           <div className='flex gap-5 w-full'>
             {hasDecline && (
               <BtnGray
