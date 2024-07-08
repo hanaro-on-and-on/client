@@ -11,6 +11,7 @@ type NotificationProps = {
 
 const Notification = ({ title, content, createdAt }: NotificationProps) => {
   const [expanded, setExpanded] = useState(false);
+  const created = new Date(createdAt);
 
   const toggleExpand = () => {
     setExpanded(!expanded);
@@ -27,8 +28,7 @@ const Notification = ({ title, content, createdAt }: NotificationProps) => {
         </button>
       </HStack>
       <div className='text-gray-400 text-sm'>
-        {/* {`${new Date(createdAt).toLocaleString()}`} */}
-        {`${createdAt.toLocaleString()}`}
+        {`${created.toLocaleDateString()} ${created.toLocaleTimeString()}`}
       </div>
       <div
         className={`min-h-8 text-wrap ${expanded ? 'overflow-visible' : 'overflow-hidden h-8'}`}

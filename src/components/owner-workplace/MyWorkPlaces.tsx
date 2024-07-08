@@ -6,49 +6,6 @@ import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { isCurrentDate } from '../../utils/is-current-date';
 import ApiClient from '../../api/apiClient';
 
-const mockData = {
-  year: 2024,
-  month: 6,
-  totalPayment: 140333000,
-  workPlaceList: [
-    {
-      workPlaceId: 1,
-      workPlaceName: '롯데리아 자양점',
-      workPlaceColor: '01',
-      payment: 140333000,
-      employeeList: [
-        {
-          workPlaceEmployeeId: 1,
-          employeeName: '이서하',
-          workStartDate: '2024-07-01',
-          payment: 140333,
-        },
-      ],
-    },
-    {
-      id: 2,
-      workPlaceName: 'Example Work Place Name',
-      workPlaceColor: '02',
-      payment: 0,
-      ownerSalaryGetResponseList: [],
-    },
-    {
-      id: 3,
-      workPlaceName: '롯데월드 어드벤쳐 부산',
-      workPlaceColor: '03',
-      payment: 0,
-      ownerSalaryGetResponseList: [
-        {
-          id: 2,
-          employeeName: '최은진',
-          workStartDate: '2024-07-01',
-          payment: 0,
-        },
-      ],
-    },
-  ],
-};
-
 const MyWorkPlaces = () => {
   const [data, setData] = useState<MyPlacesResponse | null>(null);
   const currentDate = new Date();

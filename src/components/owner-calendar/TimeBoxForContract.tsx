@@ -63,7 +63,7 @@ const TimeBoxForContract = (props: TimeBoxForContractProps) => {
   return (
     <VStack className='mx-auto gap-3'>
       <HStack className='items-center justify-between'>
-        <div className='font-semibold text-sm me-3'>근무 시간</div>
+        <div className='font-semibold text-xs me-3'>근무 시간</div>
         <TimePickerCustom
           key={`${selectedDayofWeek}-start`}
           time={startTime}
@@ -78,7 +78,7 @@ const TimeBoxForContract = (props: TimeBoxForContractProps) => {
         />
       </HStack>
       <HStack className='items-center justify-between'>
-        <div className='font-semibold text-sm me-3'>휴게 시간</div>
+        <div className='font-semibold text-xs me-3'>휴게 시간</div>
         <TimePickerCustom
           key={`${selectedDayofWeek}-rest-start`}
           time={restStartTime}

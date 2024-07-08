@@ -3,6 +3,7 @@ import employeeApi from './interfaces/employeeApi';
 import ownerApi from './interfaces/ownerApi';
 import userApi from './interfaces/userApi';
 import { getToken } from '../utils/token';
+import { EmployeeContract } from '../types/contract';
 
 class ApiClient implements employeeApi, userApi, ownerApi {
   //singleton pattern
@@ -336,6 +337,8 @@ class ApiClient implements employeeApi, userApi, ownerApi {
     return response.data;
   }
 
+  // ==========================
+
   // 사장님 - 캘린더 데이터
   public async getCalendarData(
     year: number,
@@ -395,6 +398,32 @@ class ApiClient implements employeeApi, userApi, ownerApi {
         url: `/owner/work-places/${id}/notifications`,
       });
 
+    return response.data;
+  }
+
+  // 사장님 - 근로자 추가
+  public async registerEmployee(
+    id: number,
+    request: Partial<EmployeeContract>
+  ): Promise<RegisterEmployeeResponse> {
+    const respnose: BaseResponse<RegisterEmployeeResponse> =
+      await this.axiosInstance.request({
+        method: 'post',
+        url: `/papers/${id}/employment-contracts`,
+        data: request,
+      });
+    return respnose.data;
+  }
+  // 사장님 - 근무 수동 추가
+  public async registerAttendance(
+    request: RegisterAttendanceManualRequest
+  ): Promise<RegisterAttendanceManualResponse> {
+    const response: BaseResponse<RegisterAttendanceManualResponse> =
+      await this.axiosInstance.request({
+        method: 'post',
+        url: `/owner/attendances/manual`,
+        data: request,
+      });
     return response.data;
   }
 

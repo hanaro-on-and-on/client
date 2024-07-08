@@ -91,3 +91,21 @@ type OwnerAddMainAccountRequest = {
 type OwnerAddMainAccountResponse = {
   ownerId: number;
 };
+
+// 사장님 - 근로자 등록 응답
+type RegisterEmployeeResponse = {
+  employmentContractId: number;
+  workPlaceEmployeeId: number;
+};
+
+// 사장님 - 근무 수동 추가 요청, 응답
+type RegisterAttendanceManualRequest = {
+  workPlaceEmployeeId: number;
+  payPerHour: number;
+  startTime: Date;
+  endTime: Date;
+  restMinute: number;
+};
+type RegisterAttendanceManualResponse = {
+  attendanceId: number;
+};

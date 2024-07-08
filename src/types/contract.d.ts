@@ -16,6 +16,7 @@ export type EmployeeContract = {
   otherAllowancesName: string;
   overtimeRate: number;
 };
+export type DayOfWeekShort = '월' | '화' | '수' | '목' | '금' | '토' | '일';
 
 export type DayOfWeek =
   | '월요일'

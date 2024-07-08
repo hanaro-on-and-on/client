@@ -13,7 +13,7 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 const currentDate = new Date();
 
-const CalendarCustom = () => {
+const CalendarEmployee = () => {
   const [value, setValue] = useState<Value>(currentDate);
   const { calendarData, setCalendarData } = useCalendarData();
   const navigate = useNavigate();
@@ -127,4 +127,4 @@ const CalendarCustom = () => {
     </div>
   );
 };
-export default CalendarCustom;
+export default CalendarEmployee;

@@ -3,6 +3,7 @@ import {
   PropsWithChildren,
   useContext,
   useReducer,
+  useState,
 } from 'react';
 import {
   EmployeeContract,
@@ -18,6 +19,13 @@ type EmployeeContractContextProps = {
   addSecondInfo: (secondInfo: SecondInfo) => void;
   addThirdInfo: (thirdInfo: ThirdInfo) => void;
   resetInfo: () => void;
+  firstInfo: FirstInfo | undefined;
+  setFirstInfo: (first: FirstInfo) => void;
+  secondInfo: SecondInfo | undefined;
+  setSecondInfo: (second: SecondInfo) => void;
+  thirdInfo: ThirdInfo | undefined;
+  setThirdInfo: (third: ThirdInfo) => void;
+  contract: EmployeeContract | undefined;
 };
 
 const EmployeeContractContext = createContext<EmployeeContractContextProps>({
@@ -27,6 +35,13 @@ const EmployeeContractContext = createContext<EmployeeContractContextProps>({
   addSecondInfo: () => {},
   addThirdInfo: () => {},
   resetInfo: () => {},
+  firstInfo: undefined,
+  setFirstInfo: () => {},
+  secondInfo: undefined,
+  setSecondInfo: () => {},
+  thirdInfo: undefined,
+  setThirdInfo: () => {},
+  contract: undefined,
 });
 
 type ReducerAction =
@@ -71,6 +86,21 @@ const reducer = (
 export const EmployeeContractProvider = ({ children }: PropsWithChildren) => {
   const [employeeContract, dispatch] = useReducer(reducer, undefined);
 
+  const [firstInfo, setFirstInfo] = useState<FirstInfo | undefined>(undefined);
+  const [secondInfo, setSecondInfo] = useState<SecondInfo | undefined>(
+    undefined
+  );
+  const [thirdInfo, setThirdInfo] = useState<ThirdInfo | undefined>(undefined);
+  const [contract, setContract] = useState<EmployeeContract | undefined>(
+    undefined
+  );
+
+  // const create = () => {
+  //   if (firstInfo && secondInfo && thirdInfo) {
+  //     setContract({ ...firstInfo, ...secondInfo });
+  //   }
+  // };
+
   const prepareInfo = (workPlaceName: string) => {
     dispatch({
       type: 'PREPARE',
@@ -111,6 +141,13 @@ export const EmployeeContractProvider = ({ children }: PropsWithChildren) => {
         addSecondInfo,
         addThirdInfo,
         resetInfo,
+        firstInfo,
+        setFirstInfo,
+        secondInfo,
+        setSecondInfo,
+        thirdInfo,
+        setThirdInfo,
+        contract,
       }}
     >
       {children}

@@ -122,14 +122,14 @@ const AttendanceEdit = () => {
           />
 
           <div className='text-gray-400 text-sm'>
-            현재 최저시급은
+            <span>현재 최저시급은 </span>
             <span className='underline'>{`${MINIMUM_PAY_PER_HOUR}`}</span>원
-            이에요..
+            <span>이에요.</span>
           </div>
           <div className='text-gray-400 text-sm'>
             근무 시간이 4시간 이상이면 30분 이상, <br />
-            8시간 이상이면 1시간 이상 휴게시간이 필요해요. <br /> (근로기준법
-            54조)
+            8시간 이상이면 1시간 이상 휴게시간이 필요해요. <br />
+            (근로기준법 54조)
           </div>
 
           <Spacer />

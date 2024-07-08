@@ -53,6 +53,9 @@ const DateDetail = () => {
   const onClickEditAttendance = (attendanceId: number) => {
     navigate(`/owner/calendar/attendance/${attendanceId}/edit`);
   };
+  const onClickAddAttendance = () => {
+    navigate(`/owner/calendar/${date}/add`);
+  };
 
   const targetDate = new Date(date!);
 
@@ -66,7 +69,10 @@ const DateDetail = () => {
           <div className='text-sm text-gray-400'>
             총 근무 시간: {calculateWorkedHours(temp)}
           </div>
-          <button className='bg-hanaLightGreen gap-2 py-1 px-2 flex items-center rounded-lg text-white'>
+          <button
+            className='bg-hanaLightGreen gap-2 py-1 px-2 flex items-center rounded-lg text-white'
+            onClick={onClickAddAttendance}
+          >
             <AiOutlinePlusCircle />
             <div>근무 추가</div>
           </button>

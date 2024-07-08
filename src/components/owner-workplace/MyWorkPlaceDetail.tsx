@@ -17,52 +17,6 @@ enum ToggleStatus {
   NOTIFICATIONS = 'notifications',
 }
 
-const mockData = {
-  year: '2024',
-  month: '06',
-  workPlaceId: 1,
-  workPlaceName: '롯데리아 어디어디어디 점',
-  workPlaceColor: '1',
-  totalPayPerMonth: 18000000,
-  workEmployees: [
-    {
-      workEmployeeId: 1,
-      employeeName: '이신광',
-      monthPay: 500000,
-      fromDay: '2021-04-05',
-    },
-    {
-      workEmployeeId: 2,
-      employeeName: '이서하',
-      monthPay: 1951400,
-      fromDay: '2024-03-14',
-    },
-    {
-      workEmployeeId: 3,
-      employeeName: '정연주',
-      monthPay: 102900,
-      fromDay: '2024-06-01',
-    },
-  ],
-};
-
-const mockNotifiaction = {
-  list: [
-    {
-      notificationId: 2,
-      title: '위치 정보 저장하세요',
-      content: '저장되는거 확인하세요',
-      createdAt: '2024-07-02T11:10:29.282145',
-    },
-    {
-      notificationId: 3,
-      title: '제목입니다',
-      content: '내용입니다',
-      createdAt: '2024-07-02T17:03:26.696708',
-    },
-  ],
-};
-
 const MyWorkPlaceDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
