@@ -242,6 +242,17 @@ type EmployeeWorkTimeList = {
   works: WorkListWorkTime[];
 };
 
+//근무 목록 연결X
+type EmployeeCustomWorkTimeList = {
+  year: number;
+  month: number;
+  PlaceId: number;
+  workPlaceNm: string;
+  workPlaceColor: string;
+  totalPayPerMonth: number;
+  works: WorkListWorkTime[];
+};
+
 //수동 근무 삭제
 type EmployeeDeleteWorkPlaceResponse = {
   success: boolean;
@@ -256,4 +267,14 @@ type EmployeeCheckInRequest = {
 type EmployeeCheckInResponse = {
   attendanceId: long;
   success: boolean;
+};
+
+//퇴근 등록
+type EmployeeCheckOutRequest = {
+  workPlaceEmployeeId: number;
+  location: { lng: number; lat: number };
+};
+
+type EmployeeCheckOutResponse = {
+  attendanceId: long;
 };

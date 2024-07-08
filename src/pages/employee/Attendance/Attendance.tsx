@@ -11,11 +11,21 @@ import BtnGray from '../../../components/BtnGray';
 import ToolBarLink from '../../../components/ui/ToolBarLink';
 import { EmployeeMenuList } from '../datas';
 import ModalCenter from '../../../components/ModalCenter';
+import BtnDanger from '../../../components/\bBtnDanger';
 
+enum AttendanceStatus {
+  WORKING = 'working',
+  COMPLETED = 'completed',
+  PREPARING = 'preparing',
+}
 const Attendance = () => {
   const navigation = useNavigate();
   const [isModalCenterOpen, setModalCenterOpen] = useState<boolean>(false);
   const [modalMsg, setModalMsg] = useState<string>('');
+  const [attendanceStatus, setAttendanceStatus] = useState<AttendanceStatus[]>(
+    []
+  );
+
   const [location, setLoacation] = useState<{
     latitude: number;
     longitude: number;
@@ -34,6 +44,8 @@ const Attendance = () => {
       ? new Date(target.realStartTime)
       : null;
 
+    console.log('realStart', realStart);
+
     return realStart == null ? true : false;
   };
 
@@ -44,6 +56,28 @@ const Attendance = () => {
 
       console.log(response);
       setAttendances(response);
+
+      response.works.forEach((item, index) => {
+        if (item.realStartTime) {
+          if (item.realEndTime) {
+            setAttendanceStatus((pre) => {
+              pre[index] = AttendanceStatus.COMPLETED;
+              return [...pre];
+            });
+          }
+          if (!item.realEndTime) {
+            setAttendanceStatus((pre) => {
+              pre[index] = AttendanceStatus.WORKING;
+              return [...pre];
+            });
+          }
+        } else {
+          setAttendanceStatus((pre) => {
+            pre[index] = AttendanceStatus.PREPARING;
+            return [...pre];
+          });
+        }
+      });
     } catch (err) {
       console.error(err);
     }
@@ -64,6 +98,22 @@ const Attendance = () => {
           return;
         }
         window.location.reload();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const checkOut = async (id: number) => {
+    try {
+      const response: EmployeeCheckOutResponse =
+        await ApiClient.getInstance().employeeCheckOut({
+          workPlaceEmployeeId: id,
+          location: { lat: location.latitude, lng: location.longitude },
+        });
+
+      if (response) {
+        getAttendanceList();
       }
     } catch (err) {
       console.log(err);
@@ -108,7 +158,7 @@ const Attendance = () => {
             {/* 오늘 출근 목록 */}
             <Wrapper title='오늘 출근 목록'>
               <div>
-                {attendances?.works.map((item) => (
+                {attendances?.works.map((item, index) => (
                   <WhiteBox
                     key={item.workPlaceEmployeeId}
                     border
@@ -139,13 +189,22 @@ const Attendance = () => {
                           {` ${item?.notice[0].content}`}
                         </div>
                       )}
-                      {isActivated(item) ? (
+                      {attendanceStatus[index] ===
+                        AttendanceStatus.PREPARING && (
                         <BtnPrimary
                           text='출근'
                           action={() => checkIn(item.workPlaceEmployeeId)}
                         />
-                      ) : (
-                        <BtnGray text='퇴근' action={() => {}} disabled />
+                      )}
+                      {attendanceStatus[index] === AttendanceStatus.WORKING && (
+                        <BtnDanger
+                          text='퇴근'
+                          action={() => checkOut(item.workPlaceEmployeeId)}
+                        />
+                      )}
+                      {attendanceStatus[index] ===
+                        AttendanceStatus.COMPLETED && (
+                        <BtnGray text='출근 불가' disabled />
                       )}
                     </div>
                   </WhiteBox>
