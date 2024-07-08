@@ -28,7 +28,6 @@ const Payment = ({ monthList }: Prop) => {
         await ApiClient.getInstance().getMonthlyPayment(year, month);
 
       if (response) {
-        console.log(response.list);
         setTotalMonthlyPayment(response.totalPayment);
         setPaymentList(response.list);
       }

@@ -44,7 +44,6 @@ const Attendance = () => {
       const response =
         await ApiClient.getInstance().employeeGetAttendanceList();
 
-      console.log(response);
       setAttendances(response);
 
       response.works.forEach((item, index) => {
@@ -82,7 +81,6 @@ const Attendance = () => {
         });
 
       if (response) {
-        console.log('resres', response);
         if (!response.success) {
           openModal('출석할 수 없습니다.\n 가까운 위치에서 다시 시도해주세요');
           return;

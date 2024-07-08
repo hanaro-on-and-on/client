@@ -3,10 +3,18 @@ import Frame from '../../components/Frame';
 import Wrapper from '../../components/Wrapper';
 import WhiteBox from '../../components/ui/WhiteBox';
 import { getCookie } from '../../utils/cookie';
+import { useEffect } from 'react';
+import { getToken } from '../../utils/token';
 
 const LandingPage = () => {
   const navigation = useNavigate();
   const token: string = getCookie('token');
+
+  useEffect(() => {
+    if (!getToken()) {
+      navigation('/login');
+    }
+  });
 
   return (
     <>

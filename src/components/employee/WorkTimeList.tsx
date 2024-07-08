@@ -22,7 +22,6 @@ const getDate = (date: string): string => {
 
 const getH = (date: string | Date) => {
   const time = new Date(date).getHours();
-  console.log('time', time);
   return time === 0 ? '00' : time;
 };
 
