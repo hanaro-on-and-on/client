@@ -89,27 +89,29 @@ const mockData = [
 ];
 
 type CalendarDataContextProps = {
-  calendarData: CalendarSalaryType[];
+  calendarData: CalendarData | null;
+  setCalendarData: (data: CalendarData) => void;
   getFilteredData: (date: Date) => DateWorkDetail[];
 };
 
 const CalendarDataContext = createContext<CalendarDataContextProps>({
-  calendarData: [],
-  getFilteredData: (date: Date) => [],
+  calendarData: null,
+  setCalendarData: () => {},
+  getFilteredData: () => [],
 });
 
 export const CalendarDataProvider = ({ children }: PropsWithChildren) => {
-  const [calendarData, setCalendarData] = useState(mockData);
+  const [calendarData, setCalendarData] = useState<CalendarData | null>(null);
 
   const getFilteredData = (date: Date) => {
     const filteredData: DateWorkDetail[] = [];
-    calendarData.forEach((data) => {
-      data.days.forEach((day) => {
-        if (new Date(day.startTime).toDateString() === date.toDateString()) {
+    calendarData?.workPlaceList.forEach((data) => {
+      data.employeeList.forEach((emp) => {
+        if (new Date(emp.startTime).toDateString() === date.toDateString()) {
           filteredData.push({
-            ...day,
+            ...emp,
             workPlaceName: data.workPlaceName,
-            workPlaceColor: data.workPlaceColor,
+            workPlaceColor: data.workPlaceColorCode,
           });
         }
       });
@@ -118,7 +120,9 @@ export const CalendarDataProvider = ({ children }: PropsWithChildren) => {
   };
 
   return (
-    <CalendarDataContext.Provider value={{ calendarData, getFilteredData }}>
+    <CalendarDataContext.Provider
+      value={{ calendarData, setCalendarData, getFilteredData }}
+    >
       {children}
     </CalendarDataContext.Provider>
   );

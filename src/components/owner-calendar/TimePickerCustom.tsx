@@ -6,16 +6,24 @@ import './TimePickerCustom.css';
 import { HStack } from '../ui/Stack';
 
 type TimePickerCustomProps = {
-  time: string;
+  time?: string;
   onChangeTime: (time: string) => void;
+  onSaveTime?: (timeValue: string | null) => void;
 };
 
-const TimePickerCustom = ({ time, onChangeTime }: TimePickerCustomProps) => {
+const TimePickerCustom = ({
+  time,
+  onChangeTime,
+  onSaveTime,
+}: TimePickerCustomProps) => {
   // const [value, setValue] = useState('10:00');
   const [isFocused, setIsFocused] = useState(false);
 
   const handleTimeChange = (timeValue: string | null) => {
+    // alert(`Time saved is: ${timeValue}`);
     if (timeValue) onChangeTime(timeValue);
+    onSaveTime && onSaveTime(timeValue);
+    setIsFocused(false);
   };
 
   return (
@@ -25,6 +33,7 @@ const TimePickerCustom = ({ time, onChangeTime }: TimePickerCustomProps) => {
       <TimePicker
         onChange={handleTimeChange}
         value={time}
+        placeHolder={'00:00'}
         saveButtonText='저장'
         cancelButtonText='취소'
         inputClassName={`${isFocused ? 'text-hanaLightGreen' : 'text-black'}`}

@@ -4,11 +4,10 @@ import SelectBox from './SelectBox';
 import { useState } from 'react';
 
 type optionView = {
-  workPlaceId: number;
-  workPlaceNm: string;
-  workPlaceColor: string;
   workPlaceEmployeeId: number;
-  employeeNm: string;
+  workPlaceName: string;
+  colorTypeCode: string;
+  employeeName: string;
 };
 type SelectProps = {
   options: optionView[];
@@ -30,14 +29,20 @@ const Select = ({ options, selectedId, onSelect }: SelectProps) => {
         className='w-full bg-white border-b border-b-hanaLightGreen flex flex-row gap-2 justify-between items-center'
         onClick={() => setShowList(!showList)}
       >
-        <div className='w-1/2 px-1 py-2'>
-          <WorkPlaceName
-            name={selected!.workPlaceNm}
-            colorType={selected!.workPlaceColor}
-          />
+        <div className='flex flex-row h-10 w-full items-center'>
+          {selected && (
+            <>
+              <div className='w-1/2 px-1 py-2'>
+                <WorkPlaceName
+                  name={selected!.workPlaceName}
+                  colorType={selected!.colorTypeCode}
+                />
+              </div>
+              <div className='w-1/2 font-bold'>{selected!.employeeName}</div>
+            </>
+          )}
         </div>
-        <div className='w-1/2 font-bold'>{selected!.employeeNm}</div>
-        <FaAngleDown />
+        <FaAngleDown className='content-end' />
       </button>
       <SelectBox
         isOpen={showList}

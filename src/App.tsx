@@ -1,8 +1,8 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Test from './pages/test';
 // import UiTest from './pages/UiTest';
-import OwnerMainPage from './pages/OwnerMainPage';
+import OwnerMainPage from './pages/owner/OwnerMainPage';
 import CalendarCustom from './components/ui/CalendarCustom';
 import PaymentMain from './pages/employee/PartTimeTab/PaymentMain';
 import WorkTime from './pages/employee/PartTimeTab/WorkTime';
@@ -21,6 +21,12 @@ import AttendanceEdit from './components/owner-calendar/AttendanceEdit';
 import MyWorkPlaces from './components/owner-workplace/MyWorkPlaces';
 import MyWorkPlaceDetail from './components/owner-workplace/MyWorkPlaceDetail';
 import WorkEmployeeDetail from './components/owner-workplace/WorkEmployeeDetail';
+import AttendanceCreate from './components/owner-calendar/AttendanceCreate';
+import WorkPlaceAddPage from './pages/owner/WorkPlaceAddPage';
+import WorkEmployeeAddFirst from './components/owner-workplace/WorkEmployeeAdd-First';
+import WorkEmployeeAddSecond from './components/owner-workplace/WorkEmployeeAdd-Second';
+import WorkEmployeeAddThird from './components/owner-workplace/WorkEmployeeAdd-Third';
+import WorkEmployeeAddComplete from './components/owner-workplace/WorkEmployeeAdd-Complete';
 import OwnerGreeting from './pages/LandingPage/OwnerGreeting';
 import OwnerAddMainAccount from './pages/LandingPage/OwnerAddMainAccount';
 import LoginPage from './pages/LoginPgae/LoginPage';
@@ -33,9 +39,11 @@ function App() {
         <Route path='/login' element={<LoginPage />} />
         <Route path='/test' element={<Test />} />
         {/* <Route path='/ui' element={<UiTest />} /> */}
+        {/* <Route path='/owner/myWorkPlaces/add' element={<WorkPlaceAddPage />} /> */}
         <Route path='/owner/*' element={<OwnerMainPage />}>
           <Route path='calendar' element={<CalendarCustom />} />
           <Route path='calendar/:date' element={<DateDetail />} />
+          <Route path='calendar/:date/add' element={<AttendanceCreate />} />
           <Route
             path='calendar/attendance/:id/edit'
             element={<AttendanceEdit />}
@@ -43,8 +51,28 @@ function App() {
           <Route path='myWorkPlaces' element={<MyWorkPlaces />} />
           <Route path='myWorkPlaces/:id' element={<MyWorkPlaceDetail />} />
           <Route
+            path='myWorkPlaces/:placeId/addEmployee/first'
+            element={<WorkEmployeeAddFirst />}
+          />
+          <Route
+            path='myWorkPlaces/:placeId/addEmployee/second'
+            element={<WorkEmployeeAddSecond />}
+          />
+          <Route
+            path='myWorkPlaces/:placeId/addEmployee/third'
+            element={<WorkEmployeeAddThird />}
+          />
+          <Route
+            path='myWorkPlaces/:placeId/addEmployee/complete'
+            element={<WorkEmployeeAddComplete />}
+          />
+          <Route
             path='myWorkPlaces/:placeId/employees/:id'
             element={<WorkEmployeeDetail />}
+          />
+          <Route
+            path='/owner/*'
+            element={<Navigate to='/owner/myWorkPlaces' replace />}
           />
         </Route>
         <Route path='/part-time/*' element={<PaymentMain />}>

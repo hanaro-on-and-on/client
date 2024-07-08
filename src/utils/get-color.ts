@@ -26,3 +26,30 @@ export function getColor(colorType: string) {
       return 'bg-violet-200';
   }
 }
+
+export function getTextColor(colorType: string) {
+  switch (colorType) {
+    case '01':
+      return 'text-red-200';
+    case '02':
+      return 'text-lime-200';
+    case '03':
+      return 'text-yellow-200 ';
+    case '04':
+      return 'text-blue-100';
+    case '05':
+      return 'text-emerald-200';
+    case '06':
+      return 'text-slate-200';
+    case '07':
+      return 'text-cyan-200';
+    case '08':
+      return 'text-pink-100';
+    case '09':
+      return 'text-fuchsia-100';
+    case '10':
+      return 'text-violet-100';
+    default:
+      return 'text-violet-200';
+  }
+}
