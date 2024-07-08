@@ -1,5 +1,5 @@
 interface userApi {
-  login: () => Promise<BaseResponse<string>>;
+  login: (pw: string) => Promise<LoginResponse>;
 }
 
 export default userApi;

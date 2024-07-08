@@ -41,7 +41,6 @@ const AttendanceDetail = () => {
     try {
       const response: EmployeeAttendanceDetail =
         await ApiClient.getInstance().employeeGetAttendanceDetail(+workPlaceId);
-      console.log(response);
       setAttendaceDetail(response);
       isActivated(response.workTime);
     } catch (err) {

@@ -34,7 +34,6 @@ const WorkHourManagement = ({
           month
         );
 
-      console.log('dat', response);
       setList(response);
     } catch (err) {
       console.log(err);
@@ -49,7 +48,6 @@ const WorkHourManagement = ({
         month
       );
 
-      console.log('dat', response);
       setList(response);
     } catch (err) {
       console.log(err);

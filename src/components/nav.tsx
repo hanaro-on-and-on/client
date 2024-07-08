@@ -1,4 +1,5 @@
 import { FaAngleLeft } from 'react-icons/fa6';
+import Logout from './Logout';
 
 type Prop = {
   title?: string;
@@ -12,6 +13,9 @@ const Nav = ({ title = '알바ON' }: Prop) => {
             <FaAngleLeft />
           </div>
           <div className='col-span-1'>{title}</div>
+          <div>
+            <Logout />
+          </div>
         </div>
       </div>
     </>

@@ -1,9 +1,9 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import employeeApi from './interfaces/employeeApi';
-import { getCookie } from '../utils/cookie';
-import getToken from '../utils/get-token';
+import userApi from './interfaces/userApi';
+import { getToken } from '../utils/token';
 
-class ApiClient implements employeeApi {
+class ApiClient implements employeeApi, userApi {
   //singleton pattern
   private static instance: ApiClient;
   private axiosInstance;
@@ -14,6 +14,19 @@ class ApiClient implements employeeApi {
 
   //=========================
   // 메소드
+
+  //회원 - 로그인
+  public async login(pw: string): Promise<LoginResponse> {
+    const dat: LoginRequest = { password: pw };
+    const response: BaseResponse<LoginResponse> =
+      await this.axiosInstance.request({
+        method: 'post',
+        url: 'users/login',
+        data: dat,
+      });
+
+    return response.data;
+  }
 
   //알바생 - 근무지 수동 추가
   public async manualWorkPlaceAddition(req: ManualWorkPlaceAdditionRequest) {
@@ -320,40 +333,38 @@ class ApiClient implements employeeApi {
 
     newInstance.interceptors.request.use((config) => {
       const token: string = getToken();
-      if (token.length > 0) {
+      if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
       }
       config.headers['Content-Type'] = 'application/json';
-      config.headers['Authorization'] =
-        `Bearer ${import.meta.env.VITE_ACCESS_TOKEN}`;
       return config;
     });
 
-    newInstance.interceptors.response.use(
-      (response) => {
-        if (response.status === 404) {
-          console.log('404 페이지로 넘어가야 함!');
-        }
+    // newInstance.interceptors.response.use(
+    //   (response) => {
+    //     if (response.status === 404) {
+    //       console.log('404 페이지로 넘어가야 함!');
+    //     }
 
-        return response;
-      },
-      async (error) => {
-        if (error.response?.status === 401) {
-          // if (error.response.data === 'TOKEN_EXPIRED') await tokenRefresh();
+    //     return response;
+    //   },
+    //   async (error) => {
+    //     if (error.response?.status === 401) {
+    //       // if (error.response.data === 'TOKEN_EXPIRED') await tokenRefresh();
 
-          const accessToken = getToken();
+    //       const accessToken = getToken();
 
-          error.config.headers = {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`,
-          };
+    //       error.config.headers = {
+    //         'Content-Type': 'application/json',
+    //         Authorization: `Bearer ${accessToken}`,
+    //       };
 
-          const response = await axios.request(error.config);
-          return response;
-        }
-        return Promise.reject(error);
-      }
-    );
+    //       const response = await axios.request(error.config);
+    //       return response;
+    //     }
+    //     return Promise.reject(error);
+    //   }
+    // );
 
     return newInstance;
   }
