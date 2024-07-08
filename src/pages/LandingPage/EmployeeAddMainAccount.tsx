@@ -127,21 +127,15 @@ const EmployeeAddMainAccount = () => {
                 placeHolder='- 제외하고 입력해주세요'
               />
 
-              <WhiteBox border className='flex justify-between'>
-                <div className='flex justify-between items-center py-1 '>
-                  <div className='w-[10px]'>
-                    <input
-                      type='checkbox'
-                      ref={checkRef}
-                      className='w-[20px]'
-                    />
-                  </div>
-
-                  <div className='text-end text-sm font-bold'>
-                    개인정보 이용 동의
-                  </div>
+              <div className='flex justify-start gap-5 items-center py-1 '>
+                <div className='w-[10px]'>
+                  <input type='checkbox' ref={checkRef} className='w-[20px]' />
                 </div>
-              </WhiteBox>
+
+                <div className='text-end text-sm font-bold'>
+                  개인정보 이용 동의
+                </div>
+              </div>
             </div>
           </Wrapper>
 
