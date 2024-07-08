@@ -278,3 +278,8 @@ type EmployeeCheckOutRequest = {
 type EmployeeCheckOutResponse = {
   attendanceId: long;
 };
+
+//근무지 연동 서명
+type EmployeeContractSignRequest = {
+  workPlaceEmployeeId: number;
+};

@@ -165,6 +165,19 @@ class ApiClient implements employeeApi, userApi {
     return response.data;
   }
 
+  //알바생 - 근무지 연동 서명
+  public async employeeContractSign(
+    employmentContractId: number
+  ): Promise<EmployeeContractSignRequest> {
+    const response: BaseResponse<{ workPlaceEmployeeId: number }> =
+      await this.axiosInstance.request({
+        method: 'post',
+        url: `papers/employment-contracts/${employmentContractId}/e-sign`,
+      });
+
+    return response.data;
+  }
+
   //알바생 - 출결 목록 조회
   public async employeeGetAttendanceList(): Promise<EmployeeTodayAttendancesResponse> {
     const response: BaseResponse<EmployeeTodayAttendancesResponse> =

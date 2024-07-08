@@ -71,6 +71,10 @@ interface employeeApi {
   employeeCheckOut(
     prop: EmployeeCheckOutRequest
   ): Promise<EmployeeCheckOutResponse>;
+
+  employeeContractSign(
+    employmentContractId: number
+  ): Promise<EmployeeContractSignRequest>;
 }
 
 export default employeeApi;
