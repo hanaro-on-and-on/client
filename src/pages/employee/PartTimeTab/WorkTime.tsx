@@ -8,9 +8,12 @@ import { useNavigate } from 'react-router-dom';
 import ApiClient from '../../../api/apiClient';
 import SignPad from '../../../components/SignPad';
 import useToggle from '../../../hooks/toggle';
+import ModalCenter from '../../../components/ModalCenter';
+import Contract from '../../../components/Contract';
 
 const WorkTime = () => {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isModalCenterOpen, setModalCenterOpen] = useState(false);
   const navigation = useNavigate();
   const [getsign, setGetsign] = useState<boolean>(false);
   const [currSignContractId, setCurrSignContractId] = useState<number | null>(
@@ -25,7 +28,7 @@ const WorkTime = () => {
 
   const saveSignage = async (id: number | null) => {
     if (!id) return;
-    const dataURL = refHandler.current?.canvasRef.current?.value();
+    const dataURL = refHandler.current?.canvasRef.current?.isEmpty();
 
     // const dataURL = canvasRef.current.toDataURL('image/png');
     // const decodedURL = dataURL.replace(/^data:image\/\w+;base64,/, '');
@@ -33,7 +36,12 @@ const WorkTime = () => {
     // const blob = new Blob([buf], { type: 'image/png' });
     // return new File([blob], `${name}.png`, { type: 'image/png' });
 
-    if (dataURL) await updateSign(id);
+    if (!dataURL) {
+      const res = await updateSign(id);
+      if (res) {
+        toggle();
+      }
+    }
   };
 
   const updateSign = async (contractId: number) => {
@@ -77,15 +85,84 @@ const WorkTime = () => {
   }, [flag]);
 
   return (
-    // 연동 요청
-    <div className='w-full flex flex-col gap-10'>
-      <Wrapper title='연동 요청'>
-        {workPlaceList?.invitatedWorkPlaceList?.length > 0
-          ? workPlaceList.invitatedWorkPlaceList.map((item, index) => (
+    <>
+      {isModalCenterOpen && (
+        <ModalCenter
+          confirmText='서명하기'
+          title='근로계약서 조회'
+          confirmAction={() => {
+            setModalOpen(true);
+          }}
+          closeModal={() => setModalCenterOpen(false)}
+          className='w-[90%] px-1'
+        >
+          {currSignContractId && (
+            <div className='h-[45vh] overflow-y-scroll w-full'>
+              <Contract contractId={currSignContractId} />
+            </div>
+          )}
+        </ModalCenter>
+      )}
+      <div className='w-full flex flex-col gap-10'>
+        <Wrapper title='연동 요청'>
+          {workPlaceList?.invitatedWorkPlaceList?.length > 0
+            ? workPlaceList.invitatedWorkPlaceList.map((item, index) => (
+                <WhiteBox
+                  className='py-3'
+                  border
+                  key={item.employmentContractId + String(index)}
+                >
+                  <div className='flex justify-between items-center'>
+                    <WorkPlaceName
+                      name={item.workPlaceName}
+                      colorType={item.colorCodeType}
+                    />
+                    <BtnBorder
+                      color='green'
+                      text='서명 요청'
+                      onClick={() => {
+                        setCurrSignContractId(item.employmentContractId);
+                        setModalCenterOpen(true);
+                      }}
+                    />
+                  </div>
+                </WhiteBox>
+              ))
+            : '연동된 매장이 없습니다'}
+        </Wrapper>
+
+        {/* 사장님과 연동 */}
+        <Wrapper title='사장님과 연동' className='flex flex-col gap-1'>
+          {workPlaceList.connectedWorkPlaceList?.map((item, index) => (
+            <WhiteBox
+              className='py-3'
+              border
+              key={item.employmentContractId + String(index)}
+            >
+              <div className='flex justify-between items-center'>
+                <WorkPlaceName
+                  name={item.workPlaceName}
+                  colorType={item.colorCodeType}
+                />
+                <BtnBorder color='gray' text='계약 완료' onClick={() => {}} />
+              </div>
+            </WhiteBox>
+          ))}
+        </Wrapper>
+
+        {/* 내가 추가한 */}
+        <Wrapper
+          title='내가 추가한'
+          button
+          buttonText='수동 등록'
+          onButtonClick={() => navigation('/manual/addition')}
+        >
+          <div className='flex flex-col gap-1'>
+            {workPlaceList.customWorkPlaceList?.map((item, index) => (
               <WhiteBox
+                key={item.customWorkPlaceId || index * 2}
                 className='py-3'
                 border
-                key={item.employmentContractId + String(index)}
               >
                 <div className='flex justify-between items-center'>
                   <WorkPlaceName
@@ -94,98 +171,49 @@ const WorkTime = () => {
                   />
                   <BtnBorder
                     color='green'
-                    text='서명 요청'
-                    onClick={() => {
-                      setCurrSignContractId(item.customWorkPlaceId);
-                      setModalOpen(true);
-                    }}
+                    text='삭제'
+                    onClick={() =>
+                      deleteCustomWorkPlace(item.customWorkPlaceId)
+                    }
                   />
                 </div>
               </WhiteBox>
-            ))
-          : '연동된 매장이 없습니다'}
-      </Wrapper>
+            ))}
+          </div>
+        </Wrapper>
 
-      {/* 사장님과 연동 */}
-      <Wrapper title='사장님과 연동' className='flex flex-col gap-1'>
-        {workPlaceList.connectedWorkPlaceList?.map((item, index) => (
-          <WhiteBox
-            className='py-3'
-            border
-            key={item.employmentContractId + String(index)}
+        {isModalOpen && (
+          <ModalBottom
+            title={modalTitle}
+            btnBottom={!getsign}
+            action={() => {
+              setGetsign(true);
+              setModalTitle('서명을 입력해주세요');
+            }}
+            closeModal={() => {
+              setModalOpen(false);
+              setGetsign(false);
+            }}
+            btnText={getsign ? '' : '서명하기'}
           >
-            <div className='flex justify-between items-center'>
-              <WorkPlaceName
-                name={item.workPlaceName}
-                colorType={item.colorCodeType}
-              />
-              <BtnBorder color='gray' text='계약 완료' onClick={() => {}} />
-            </div>
-          </WhiteBox>
-        ))}
-      </Wrapper>
-
-      {/* 내가 추가한 */}
-      <Wrapper
-        title='내가 추가한'
-        button
-        buttonText='수동 등록'
-        onButtonClick={() => navigation('/manual/addition')}
-      >
-        <div className='flex flex-col gap-1'>
-          {workPlaceList.customWorkPlaceList?.map((item, index) => (
-            <WhiteBox
-              key={item.customWorkPlaceId || index * 2}
-              className='py-3'
-              border
-            >
-              <div className='flex justify-between items-center'>
-                <WorkPlaceName
-                  name={item.workPlaceName}
-                  colorType={item.colorCodeType}
-                />
-                <BtnBorder
-                  color='green'
-                  text='삭제'
-                  onClick={() => deleteCustomWorkPlace(item.customWorkPlaceId)}
+            {!getsign ? (
+              <>전자서명 시작!</>
+            ) : (
+              <div>
+                <SignPad
+                  submit={() => {
+                    setModalOpen(false);
+                    setGetsign(false);
+                    saveSignage(currSignContractId);
+                  }}
+                  ref={refHandler}
                 />
               </div>
-            </WhiteBox>
-          ))}
-        </div>
-      </Wrapper>
-
-      {isModalOpen && (
-        <ModalBottom
-          title={modalTitle}
-          btnBottom={!getsign}
-          action={() => {
-            setGetsign(true);
-            setModalTitle('서명을 입력해주세요');
-          }}
-          closeModal={() => {
-            setModalOpen(false);
-            setGetsign(false);
-          }}
-          btnText={getsign ? '' : '서명하기'}
-        >
-          {!getsign ? (
-            <>전자서명 시작!</>
-          ) : (
-            <div>
-              <SignPad
-                submit={() => {
-                  setModalOpen(false);
-                  setGetsign(false);
-                  saveSignage(currSignContractId);
-                }}
-                ref={refHandler}
-              />
-            </div>
-          )}
-        </ModalBottom>
-      )}
-    </div>
+            )}
+          </ModalBottom>
+        )}
+      </div>
+    </>
   );
 };
 
