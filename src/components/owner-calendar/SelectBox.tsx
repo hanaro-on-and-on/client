@@ -1,7 +1,5 @@
-import { useState } from 'react';
 import { HStack, VStack } from '../ui/Stack';
 import WorkPlaceName from '../ui/WorkPlaceName';
-import { FaAngleDown } from 'react-icons/fa6';
 
 const mockData = [
   {
@@ -44,11 +42,10 @@ const mockData = [
 type SelectBoxProps = {
   isOpen: boolean;
   options: {
-    workPlaceId: number;
-    workPlaceNm: string;
-    workPlaceColor: string;
     workPlaceEmployeeId: number;
-    employeeNm: string;
+    workPlaceName: string;
+    colorTypeCode: string;
+    employeeName: string;
   }[];
   onClose: () => void;
   onClick: (id: number) => void;
@@ -72,11 +69,11 @@ const SelectBox = ({ isOpen, options, onClose, onClick }: SelectBoxProps) => {
             <HStack className='items-center justify-between'>
               <div className='w-1/2 p-2'>
                 <WorkPlaceName
-                  name={data.workPlaceNm}
-                  colorType={data.workPlaceColor}
+                  name={data.workPlaceName}
+                  colorType={data.colorTypeCode}
                 />
               </div>
-              <div className='w-1/2'>{data.employeeNm}</div>
+              <div className='w-1/2'>{data.employeeName}</div>
             </HStack>
           </button>
         ))}

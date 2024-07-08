@@ -4,9 +4,10 @@ import { HStack, VStack } from '../ui/Stack';
 import WorkPlaceName from '../ui/WorkPlaceName';
 import { getTimeString } from '../../utils/get-TimeString';
 import { FaAngleRight } from 'react-icons/fa6';
-import { AiOutlineAccountBook, AiOutlinePlusCircle } from 'react-icons/ai';
+import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { useAttendance } from '../../contexts/Attendance-Context';
 import { DateWorkDetail } from '../../types/calendar';
+import { differenceInHours, differenceInMinutes } from 'date-fns';
 export type Attendance = {
   attendanceId?: number;
   workPlaceEmployeeId: number;
@@ -16,14 +17,30 @@ export type Attendance = {
   restStartTime: Date;
   restEndTime: Date;
 };
+
+// 두 날짜 간의 총 시간을 계산하는 함수
+const calculateWorkedHours = (data: DateWorkDetail[]): string => {
+  let totalMinutes = 0;
+
+  data.forEach((item) => {
+    totalMinutes += differenceInMinutes(item.endTime, item.startTime);
+  });
+
+  // 전체 시간 차이 계산
+  const totalHours = Math.floor(totalMinutes / 60);
+  const remainingMinutes = totalMinutes % 60;
+
+  return `${totalHours}시간 ${remainingMinutes}분`;
+};
+
 const onClickChangeAttendance = (data: DateWorkDetail) => {
   return {
     attendenceId: data.attendanceId,
     workPlaceEmployeeId: data.workPlaceEmployeeId,
-    payPerHour: data.payPerHour,
+    payPerHour: data.payment,
     startTime: data.startTime,
     endTime: data.endTime,
-    restMinutes: data.restMinutes,
+    restMinutes: data.restMinute,
   };
 };
 
@@ -40,48 +57,51 @@ const DateDetail = () => {
   const targetDate = new Date(date!);
 
   const temp = getFilteredData(targetDate);
-  // console.log(temp);
+  console.log(temp);
 
   return (
     <div className='px-6 py-7'>
       <VStack className='gap-3'>
         <HStack className='justify-between items-center'>
-          <div>총 근무 시간: 8시간 이거 꼭 바꿔야함</div>
+          <div className='text-sm text-gray-400'>
+            총 근무 시간: {calculateWorkedHours(temp)}
+          </div>
           <button className='bg-hanaLightGreen gap-2 py-1 px-2 flex items-center rounded-lg text-white'>
             <AiOutlinePlusCircle />
             <div>근무 추가</div>
           </button>
         </HStack>
 
-        {temp.map((item) => (
-          <button
-            key={item.attendanceId}
-            onClick={() => {
-              changeAttendance({
-                attendanceId: item.attendanceId,
-                workPlaceEmployeeId: item.workPlaceEmployeeId,
-                payPerHour: item.payPerHour,
-                startTime: item.startTime,
-                endTime: item.endTime,
-                restMinutes: item.restMinutes,
-              }),
-                onClickEditAttendance(item.attendanceId);
-            }}
-            className='px-1 py-3 w-full rounded-lg border border-hanaLightGreen bg-white'
-          >
-            <HStack className='justify-around items-center'>
-              <WorkPlaceName
-                name={`${item.workPlaceName}`}
-                colorType={`${item.workPlaceColor}`}
-              />
-              <VStack className=''>
-                <div className='text-lg'>{`${item.employeeName}`}</div>
-                <div className='text-sm'>{`${getTimeString(item.startTime)} - ${getTimeString(temp[0].endTime)}`}</div>
-              </VStack>
-              <FaAngleRight />
-            </HStack>
-          </button>
-        ))}
+        {temp &&
+          temp.map((item) => (
+            <button
+              key={item.attendanceId}
+              onClick={() => {
+                changeAttendance({
+                  attendanceId: item.attendanceId,
+                  workPlaceEmployeeId: item.workPlaceEmployeeId,
+                  payPerHour: item.payment,
+                  startTime: item.startTime,
+                  endTime: item.endTime,
+                  restMinutes: item.restMinute,
+                }),
+                  onClickEditAttendance(item.attendanceId);
+              }}
+              className='px-1 py-3 w-full rounded-lg border border-hanaLightGreen bg-white'
+            >
+              <HStack className='justify-around items-center'>
+                <WorkPlaceName
+                  name={`${item.workPlaceName}`}
+                  colorType={`${item.workPlaceColor}`}
+                />
+                <VStack className=''>
+                  <div className='text-lg'>{`${item.employeeName}`}</div>
+                  <div className='text-sm'>{`${getTimeString(new Date(item.startTime))} - ${getTimeString(new Date(item.endTime))}`}</div>
+                </VStack>
+                <FaAngleRight />
+              </HStack>
+            </button>
+          ))}
       </VStack>
     </div>
   );

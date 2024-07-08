@@ -1,7 +1,8 @@
 import axios from 'axios';
 import employeeApi from './interfaces/employeeApi';
+import ownerApi from './interfaces/ownerApi';
 
-class ApiClient implements employeeApi {
+class ApiClient implements employeeApi, ownerApi {
   //singleton pattern
   private static instance: ApiClient;
   private axiosInstance;
@@ -152,6 +153,71 @@ class ApiClient implements employeeApi {
       method: 'get',
       url: 'employee/accounts',
     });
+
+    return response.data;
+  }
+
+  // 사장님 - 캘린더 데이터
+  public async getCalendarData(
+    year: number,
+    month: number
+  ): Promise<CalendarData> {
+    const response: BaseResponse<CalendarData> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `owner/salaries/calendar?year=${year}&month=${month}`,
+      });
+
+    return response.data;
+  }
+
+  // 사장님 - 나의 사업장 전체 조회
+  public async getMyPlaces(
+    year: number,
+    month: number
+  ): Promise<MyPlacesResponse> {
+    const respnose: BaseResponse<MyPlacesResponse> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `/owner/salaries?year=${year}&month=${month}`,
+      });
+    return respnose.data;
+  }
+
+  // 사장님 - 나의 사업장 디테일 조회
+  public async getMyPlaceDetail(
+    id: number,
+    year: number,
+    month: number
+  ): Promise<MyPlaceDetailResponse> {
+    const respnose: BaseResponse<MyPlaceDetailResponse> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `/owner/salaries/work-places/${id}?year=${year}&month=${month}`,
+      });
+    return respnose.data;
+  }
+
+  // 사장님 - 근무자 전체 조회
+  public async getMyEmployees(
+    employeeStatus: string
+  ): Promise<GetEmployeeList> {
+    const response: BaseResponse<GetEmployeeList> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `/owner/work-places/employees?employeeStatus=${employeeStatus}`,
+      });
+
+    return response.data;
+  }
+
+  // 사장님 - 공지 전체 조회
+  public async getNotifications(id: number): Promise<NotificationsResponse> {
+    const response: BaseResponse<NotificationsResponse> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `/owner/work-places/${id}/notifications`,
+      });
 
     return response.data;
   }

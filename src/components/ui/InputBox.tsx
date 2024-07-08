@@ -26,7 +26,7 @@ const getClassNameByType = (type: string) => {
 const InputBox = (props: PropsWithChildren<InputBoxProps>) => {
   const {
     type = 'UNDER_BAR',
-    valueType = 'NUMBER',
+    valueType,
     label,
     value,
     onChange,

@@ -23,10 +23,10 @@ export type DateWorkDetail = {
   workPlaceEmployeeId: number;
   employeeName: string;
   attendanceType: string;
-  payPerHour: number;
+  payment: number;
   startTime: Date;
   endTime: Date;
-  restMinutes: number;
+  restMinute: number;
 };
 
 export type Attendance = {

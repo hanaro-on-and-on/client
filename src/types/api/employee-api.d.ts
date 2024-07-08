@@ -85,7 +85,7 @@ type EmployeePayStubGetResponse = {
 };
 
 //단일 근로 계약서 조회
-type WorkTimes = {
+type WorkTime = {
   workDayOfWeek: string;
   workStartTime: string;
   workEndTime: string;
@@ -99,7 +99,7 @@ type EmployeePaperGetResponse = {
   workStartDate: Date;
   workSite: string;
   workDetail: string;
-  workTimes: WorkTimes[];
+  workTimes: WorkTime[];
   payPerHour: number;
   paymentDay: number;
   employeeNm: string;

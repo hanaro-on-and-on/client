@@ -2,9 +2,11 @@
   @apply !bg-white border border-hanaLightGreen;
 }
 .react-ios-time-picker-input {
-  @apply w-16 border-none;
+  @apply w-20 border-none text-nowrap;
 }
-
+/* .react-ios-time-picker-input.text-black {
+  @apply text-sm;
+} */
 .react-ios-time-picker-container {
   @apply !bg-white;
 }
