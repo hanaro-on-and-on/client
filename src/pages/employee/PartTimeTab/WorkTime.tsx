@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ApiClient from '../../../api/apiClient';
 import SignPad from '../../../components/SignPad';
+import useToggle from '../../../hooks/toggle';
 
 const WorkTime = () => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -16,6 +17,7 @@ const WorkTime = () => {
   const [modalTitle, setModalTitle] = useState<string>('전자 서명');
 
   const [workPlaceList, setWorkPlaceList] = useState<EmployeeWorkPlaceList>([]);
+  const { flag, toggle } = useToggle();
 
   const refHandler = useRef<SignPadHandler>(null);
 
@@ -58,7 +60,9 @@ const WorkTime = () => {
       const response =
         await ApiClient.getInstance().employeeDeleteCustomWorkPlace(id);
       console.log('delete res', response);
-      if (response.success) window.location.reload();
+      if (response.success) {
+        toggle();
+      }
     } catch (err) {
       console.log(err);
     }
@@ -67,7 +71,7 @@ const WorkTime = () => {
   useEffect(() => {
     getConfirmList();
     getWorkPlaceList();
-  }, []);
+  }, [flag]);
 
   return (
     // 연동 요청
