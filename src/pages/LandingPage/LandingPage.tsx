@@ -28,6 +28,7 @@ const LandingPage = () => {
                 <button
                   type='button'
                   className='w-full h-full flex justify-start bg-transparent py-3'
+                  onClick={() => navigation('/greeting/owner')}
                 >
                   사장님ON
                 </button>

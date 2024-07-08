@@ -21,6 +21,8 @@ import AttendanceEdit from './components/owner-calendar/AttendanceEdit';
 import MyWorkPlaces from './components/owner-workplace/MyWorkPlaces';
 import MyWorkPlaceDetail from './components/owner-workplace/MyWorkPlaceDetail';
 import WorkEmployeeDetail from './components/owner-workplace/WorkEmployeeDetail';
+import OwnerGreeting from './pages/LandingPage/OwnerGreeting';
+import OwnerAddMainAccount from './pages/LandingPage/OwnerAddMainAccount';
 
 function App() {
   return (
@@ -62,6 +64,11 @@ function App() {
           element={<AttendanceDetail />}
         />
         <Route path='/greeting/employee' element={<EmployeeGreeting />} />
+        <Route path='/greeting/owner' element={<OwnerGreeting />} />
+        <Route
+          path='/greeting/owner/account'
+          element={<OwnerAddMainAccount />}
+        />
         <Route
           path='/greeting/employee/account'
           element={<EmployeeAddMainAccount />}
