@@ -158,7 +158,7 @@ class ApiClient implements employeeApi, userApi {
   ): Promise<EmployeeSignatureResponse> {
     const response: BaseResponse<EmployeeSignatureResponse> =
       await this.axiosInstance.request({
-        method: 'get',
+        method: 'post',
         url: `papers/pay-stubs/${payStubId}/e-sign`,
       });
 
