@@ -12,7 +12,6 @@ type Prop = {
 };
 
 const Payment = ({ monthList }: Prop) => {
-  const today = new Date();
   const navigate = useNavigate();
 
   const [totalMonthlyPayment, setTotalMonthlyPayment] = useState<number>(0);

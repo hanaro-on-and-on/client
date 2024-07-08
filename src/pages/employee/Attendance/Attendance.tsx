@@ -39,16 +39,6 @@ const Attendance = () => {
   const [attendances, setAttendances] =
     useState<EmployeeTodayAttendancesResponse | null>(null);
 
-  const isActivated = (target: AttendanceTodayWork): boolean => {
-    const realStart = target.realStartTime
-      ? new Date(target.realStartTime)
-      : null;
-
-    console.log('realStart', realStart);
-
-    return realStart == null ? true : false;
-  };
-
   const getAttendanceList = async () => {
     try {
       const response =
