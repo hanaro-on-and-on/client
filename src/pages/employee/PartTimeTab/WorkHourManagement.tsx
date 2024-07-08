@@ -33,6 +33,8 @@ const WorkHourManagement = ({
           year,
           month
         );
+
+      console.log('dat', response);
       setList(response);
     } catch (err) {
       console.log(err);
@@ -47,6 +49,7 @@ const WorkHourManagement = ({
         month
       );
 
+      console.log('dat', response);
       setList(response);
     } catch (err) {
       console.log(err);
@@ -112,7 +115,7 @@ const WorkHourManagement = ({
           key={list.workPlaceId}
           PlaceId={list.workPlaceId}
           workPlaceNm={list.workPlaceNm}
-          colorTypeCd={list.workPlaceColor}
+          colorTypeCd={list.colorTypeCd}
           works={list.works}
         />
       )}
