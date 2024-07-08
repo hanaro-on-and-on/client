@@ -23,12 +23,14 @@ import MyWorkPlaceDetail from './components/owner-workplace/MyWorkPlaceDetail';
 import WorkEmployeeDetail from './components/owner-workplace/WorkEmployeeDetail';
 import OwnerGreeting from './pages/LandingPage/OwnerGreeting';
 import OwnerAddMainAccount from './pages/LandingPage/OwnerAddMainAccount';
+import LoginPage from './pages/LoginPgae/LoginPage';
 
 function App() {
   return (
     <>
       <Routes>
         <Route path='/' element={<LandingPage />} />
+        <Route path='/login' element={<LoginPage />} />
         <Route path='/test' element={<Test />} />
         {/* <Route path='/ui' element={<UiTest />} /> */}
         <Route path='/owner/*' element={<OwnerMainPage />}>
