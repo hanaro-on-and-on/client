@@ -69,7 +69,7 @@ const PaymentDetail = () => {
 
   return (
     <Frame navTitle='알바ON'>
-      <div className='w-full pt-3'>
+      <div className='w-full '>
         {workPlace && (
           <div className='flex flex-col gap-2'>
             {/* 뒤로 가기 */}

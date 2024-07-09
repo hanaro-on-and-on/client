@@ -162,7 +162,9 @@ const Attendance = () => {
                         type='button'
                         className='flex justify-between items-center bg-transparent'
                         onClick={() =>
-                          navigation(`detail/${item.workPlaceEmployeeId}`)
+                          navigation(
+                            `detail/${item.workPlaceEmployeeId}/${item.colorTypeCd}`
+                          )
                         }
                       >
                         <WorkPlaceName

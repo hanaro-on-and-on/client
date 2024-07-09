@@ -98,7 +98,7 @@ function App() {
         <Route path='/my/edit' element={<EditMyPage />} />
         <Route path='/attendance' element={<Attendance />} />
         <Route
-          path='/attendance/detail/:workPlaceId'
+          path='/attendance/detail/:workPlaceId/:code'
           element={<AttendanceDetail />}
         />
         <Route path='/greeting/employee' element={<EmployeeGreeting />} />

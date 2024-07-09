@@ -8,12 +8,15 @@ import { useEffect, useState } from 'react';
 import ApiClient from '../../../api/apiClient';
 import clsx from 'clsx';
 import WorkPlaceName from '../../../components/ui/WorkPlaceName';
+import BtnPrimary from '../../../components/BtnPrimary';
+import PulseWorkPlace from '../../../components/ui/PulseWorkPlace';
+import ModalCenter from '../../../components/ModalCenter';
 const { kakao } = window;
 
 const days = ['일', '월', '화', '수', '목', '금', '토', '일'];
 
 const AttendanceDetail = () => {
-  const { workPlaceId } = useParams();
+  const { workPlaceId, code } = useParams();
   const [workingDay, setWorkingDay] = useState<
     {
       day: null | string;
@@ -23,6 +26,8 @@ const AttendanceDetail = () => {
     }[]
   >([]);
 
+  const [isModalCenterOpen, setModalCenterOpen] = useState<boolean>(false);
+  const [modalMsg, setModalMsg] = useState<string>('');
   const [attendanceDetail, setAttendaceDetail] =
     useState<EmployeeAttendanceDetail | null>(null);
   const [location, setLoacation] = useState<{
@@ -121,6 +126,42 @@ const AttendanceDetail = () => {
     setWorkingDay(ret);
   };
 
+  const checkIn = async (id: number) => {
+    try {
+      const response: EmployeeCheckInResponse =
+        await ApiClient.getInstance().employeeCheckIn({
+          workPlaceEmployeeId: id,
+          location: { lat: location.latitude, lng: location.longitude },
+        });
+
+      if (response) {
+        if (!response.success) {
+          openModal('출석할 수 없습니다.\n 가까운 위치에서 다시 시도해주세요');
+          return;
+        }
+        getDetail();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const checkOut = async (id: number) => {
+    try {
+      const response: EmployeeCheckOutResponse =
+        await ApiClient.getInstance().employeeCheckOut({
+          workPlaceEmployeeId: id,
+          location: { lat: location.latitude, lng: location.longitude },
+        });
+
+      if (response) {
+        getDetail();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     if (!attendanceDetail) getDetail();
     navigator.geolocation.getCurrentPosition(
@@ -134,17 +175,30 @@ const AttendanceDetail = () => {
 
   return (
     <>
+      {isModalCenterOpen && (
+        <ModalCenter
+          title='알림'
+          closeModal={() => setModalCenterOpen(false)}
+          confirmAction={() => setModalCenterOpen(false)}
+        >
+          <div>{modalMsg}</div>
+        </ModalCenter>
+      )}
       {attendanceDetail && (
         <Frame navTitle='알바ON'>
-          <div className='w-full flex flex-col mt-5 pb-10'>
+          <div className='w-full flex flex-col'>
             <ReturnArrow To='/attendance' />
             <Wrapper className='gap-3'>
-              <WorkPlaceName
-                name={attendanceDetail.workPlaceName}
-                colorType={attendanceDetail.colorTypeCode}
-                textSlide
-                wide
-              />
+              {code ? (
+                <WorkPlaceName
+                  name={attendanceDetail.workPlaceName}
+                  colorType={code}
+                  textSlide
+                  wide
+                />
+              ) : (
+                <PulseWorkPlace />
+              )}
               {/* 지도 */}
               <div className='bg-white rounded-md border h-[200px]'>
                 <Map
@@ -211,19 +265,32 @@ const AttendanceDetail = () => {
                   ))}
                 </div>
               </WhiteBox>
+              <BtnPrimary
+                text='출근'
+                action={() => {}}
+                className='py-4'
+              ></BtnPrimary>
             </Wrapper>
             <Wrapper title='공지사항' className='mt-10'>
               <div className='flex flex-col gap-2'>
-                {attendanceDetail.notice?.map((item) => (
-                  <WhiteBox
-                    key={item.notificationId}
-                    title={item.title}
-                    border
-                    className='py-3'
-                  >
-                    <div className='text-start text-sm'>{item.content}</div>
+                {attendanceDetail && attendanceDetail.notice.length > 0 ? (
+                  attendanceDetail.notice?.map((item) => (
+                    <WhiteBox
+                      key={item.notificationId}
+                      title={item.title}
+                      border
+                      className='py-3'
+                    >
+                      <div className='text-start text-sm'>{item.content}</div>
+                    </WhiteBox>
+                  ))
+                ) : (
+                  <WhiteBox>
+                    <div className='flex h-[55px] items-center justify-center text-gray-500 text-sm'>
+                      공지사항이 없습니다
+                    </div>
                   </WhiteBox>
-                ))}
+                )}
               </div>
             </Wrapper>
           </div>

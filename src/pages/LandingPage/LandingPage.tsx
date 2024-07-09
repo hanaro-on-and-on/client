@@ -18,18 +18,17 @@ const LandingPage = () => {
 
   return (
     <>
-      <Frame option={false}>
-        {/* nav */}
-        <div className='fix top-0 flex justify-between items-end pb-2 h-[60px] bg-white w-[390px] px-5'>
-          <div className='flex justify-center items-center text-sm text-gray-600 rounded-2xl border border-gray-600 px-2'>
-            전체계좌
-          </div>
-          <div className='flex gap-2 items-center'>
-            <span>지갑</span>
-            <span>알림</span>
-          </div>
+      {/* nav */}
+      <div className='absolute top-0 flex justify-between items-end pb-2 h-[60px] bg-white w-[390px] px-5'>
+        <div className='flex justify-center items-center text-sm text-gray-600 rounded-2xl border border-gray-600 px-2'>
+          전체계좌
         </div>
-
+        <div className='flex gap-2 items-center'>
+          <span>지갑</span>
+          <span>알림</span>
+        </div>
+      </div>
+      <Frame option={false}>
         {/* body */}
         <div className='w-full flex flex-col mt-5'>
           <Wrapper title='급여 맞춤 서비스'>
