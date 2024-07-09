@@ -33,6 +33,7 @@ import LoginPage from './pages/LoginPgae/LoginPage';
 import CalendarEmployee from './components/employee/CalendarEmployee';
 import WorkPlaceAdd from './components/owner-workplace/WorkPlaceAdd';
 import AddWorkPlace from './pages/owner/AddWorkPlace';
+import EmployeeCalendar from './pages/employee/Calendar/EmployeeCalendar';
 
 function App() {
   return (
@@ -92,6 +93,7 @@ function App() {
           path='/part-time/worktime/manual/addition'
           element={<ManualWorkPlaceAddition />}
         />
+        <Route path='/calendar' element={<EmployeeCalendar />} />
         <Route path='/my' element={<MyPage />} />
         <Route path='/my/edit' element={<EditMyPage />} />
         <Route path='/attendance' element={<Attendance />} />
