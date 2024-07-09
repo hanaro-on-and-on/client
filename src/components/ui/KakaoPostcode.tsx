@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/components/KakaoPostcode.tsx
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { HStack, VStack } from './Stack';
 
 declare global {

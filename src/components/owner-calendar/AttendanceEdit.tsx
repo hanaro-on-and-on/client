@@ -7,40 +7,61 @@ import Select from './Select';
 import { getTimeString } from '../../utils/get-TimeString';
 import { MINIMUM_PAY_PER_HOUR } from '../../utils/const-value';
 import ModalCenter from '../ModalCenter';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ApiClient from '../../api/apiClient';
 import BtnBottom from '../BtnBottom';
+import { convertToISOFormat, formatDate } from '../../utils/date-util';
 
+const krToISODate = (date: Date) => {
+  const iso = convertToISOFormat(date);
+  return formatDate(new Date(iso));
+};
 const AttendanceEdit = () => {
   const navigation = useNavigate();
+  const { id } = useParams();
 
   const [workEmployeeList, setworkEmployeeList] = useState<Employee[]>([]); // 나의 전체 사업장의 전 직원들
+  const [attendance, setAttendance] = useState<AttendanceResponse | undefined>(
+    undefined
+  );
 
-  const { attendance, changeAttendance } = useAttendance();
-  console.log(attendance);
+  // const { attendance, changeAttendance } = useAttendance();
+  // console.log(attendance);
   const [workPlaceEmployeeId, setWorkPlaceEmployeeId] = useState<
     number | undefined
   >();
   const [startTime, setStartTime] = useState<Date | undefined>(undefined);
+  // console.log('🚀  AttendanceEdit  startTime:', startTime);
   const [endTime, setEndTime] = useState<Date | undefined>(undefined);
-  const [restMinutes, setRestMinutes] = useState<number | undefined>(undefined);
-  const [payPerHour, setPayPerHour] = useState<number | undefined>(undefined);
+  const [restMinute, setRestMinute] = useState<number>(0);
+  const [payPerHour, setPayPerHour] = useState<number>(MINIMUM_PAY_PER_HOUR);
 
   useEffect(() => {
-    fetchData('WORKING');
+    fetchGetEmplyees('WORKING');
   }, []);
-
+  useEffect(() => {
+    id && fetchGetAttendance(Number(id));
+  }, [id]);
   useEffect(() => {
     if (attendance) {
       setWorkPlaceEmployeeId(attendance.workPlaceEmployeeId);
       setStartTime(attendance.startTime);
       setEndTime(attendance.endTime);
-      setRestMinutes(attendance.restMinutes);
+      setRestMinute(attendance.restMinute);
       setPayPerHour(attendance.payPerHour);
     }
   }, [attendance]);
 
-  const fetchData = async (workingStatus: string) => {
+  const fetchGetAttendance = async (id: number) => {
+    try {
+      const response = await ApiClient.getInstance().getAttendance(id);
+      console.log('API 호출 결과:', response);
+      setAttendance(response);
+    } catch (error) {
+      console.error('API 호출 실패:', error);
+    }
+  };
+  const fetchGetEmplyees = async (workingStatus: string) => {
     try {
       const response =
         await ApiClient.getInstance().getMyEmployees(workingStatus);
@@ -50,11 +71,36 @@ const AttendanceEdit = () => {
       console.error('API 호출 실패:', error);
     }
   };
+  const fetchUpdateAttendance = async (
+    id: number,
+    request: UpdateAttendanceRequest
+  ) => {
+    try {
+      const response = await ApiClient.getInstance().updateAttendance(
+        id,
+        request
+      );
+      console.log('API 호출 결과:', response);
+      return response;
+    } catch (error) {
+      console.error('API 호출 실패:', error);
+    }
+  };
 
-  // const dateUrl = startTime!.toLocaleDateString('en-CA');
+  const [isModalOpen, setModalOpen] = useState(false); // 모달 관련
 
-  // 모달 관련
-  const [isModalOpen, setModalOpen] = useState(false);
+  const onClickConfirm = async () => {
+    if (id && workPlaceEmployeeId && startTime && endTime) {
+      const response = await fetchUpdateAttendance(Number(id), {
+        workPlaceEmployeeId,
+        payPerHour,
+        startTime: convertToISOFormat(startTime),
+        endTime: convertToISOFormat(endTime),
+        restMinute,
+      });
+      response && navigation(`/owner/calendar/${krToISODate(startTime)}`);
+    }
+  };
 
   const onSelectWorkEmployeeId = (id: number) => {
     setWorkPlaceEmployeeId(id);
@@ -85,8 +131,7 @@ const AttendanceEdit = () => {
           title={' '}
           closeModal={() => setModalOpen(false)}
           hasDecline
-          confirmAction={() => {}}
-          // confirmAction={() => navigation(`/owner/calendar/${dateUrl}`)}
+          confirmAction={onClickConfirm}
         >{`정말로 수정하시겠습니까?`}</ModalCenter>
       )}
 
@@ -111,8 +156,8 @@ const AttendanceEdit = () => {
               changeEndTime={(time: string) =>
                 setEndTime(updateTime(endTime, time))
               }
-              restMinutes={restMinutes!}
-              changeRestMinutes={(minutes: number) => setRestMinutes(minutes)}
+              restMinutes={restMinute}
+              changeRestMinutes={(minutes: number) => setRestMinute(minutes)}
             />
           </InputBox>
           <InputBox
@@ -133,19 +178,7 @@ const AttendanceEdit = () => {
           </div>
 
           <Spacer />
-          <BtnBottom
-            text='근무 수정'
-            action={() => {
-              changeAttendance({
-                workPlaceEmployeeId: workPlaceEmployeeId!,
-                payPerHour: payPerHour!,
-                startTime: startTime!,
-                endTime: endTime!,
-                restMinutes: restMinutes!,
-              });
-              setModalOpen(true);
-            }}
-          />
+          <BtnBottom text='근무 수정' action={() => setModalOpen(true)} />
         </VStack>
       )}
     </>

@@ -2,7 +2,7 @@
 import DatePicker from 'react-datepicker';
 import Nav from '../Nav';
 import InputBox from '../ui/InputBox';
-import { HStack, Spacer, VStack } from '../ui/Stack';
+import { HStack, VStack } from '../ui/Stack';
 import { FaAngleDown } from 'react-icons/fa6';
 import { ChangeEvent, useState } from 'react';
 import '../../styles/custom.css';
