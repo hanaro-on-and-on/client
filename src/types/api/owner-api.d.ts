@@ -109,3 +109,10 @@ type RegisterAttendanceManualRequest = {
 type RegisterAttendanceManualResponse = {
   attendanceId: number;
 };
+
+// 사장님 - 공지 추가
+type RegisterNoticeRequest = {
+  title: string;
+  content: string;
+};
+type RegisterNoticeResponse = { notificationId: number };

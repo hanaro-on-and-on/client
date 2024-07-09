@@ -338,6 +338,18 @@ class ApiClient implements employeeApi, userApi, ownerApi {
   }
 
   // ==========================
+  // 알바생 - 캘린더 데이터
+  public async getEmployeeCalendarData(
+    year: number,
+    month: number
+  ): Promise<EmployeeCalendarDataResponse> {
+    const response: BaseResponse<EmployeeCalendarDataResponse> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `employee/salaries/calendar?year=${year}&month=${month}`,
+      });
+    return response.data;
+  }
 
   // 사장님 - 캘린더 데이터
   public async getCalendarData(
@@ -422,6 +434,19 @@ class ApiClient implements employeeApi, userApi, ownerApi {
       await this.axiosInstance.request({
         method: 'post',
         url: `/owner/attendances/manual`,
+        data: request,
+      });
+    return response.data;
+  }
+  // 사장님 - 공지 추가
+  public async registerNotice(
+    id: number,
+    request: RegisterNoticeRequest
+  ): Promise<RegisterNoticeResponse> {
+    const response: BaseResponse<RegisterNoticeResponse> =
+      await this.axiosInstance.request({
+        method: 'post',
+        url: `/owner/work-places/${id}/notifications`,
         data: request,
       });
     return response.data;

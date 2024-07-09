@@ -30,6 +30,8 @@ import WorkEmployeeAddComplete from './components/owner-workplace/WorkEmployeeAd
 import OwnerGreeting from './pages/LandingPage/OwnerGreeting';
 import OwnerAddMainAccount from './pages/LandingPage/OwnerAddMainAccount';
 import LoginPage from './pages/LoginPgae/LoginPage';
+import CalendarEmployee from './components/employee/CalendarEmployee';
+import WorkPlaceAdd from './components/owner-workplace/WorkPlaceAdd';
 
 function App() {
   return (
@@ -40,7 +42,9 @@ function App() {
         <Route path='/test' element={<Test />} />
         {/* <Route path='/ui' element={<UiTest />} /> */}
         {/* <Route path='/owner/myWorkPlaces/add' element={<WorkPlaceAddPage />} /> */}
+        <Route path='/owner/addPlace' element={<WorkPlaceAdd />} />
         <Route path='/owner/*' element={<OwnerMainPage />}>
+          <Route path='test' element={<CalendarEmployee />} />
           <Route path='calendar' element={<CalendarCustom />} />
           <Route path='calendar/:date' element={<DateDetail />} />
           <Route path='calendar/:date/add' element={<AttendanceCreate />} />

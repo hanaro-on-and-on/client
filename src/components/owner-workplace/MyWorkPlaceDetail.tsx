@@ -8,7 +8,7 @@ import WorkEmployeeListView from './WorkEmployeeListView';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import NotificationAdd from './NotificationAdd';
 import { useEmployeeContract } from '../../contexts/EmployeeContract-Context';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import ApiClient from '../../api/apiClient';
 import Notification from './Notification';
 
@@ -20,6 +20,8 @@ enum ToggleStatus {
 const MyWorkPlaceDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const selected = searchParams.get('selected');
 
   const [data, setData] = useState<MyPlaceDetailResponse | null>(null);
   const currentDate = new Date();
@@ -34,8 +36,10 @@ const MyWorkPlaceDetail = () => {
     fetchData(year, month);
   }, [year, month]);
   useEffect(() => {
+    console.log('🚀  showAddNotification:', showAddNotification);
+    console.log('>>>>>>>>>>>> 호출되나여?');
     fetchNotifications();
-  }, []);
+  }, [showAddNotification]);
 
   const fetchData = async (year: number, month: number) => {
     try {
@@ -77,7 +81,7 @@ const MyWorkPlaceDetail = () => {
 
   return (
     data && (
-      <VStack className='m-6 gap-4'>
+      <VStack className='m-6 gap-4 h-full'>
         <VStack className='border border-gray-300 rounded-md items-center justify-center gap-3 py-2'>
           <button className='flex items-center gap-3 text-sm'>
             {`${year}년 ${month}월 ${isCurrentDate(currentDate, year, month) ? '예정' : '확정'} 인건비`}{' '}
@@ -133,7 +137,7 @@ const MyWorkPlaceDetail = () => {
           !showAddNotification &&
           notifiactions && (
             <>
-              <div className='flex flex-col max-h-screen border border-gray-300 rounded-lg overflow-y-scroll'>
+              <div className='flex flex-col max-h-/3 border border-gray-300 rounded-lg overflow-y-scroll'>
                 {notifiactions.list.map((n) => (
                   <Notification key={n.notificationId} {...n} />
                 ))}

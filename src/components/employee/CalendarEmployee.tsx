@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
-import './CalendarCustom.css';
+import './CalendarEmployee.css';
 import Calendar, { OnArgs } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import CalendarMark from './CalendarMark';
+// import CalendarMark from './CalendarMark';
 import { useNavigate } from 'react-router-dom';
 import { useCalendarData } from '../../contexts/Calender-Data-Context';
 import ApiClient from '../../api/apiClient';
 import { parseYYYMMDD } from '../../utils/date-util';
+import { useEmployeeCalendarData } from '../../contexts/Employee-Calender-Data-Context';
+import CalendarMark from '../ui/CalendarMark';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -15,7 +17,7 @@ const currentDate = new Date();
 
 const CalendarEmployee = () => {
   const [value, setValue] = useState<Value>(currentDate);
-  const { calendarData, setCalendarData } = useCalendarData();
+  const { calendarData, setCalendarData } = useEmployeeCalendarData();
   const navigate = useNavigate();
 
   console.log('🚀  CalendarCustom  value:', value);
@@ -30,7 +32,7 @@ const CalendarEmployee = () => {
 
   const fetchData = async (year: number, month: number) => {
     try {
-      const response = await ApiClient.getInstance().getCalendarData(
+      const response = await ApiClient.getInstance().getEmployeeCalendarData(
         year,
         month
       );
@@ -58,7 +60,7 @@ const CalendarEmployee = () => {
   const getListForDate = (date: Date) => {
     const list = [];
     calendarData &&
-      calendarData.workPlaceList.map((workPlace) => {
+      calendarData.list.map((workPlace) => {
         if (
           new Date(parseYYYMMDD(workPlace.attendDate)).toDateString() ===
           date.toDateString()
@@ -92,21 +94,14 @@ const CalendarEmployee = () => {
     if (view === 'month') {
       // const events = getEventsForDate(date);
       const list = getListForDate(date);
+      console.log(list, '>>>>>>>>>>>>>>>>>');
       return (
+        // <div>헬로</div>
         <div className='h-full w-full'>
           {list.map((data) => (
-            <CalendarMark key={`${data}`} {...data} />
+            <div key={`${data}`}>{data.workPlaceName}</div>
+            // <CalendarMark key={`${data}`} {...data} />
           ))}
-          {/* {events.map((event) => (
-            <CalendarMark key={event.attendanceId} {...event} />
-            // <div
-            //   key={event.attendanceId}
-            //   className={`text-xs p-1 rounded-md mb-1 bg-color-${event.workPlaceColor}`}
-            //   title={`${event.employeeName} - ${event.workPlaceName}`}
-            // >
-            //   {event.employeeName} - {event.workPlaceName}
-            // </div>
-          ))} */}
         </div>
       );
     }

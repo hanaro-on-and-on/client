@@ -75,6 +75,11 @@ interface employeeApi {
   employeeContractSign(
     employmentContractId: number
   ): Promise<EmployeeContractSignRequest>;
+
+  getEmployeeCalendarData(
+    year: number,
+    month: number
+  ): Promise<EmployeeCalendarDataResponse>;
 }
 
 export default employeeApi;

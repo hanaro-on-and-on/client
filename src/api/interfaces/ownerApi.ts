@@ -21,8 +21,15 @@ interface ownerApi {
     request: Partial<EmployeeContract>
   ): Promise<RegisterEmployeeResponse>;
 
+  // 사장님 - 근로 수동 추가
   registerAttendance(
     request: RegisterAttendanceManualRequest
   ): Promise<RegisterAttendanceManualResponse>;
+
+  // 사장님 - 공지 추가
+  registerNotice(
+    id: number,
+    request: RegisterNoticeRequest
+  ): Promise<RegisterNoticeResponse>;
 }
 export default ownerApi;
