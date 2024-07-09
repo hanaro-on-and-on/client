@@ -50,7 +50,7 @@ const LandingPage = () => {
                   type='button'
                   className='w-full h-full flex justify-start bg-transparent py-3'
                   onClick={
-                    token ? () => {} : () => navigation('/greeting/owner')
+                    token ? () => {} : () => navigation('/greeting/employee')
                   }
                 >
                   알바ON

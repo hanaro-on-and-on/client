@@ -6,7 +6,7 @@ const OwnerGreeting = () => {
   const navigation = useNavigate();
   return (
     <>
-      <Frame navTitle='사장ON'>
+      <Frame navTitle='사장님ON'>
         <div className='w-full h-full flex flex-col justify-between pb-10'>
           <div className='flex flex-col justify-center h-full'>
             <div className='text-2xl font-bold'>안녕하세요</div>

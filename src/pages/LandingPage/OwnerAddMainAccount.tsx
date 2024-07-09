@@ -104,7 +104,7 @@ const OwnerAddMainAccount = () => {
           <div>개인정보 약관</div>
         </ModalBottom>
       )}
-      <Frame>
+      <Frame navTitle='사장님ON'>
         <div className='flex flex-col justify-between w-full h-full py-5 gap-2'>
           <Wrapper title='사장님 대표 계좌 등록'>
             <div className=' flex flex-col justify-start gap-2'>
