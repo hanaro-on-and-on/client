@@ -1,8 +1,6 @@
 import Frame from '../../../components/Frame';
 import NavToggle from '../../../components/NavToggle';
 
-import ToolBarLink from '../../../components/ui/ToolBarLink';
-import { EmployeeMenuList } from '../datas';
 import { useEffect, useState } from 'react';
 import generateMonthList from '../../../utils/generateMonthList';
 import Payment from './Payment';
@@ -11,8 +9,8 @@ import { useDate } from '../../../contexts/Date-Context';
 import { useLocation } from 'react-router-dom';
 
 export enum SELECTED_TAB {
-  PAYMENT = 'payment',
-  WORKTIME = 'worktime',
+  PAYMENT = '급여관리',
+  WORKTIME = '근무지 관리',
 }
 
 const PaymentMain = () => {
@@ -31,15 +29,17 @@ const PaymentMain = () => {
   const selectWorktime = () => setSelectedTab(SELECTED_TAB.WORKTIME);
 
   useEffect(() => {
+    console.log('state', passedSelectedTab);
     if (passedSelectedTab) setSelectedTab(passedSelectedTab);
   }, [passedSelectedTab]);
 
   return (
     <>
-      <Frame navTitle='알바ON' toolBar>
+      <Frame navTitle='알바ON' toolBar footer>
         <div className='w-full flex flex-col  items-center gap-5 mt-7'>
           {/* 토글 버튼 */}
           <NavToggle
+            selectedTab={selectedTab}
             first='급여관리'
             second='근무지 관리'
             firstSelected={() => {
