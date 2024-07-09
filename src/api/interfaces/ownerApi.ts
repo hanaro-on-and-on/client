@@ -12,5 +12,14 @@ interface ownerApi {
   getMyEmployees(employeeStatus: string): Promise<GetEmployeeList>;
 
   getNotifications(id: number): Promise<NotificationsResponse>;
+
+  OwnerGetEmployeeAccountInfo(
+    workPlaceEmployeeId: number
+  ): Promise<OwnerGetEmployeeAccountInfo>;
+
+  OwnerConfirmPayment(
+    payStubId: number,
+    request: OwnerConfirmPayment
+  ): Promise<OwnerConfirmPaymentResponse>;
 }
 export default ownerApi;
