@@ -40,6 +40,7 @@ const ModalCenter = ({
           <div className='flex gap-5 w-full'>
             {hasDecline && (
               <BtnGray
+                className='w-full'
                 text={declineText}
                 action={() => {
                   declineAction();
