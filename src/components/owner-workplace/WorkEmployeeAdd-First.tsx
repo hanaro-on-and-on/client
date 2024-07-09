@@ -25,11 +25,18 @@ const WorkEmployeeAddFirst = () => {
   const navigate = useNavigate();
   const { placeId } = useParams();
 
-  const { employeeContract, addFirstInfo } = useEmployeeContract();
+  const { employeeContract, addFirstInfo, setFirstInfo } =
+    useEmployeeContract();
 
-  const [employeeNm, setEmployeeName] = useState<string>('');
-  const [employeeAddress, setEmployeeAddress] = useState<string>('');
-  const [employeePhone, setEmployeePhone] = useState<string>('');
+  const [employeeNm, setEmployeeName] = useState<string>(
+    employeeContract?.employeeNm ? employeeContract.employeeNm : ''
+  );
+  const [employeeAddress, setEmployeeAddress] = useState<string>(
+    employeeContract?.employeeAddress ? employeeContract.employeeAddress : ''
+  );
+  const [employeePhone, setEmployeePhone] = useState<string>(
+    employeeContract?.employeePhone ? employeeContract.employeePhone : ''
+  );
   const [valid, setValid] = useState<string>('');
 
   const onChangeEmployeeName = (e: ChangeEvent<HTMLInputElement>) => {
@@ -57,6 +64,7 @@ const WorkEmployeeAddFirst = () => {
     }
 
     addFirstInfo({ employeeNm, employeeAddress, employeePhone });
+    setFirstInfo({ employeeNm, employeeAddress, employeePhone });
     navigate(`/owner/myWorkPlaces/${placeId}/addEmployee/second`);
   };
 

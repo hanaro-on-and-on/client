@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import BtnGray from '../../../components/BtnGray';
 
 import ModalCenter from '../../../components/ModalCenter';
-import BtnDanger from '../../../components/\bBtnDanger';
+import BtnDanger from '../../../components/BtnDanger';
 import PulseWorkPlace from '../../../components/ui/PulseWorkPlace';
 import PulseAttendance from '../../../components/ui/PulseAttendance';
 

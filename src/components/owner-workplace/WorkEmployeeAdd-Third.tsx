@@ -1,9 +1,14 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { MINIMUM_PAY_PER_HOUR } from '../../utils/const-value';
 import { HStack, Spacer, VStack } from '../ui/Stack';
 import { DayOfWeekShort } from './WorkEmployeeAdd-Second';
 import BtnChoiceBox from '../ui/BtnChoiceBox';
 import ThreeLevelUi from '../ui/ThreeLevelUi';
+import { useEmployeeContract } from '../../contexts/EmployeeContract-Context';
+import { set } from 'date-fns';
+import { addSuffixDayOfWeek } from '../../utils/date-util';
+import { useNavigate, useParams } from 'react-router-dom';
+import ApiClient from '../../api/apiClient';
 
 enum Bonus {
   ON = 'bonusOn',
@@ -17,14 +22,94 @@ enum Allowance {
 const DayOfWeeks = ['없음', '월', '화', '수', '목', '금', '토', '일'];
 
 const WorkEmployeeAddThird = () => {
-  const [selectDayOfWeek, setSelectDayOfWeek] = useState<Bonus>(Bonus.OFF);
+  const { placeId } = useParams();
+  const navigate = useNavigate();
+  const { employeeContract, addThirdInfo, setThirdInfo } =
+    useEmployeeContract();
+  console.log('🚀  WorkEmployeeAddThird  id:', placeId);
+  console.log(employeeContract);
 
-  const [bonus, setBonus] = useState('bonusOff');
-  const [allowance, setAllowance] = useState<Allowance>(Allowance.OFF);
+  const [payPerHour, setPayPerHour] = useState(MINIMUM_PAY_PER_HOUR);
+  const onChangePayperHour = (e: ChangeEvent<HTMLInputElement>) => {
+    if (Number(e.target.value) <= MINIMUM_PAY_PER_HOUR) {
+      setPayPerHour(MINIMUM_PAY_PER_HOUR);
+    } else {
+      setPayPerHour(Number(e.target.value));
+    }
+  };
 
-  // 요일 버튼을 클릭했을 때 호출되는 함수
+  const [paymentDay, setPaymentDay] = useState<number>(15);
+  const onChangePaymentDay = (e: ChangeEvent<HTMLInputElement>) => {
+    if (Number(e.target.value) <= 1) {
+      setPaymentDay(1);
+    } else if (Number(e.target.value) >= 28) {
+      setPaymentDay(28);
+    } else {
+      setPaymentDay(Number(e.target.value));
+    }
+  };
+
+  const [restDayOfWeek, setRestDayofWeek] = useState('없음');
   const handleDayClick = (day: string) => {
-    setSelectDayOfWeek(day); // 선택된 요일을 변경
+    setRestDayofWeek(day); // 선택된 요일을 변경
+  };
+
+  const [bonus, setBonus] = useState<Bonus>(Bonus.OFF);
+  const [allowance, setAllowance] = useState<Allowance>(Allowance.OFF);
+  const [overtimeRate, setOverTimeRate] = useState<number>(0);
+  const onChangeOvertimeRate = (e: ChangeEvent<HTMLInputElement>) => {
+    if (Number(e.target.value) <= 0) {
+      setOverTimeRate(0);
+    } else {
+      setOverTimeRate(Number(e.target.value));
+    }
+  };
+
+  const fetchContract = async () => {
+    try {
+      const response = await ApiClient.getInstance().registerEmployee(
+        Number(placeId),
+        employeeContract!
+      );
+      console.log('API 호출 결과:', response);
+    } catch (error) {
+      console.error('API 호출 실패:', error);
+    }
+  };
+  const [ready, setReady] = useState(false);
+  if (ready) {
+    console.log(employeeContract);
+    fetchContract();
+    setReady(false);
+  }
+
+  const onClickAddThird = () => {
+    addThirdInfo({
+      payPerHour,
+      paymentDay,
+      restDayOfWeek:
+        restDayOfWeek === '없음'
+          ? undefined
+          : addSuffixDayOfWeek(restDayOfWeek as DayOfWeekShort),
+      bonusAmount: bonus === Bonus.OFF ? 0 : 10000,
+      otherAllowancesAmount: allowance === Allowance.OFF ? 0 : 10000,
+      otherAllowancesName: allowance === Allowance.OFF ? undefined : '제수당',
+      overtimeRate,
+    });
+    setThirdInfo({
+      payPerHour,
+      paymentDay,
+      restDayOfWeek:
+        restDayOfWeek === '없음'
+          ? undefined
+          : addSuffixDayOfWeek(restDayOfWeek as DayOfWeekShort),
+      bonusAmount: bonus === Bonus.OFF ? 0 : 10000,
+      otherAllowancesAmount: allowance === Allowance.OFF ? 0 : 10000,
+      otherAllowancesName: allowance === Allowance.OFF ? undefined : '제수당',
+      overtimeRate,
+    });
+    setReady(true);
+    navigate(`/owner/myWorkPlaces/${placeId}/addEmployee/third`);
   };
 
   return (
@@ -32,7 +117,7 @@ const WorkEmployeeAddThird = () => {
       <VStack className='gap-6'>
         <ThreeLevelUi level={3} />
 
-        <VStack className='border border-gray-300 rounded-lg p-3 gap-4 overflow-y-scroll'>
+        <VStack className='border border-gray-300 rounded-lg p-3 gap-6 overflow-y-scroll'>
           <HStack className='justify-between'>
             <HStack className='p-2 items-baseline gap-2'>
               <label
@@ -44,9 +129,12 @@ const WorkEmployeeAddThird = () => {
               <input
                 id='payPerHour'
                 type='number'
-                className='border-b border-b-gray-300 w-1/2'
+                value={payPerHour}
+                onChange={onChangePayperHour}
+                className='border-b border-b-gray-300 w-2/5 text-right'
                 placeholder={`${String(MINIMUM_PAY_PER_HOUR)} 원`}
               />
+              원
             </HStack>
 
             <HStack className='p-2 gap-2'>
@@ -56,19 +144,22 @@ const WorkEmployeeAddThird = () => {
               <input
                 id='payDay'
                 type='number'
-                className='border-b border-b-gray-300 w-1/2'
+                value={paymentDay}
+                onChange={onChangePaymentDay}
+                className='border-b border-b-gray-300 w-2/6 text-right'
                 placeholder='15일'
               />
+              일
             </HStack>
           </HStack>
 
-          <VStack className='items-center gap-2'>
-            <div className='font-semibold'>주휴일 선택</div>
+          <HStack className='items-center gap-4'>
+            <div className='font-semibold text-sm'>주휴일 선택</div>
             {/* 요일 선택 버튼 */}
-            <div className='self-center flex flex-row justify-center'>
+            <div className='flex flex-row justify-center'>
               {DayOfWeeks.map((day) => (
                 <button
-                  className={`${selectDayOfWeek === day ? 'bg-hanaLightGreen text-white' : ''} border-r border-t border-b border-gray-300 px-2 py-1 first:rounded-l-lg first:border-l last:rounded-r-lg`}
+                  className={`${restDayOfWeek === day ? 'bg-hanaLightGreen text-white' : ''} text-xs border-r border-t border-b border-gray-300 px-2 text-nowrap py-1 first:rounded-l-md first:border-l last:rounded-r-md`}
                   key={day}
                   onClick={() => handleDayClick(day)}
                 >
@@ -76,10 +167,10 @@ const WorkEmployeeAddThird = () => {
                 </button>
               ))}
             </div>
-          </VStack>
+          </HStack>
 
-          <HStack className='gap-2'>
-            <div className='font-semibold me-5'>상여금</div>
+          <HStack className='gap-2 items-center'>
+            <div className='font-semibold text-sm me-5'>상여금</div>
 
             <HStack
               className={`${bonus === Bonus.OFF ? 'border border-hanaLightGreen text-hanaLightGreen' : ''} px-2 rounded-xl shadow-md`}
@@ -105,8 +196,8 @@ const WorkEmployeeAddThird = () => {
             </HStack>
           </HStack>
 
-          <HStack>
-            <div className='font-semibold me-3'>기타급여</div>
+          <HStack className='items-center gap-2'>
+            <div className='font-semibold text-sm me-2'>기타급여</div>
             <HStack
               className={`${allowance === Allowance.OFF ? 'border border-hanaLightGreen text-hanaLightGreen' : ''} px-2 rounded-xl shadow-md`}
             >
@@ -131,13 +222,15 @@ const WorkEmployeeAddThird = () => {
             </HStack>
           </HStack>
 
-          <VStack className='justify-start text-end'>
+          <VStack className='justify-start text-start'>
             <HStack className='gap-3'>
-              <div className='font-semibold'>초과 근로</div>
+              <div className='font-semibold text-sm'>초과 근로</div>
               <input
                 type='number'
                 className='border-b border-b-gray-300 w-10 text-right'
                 placeholder='0'
+                value={overtimeRate}
+                onChange={onChangeOvertimeRate}
               />
               %
             </HStack>
@@ -155,7 +248,7 @@ const WorkEmployeeAddThird = () => {
           <BtnChoiceBox
             actionName={'근로계약서 생성'}
             closeName={'이전'}
-            onAction={() => {}}
+            onAction={onClickAddThird}
             onClose={() => history.back()}
           />
         </div>

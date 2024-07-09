@@ -5,9 +5,9 @@ import TimePickerCustom from './TimePickerCustom';
 import { ChangeEvent } from 'react';
 
 type TimeBoxProps = {
-  startTime: string;
+  startTime: string | undefined;
   changeStartTime: (time: string) => void;
-  endTime: string;
+  endTime: string | undefined;
   changeEndTime: (time: string) => void;
   restMinutes: number;
   changeRestMinutes: (minutes: number) => void;

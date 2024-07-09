@@ -8,7 +8,7 @@ import WorkEmployeeListView from './WorkEmployeeListView';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import NotificationAdd from './NotificationAdd';
 import { useEmployeeContract } from '../../contexts/EmployeeContract-Context';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import ApiClient from '../../api/apiClient';
 import Notification from './Notification';
 
@@ -17,55 +17,11 @@ enum ToggleStatus {
   NOTIFICATIONS = '공지사항',
 }
 
-const mockData = {
-  year: '2024',
-  month: '06',
-  workPlaceId: 1,
-  workPlaceName: '롯데리아 어디어디어디 점',
-  workPlaceColor: '1',
-  totalPayPerMonth: 18000000,
-  workEmployees: [
-    {
-      workEmployeeId: 1,
-      employeeName: '이신광',
-      monthPay: 500000,
-      fromDay: '2021-04-05',
-    },
-    {
-      workEmployeeId: 2,
-      employeeName: '이서하',
-      monthPay: 1951400,
-      fromDay: '2024-03-14',
-    },
-    {
-      workEmployeeId: 3,
-      employeeName: '정연주',
-      monthPay: 102900,
-      fromDay: '2024-06-01',
-    },
-  ],
-};
-
-const mockNotifiaction = {
-  list: [
-    {
-      notificationId: 2,
-      title: '위치 정보 저장하세요',
-      content: '저장되는거 확인하세요',
-      createdAt: '2024-07-02T11:10:29.282145',
-    },
-    {
-      notificationId: 3,
-      title: '제목입니다',
-      content: '내용입니다',
-      createdAt: '2024-07-02T17:03:26.696708',
-    },
-  ],
-};
-
 const MyWorkPlaceDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const selected = searchParams.get('selected');
 
   const [data, setData] = useState<MyPlaceDetailResponse | null>(null);
   const currentDate = new Date();
@@ -81,7 +37,7 @@ const MyWorkPlaceDetail = () => {
   }, [year, month]);
   useEffect(() => {
     fetchNotifications();
-  }, []);
+  }, [showAddNotification]);
 
   const fetchData = async (year: number, month: number) => {
     try {
@@ -92,9 +48,7 @@ const MyWorkPlaceDetail = () => {
       );
       console.log('API 호출 결과:', response);
       setData(response);
-    } catch (error) {
-      console.error('API 호출 실패:', error);
-    }
+    } catch (error) {}
   };
   const fetchNotifications = async () => {
     try {
@@ -123,7 +77,7 @@ const MyWorkPlaceDetail = () => {
 
   return (
     data && (
-      <VStack className='m-6 gap-4'>
+      <VStack className='m-6 gap-4 h-full'>
         <VStack className='border border-gray-300 rounded-md items-center justify-center gap-3 py-2'>
           <button className='flex items-center gap-3 text-sm'>
             {`${year}년 ${month}월 ${isCurrentDate(currentDate, year, month) ? '예정' : '확정'} 인건비`}{' '}
@@ -181,9 +135,13 @@ const MyWorkPlaceDetail = () => {
           !showAddNotification &&
           notifiactions && (
             <>
-              <div className='flex flex-col max-h-screen border border-gray-300 rounded-lg overflow-y-scroll'>
+              <div className='flex flex-col max-h-/3 border border-gray-300 rounded-lg overflow-y-scroll'>
                 {notifiactions.list.map((n) => (
-                  <Notification key={n.notificationId} {...n} />
+                  <Notification
+                    key={n.notificationId}
+                    fetchNotices={fetchNotifications}
+                    {...n}
+                  />
                 ))}
               </div>
               <button

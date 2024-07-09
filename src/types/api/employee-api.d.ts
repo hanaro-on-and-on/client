@@ -284,6 +284,26 @@ type EmployeeContractSignRequest = {
   workPlaceEmployeeId: number;
 };
 
+// 알바생 달력 데이터
+type EmployeeCalendarDataResponse = {
+  allCurrentPayment: number;
+  allTotalPayment: number;
+  connectedCurrentPayment: number;
+  connectedTotalPayment: number;
+  list: EmployeeCalendarWorkPlace[];
+};
+type EmployeeCalendarWorkPlace = {
+  isConnected: boolean;
+  id: number;
+  workPlaceName: string;
+  workPlaceColorCode: string;
+  attendDate: string;
+  attendanceType: string;
+  startTime: Date;
+  endDate: Date;
+  restMinute: number;
+  payment: number;
+};
 //계좌 목록 조회
 type AccountList = {
   accountNumber: string;

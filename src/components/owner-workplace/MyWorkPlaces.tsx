@@ -5,55 +5,18 @@ import MyWorkPlaceListView from './MyWorkPlaceListView';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { isCurrentDate } from '../../utils/is-current-date';
 import ApiClient from '../../api/apiClient';
-
-const mockData = {
-  year: 2024,
-  month: 6,
-  totalPayment: 140333000,
-  workPlaceList: [
-    {
-      workPlaceId: 1,
-      workPlaceName: '롯데리아 자양점',
-      workPlaceColor: '01',
-      payment: 140333000,
-      employeeList: [
-        {
-          workPlaceEmployeeId: 1,
-          employeeName: '이서하',
-          workStartDate: '2024-07-01',
-          payment: 140333,
-        },
-      ],
-    },
-    {
-      id: 2,
-      workPlaceName: 'Example Work Place Name',
-      workPlaceColor: '02',
-      payment: 0,
-      ownerSalaryGetResponseList: [],
-    },
-    {
-      id: 3,
-      workPlaceName: '롯데월드 어드벤쳐 부산',
-      workPlaceColor: '03',
-      payment: 0,
-      ownerSalaryGetResponseList: [
-        {
-          id: 2,
-          employeeName: '최은진',
-          workStartDate: '2024-07-01',
-          payment: 0,
-        },
-      ],
-    },
-  ],
-};
+import { useNavigate } from 'react-router-dom';
 
 const MyWorkPlaces = () => {
+  const navigate = useNavigate();
   const [data, setData] = useState<MyPlacesResponse | null>(null);
   const currentDate = new Date();
   const [year, setYear] = useState(currentDate.getFullYear());
   const [month, setMonth] = useState(currentDate.getMonth() + 1);
+
+  const onClickAddPlace = () => {
+    navigate('/owner/addPlaceFirst');
+  };
 
   const fetchData = async (year: number, month: number) => {
     try {
@@ -89,7 +52,10 @@ const MyWorkPlaces = () => {
             />
           ))}
         </VStack>
-        <button className='bg-hanaLightGreen gap-2 py-1 px-2 mt-2 flex items-center rounded-lg text-white self-end'>
+        <button
+          className='bg-hanaLightGreen gap-2 py-1 px-2 mt-2 flex items-center rounded-lg text-white self-end'
+          onClick={onClickAddPlace}
+        >
           <AiOutlinePlusCircle />
           <div>사업장 추가</div>
         </button>

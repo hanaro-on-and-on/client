@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import BtnBottom from '../../components/BtnBottom';
 import Frame from '../../components/Frame';
 import WhiteBox from '../../components/ui/WhiteBox';
 import Wrapper from '../../components/Wrapper';
@@ -10,6 +9,7 @@ import InputBorderSelect from '../../components/InputBorderSelect';
 import ModalCenter from '../../components/ModalCenter';
 import ApiClient from '../../api/apiClient';
 import { BankList } from '../employee/datas';
+import BtnBottom from '../../components/BtnBottom';
 
 const OwnerAddMainAccount = () => {
   const [isModalOpen, setIsModal] = useState(false);

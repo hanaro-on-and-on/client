@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react';
 import Frame from '../../components/Frame';
-import BtnBottom from '../../components/BtnBottom';
 import login, { LoginReturnType, ROLE } from '../../components/login';
 import ModalCenter from '../../components/ModalCenter';
 import { useNavigate } from 'react-router-dom';
+import BtnBottom from '../../components/BtnBottom';
 
 const LoginPage = () => {
   const [pwErr, pwIdErr] = useState<string>('');
