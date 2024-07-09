@@ -16,9 +16,9 @@ const WorkTime = () => {
   const [isModalCenterOpen, setModalCenterOpen] = useState(false);
   const navigation = useNavigate();
   const [getsign, setGetsign] = useState<boolean>(false);
-  const [currSignContractId, setCurrSignContractId] = useState<number | null>(
-    null
-  );
+  const [currSignContractId, setCurrSignContractId] = useState<
+    number | undefined
+  >(undefined);
   const [modalTitle, setModalTitle] = useState<string>('전자 서명');
 
   const [workPlaceList, setWorkPlaceList] = useState<EmployeeWorkPlaceList>([]);
@@ -38,13 +38,18 @@ const WorkTime = () => {
 
     if (!dataURL) {
       const res = await updateSign(id);
+      console.log('res', res);
       if (res) {
         toggle();
       }
     }
   };
 
-  const updateSign = async (contractId: number) => {
+  const updateSign = async (contractId: number | undefined) => {
+    if (contractId === undefined) return;
+    const dataURL = refHandler.current?.canvasRef.current?.isEmpty();
+    if (dataURL) return;
+
     try {
       const response: { workPlaceEmployeeId: number } =
         await ApiClient.getInstance().employeeContractSign(contractId);
@@ -108,50 +113,71 @@ const WorkTime = () => {
       <div className='w-full flex flex-col gap-10'>
         <Wrapper title='연동 요청'>
           <div className='flex flex-col gap-1'>
-            {workPlaceList?.invitatedWorkPlaceList?.length > 0
-              ? workPlaceList.invitatedWorkPlaceList.map((item, index) => (
-                  <WhiteBox
-                    className='py-3'
-                    border
-                    key={item.employmentContractId + String(index)}
-                  >
-                    <div className='flex justify-between items-center'>
-                      <WorkPlaceName
-                        name={item.workPlaceName}
-                        colorType={item.colorCodeType}
-                      />
-                      <BtnBorder
-                        color='green'
-                        text='서명 요청'
-                        onClick={() => {
-                          setCurrSignContractId(item.employmentContractId);
-                          setModalCenterOpen(true);
-                        }}
-                      />
-                    </div>
-                  </WhiteBox>
-                ))
-              : '연동된 매장이 없습니다'}
+            {workPlaceList &&
+            workPlaceList.invitatedWorkPlaceList?.length > 0 ? (
+              workPlaceList?.invitatedWorkPlaceList.map((item, index) => (
+                <WhiteBox
+                  className='py-3'
+                  border
+                  key={item.employmentContractId + String(index)}
+                >
+                  <div className='flex justify-between items-center'>
+                    <WorkPlaceName
+                      name={item.workPlaceName}
+                      colorType={item.colorCodeType}
+                    />
+                    <BtnBorder
+                      color='green'
+                      text='서명 요청'
+                      onClick={() => {
+                        setCurrSignContractId(item.employmentContractId);
+                        setModalCenterOpen(true);
+                      }}
+                    />
+                  </div>
+                </WhiteBox>
+              ))
+            ) : (
+              <WhiteBox>
+                <div className='flex h-[55px] items-center justify-center text-gray-500 text-sm'>
+                  등록된 매장이 없습니다
+                </div>
+              </WhiteBox>
+            )}
           </div>
         </Wrapper>
 
         {/* 사장님과 연동 */}
         <Wrapper title='사장님과 연동' className='flex flex-col gap-1'>
-          {workPlaceList.connectedWorkPlaceList?.map((item, index) => (
-            <WhiteBox
-              className='py-3'
-              border
-              key={item.employmentContractId + String(index)}
-            >
-              <div className='flex justify-between items-center'>
-                <WorkPlaceName
-                  name={item.workPlaceName}
-                  colorType={item.colorCodeType}
-                />
-                <BtnBorder color='gray' text='계약 완료' onClick={() => {}} />
+          {workPlaceList && workPlaceList.connectedWorkPlaceList?.length > 0 ? (
+            <div className='flex flex-col gap-1'>
+              {workPlaceList.connectedWorkPlaceList.map((item, index) => (
+                <WhiteBox
+                  className='py-3'
+                  border
+                  key={item.employmentContractId + String(index)}
+                >
+                  <div className='flex justify-between items-center'>
+                    <WorkPlaceName
+                      name={item.workPlaceName}
+                      colorType={item.colorCodeType}
+                    />
+                    <BtnBorder
+                      color='gray'
+                      text='계약 완료'
+                      onClick={() => {}}
+                    />
+                  </div>
+                </WhiteBox>
+              ))}
+            </div>
+          ) : (
+            <WhiteBox>
+              <div className='flex h-[55px] items-center justify-center text-gray-500 text-sm'>
+                등록된 매장이 없습니다
               </div>
             </WhiteBox>
-          ))}
+          )}
         </Wrapper>
 
         {/* 내가 추가한 */}
@@ -161,29 +187,37 @@ const WorkTime = () => {
           buttonText='수동 등록'
           onButtonClick={() => navigation('/manual/addition')}
         >
-          <div className='flex flex-col gap-1'>
-            {workPlaceList.customWorkPlaceList?.map((item, index) => (
-              <WhiteBox
-                key={item.customWorkPlaceId || index * 2}
-                className='py-3'
-                border
-              >
-                <div className='flex justify-between items-center'>
-                  <WorkPlaceName
-                    name={item.workPlaceName}
-                    colorType={item.colorCodeType}
-                  />
-                  <BtnBorder
-                    color='green'
-                    text='삭제'
-                    onClick={() =>
-                      deleteCustomWorkPlace(item.customWorkPlaceId)
-                    }
-                  />
-                </div>
-              </WhiteBox>
-            ))}
-          </div>
+          {workPlaceList && workPlaceList?.customWorkPlaceList?.length > 0 ? (
+            <div className='flex flex-col gap-1'>
+              {workPlaceList.customWorkPlaceList?.map((item, index) => (
+                <WhiteBox
+                  key={item.customWorkPlaceId || index * 2}
+                  className='py-3'
+                  border
+                >
+                  <div className='flex justify-between items-center'>
+                    <WorkPlaceName
+                      name={item.workPlaceName}
+                      colorType={item.colorCodeType}
+                    />
+                    <BtnBorder
+                      color='green'
+                      text='삭제'
+                      onClick={() =>
+                        deleteCustomWorkPlace(item.customWorkPlaceId)
+                      }
+                    />
+                  </div>
+                </WhiteBox>
+              ))}
+            </div>
+          ) : (
+            <WhiteBox>
+              <div className='flex h-[55px] items-center justify-center text-gray-500 text-sm'>
+                등록된 매장이 없습니다
+              </div>
+            </WhiteBox>
+          )}
         </Wrapper>
 
         {isModalOpen && (
@@ -208,7 +242,7 @@ const WorkTime = () => {
                   submit={() => {
                     setModalOpen(false);
                     setGetsign(false);
-                    saveSignage(currSignContractId);
+                    updateSign(currSignContractId);
                   }}
                   ref={refHandler}
                 />

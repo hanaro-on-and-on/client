@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 import PulseWorkPlaceName from './ui/PulseWorkPlaceName';
-import WhiteBox from './ui/WhiteBox';
 import WorkPlaceName from './ui/WorkPlaceName';
 import { ReactNode } from 'react';
 import { FaAngleRight } from 'react-icons/fa6';
@@ -8,22 +7,33 @@ import { FaAngleRight } from 'react-icons/fa6';
 type Prop = {
   workPlaceName: string | undefined;
   colorType: string | undefined;
+  onClick?: () => void;
   center?: boolean;
   hover?: boolean;
   arrow?: boolean;
-  children?: ReactNode;
+  arrowText?: string;
+  className?: string;
+  children?: ReactNode | string;
 };
 const WorkPlaceNameBox = ({
   workPlaceName,
   colorType,
-  children,
+  onClick = () => {},
+  className = '',
   center = false,
   arrow = false,
+  arrowText = '',
+  children,
 }: Prop) => {
   return (
-    <WhiteBox border className='hover:bg-[#f2ebf2]'>
+    <button
+      onClick={onClick}
+      className={clsx(
+        `flex flex-col bg-white w-full rounded-lg border border-gray-200 ${className}`
+      )}
+    >
       <div
-        className={clsx('flex py-5 justify-between', {
+        className={clsx('flex py-5 px-5 justify-between items-center w-full', {
           'justify-center': center,
         })}
       >
@@ -38,13 +48,20 @@ const WorkPlaceNameBox = ({
         </div>
 
         {arrow && (
-          <div className='flex items-center justify-end'>
+          <div className='flex items-center gap-2 justify-end'>
+            {arrowText}
             <FaAngleRight />
           </div>
         )}
       </div>
-    </WhiteBox>
+    </button>
   );
 };
 
 export default WorkPlaceNameBox;
+
+{
+  /* <WhiteBox border className='hover:bg-[#f2ebf2]'>
+  
+</WhiteBox>; */
+}

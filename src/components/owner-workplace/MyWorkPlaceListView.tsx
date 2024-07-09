@@ -43,3 +43,23 @@ const MyWorkPlaceListView = (props: MyWorkPlaceListViewProps) => {
 };
 
 export default MyWorkPlaceListView;
+
+{
+  /* <button
+      className='flex border border-gray-300 bg-white rounded-md p-4 items-center gap-3 justify-between hover:bg-slate-300'
+      onClick={onClickWorkPlace}
+    >
+      <div className='w-1/12'>
+        <ColorCircle workPlaceColor={workPlaceColor} />
+      </div>
+      <VStack className='text-start w-4/12'>
+        <div className='text-ellipsis overflow-hidden whitespace-nowrap'>{`${workPlaceName}`}</div>
+        <div className='text-sm text-gray-400 ho'>{`총 ${length}명`}</div>
+      </VStack>
+
+      <HStack className='text-nowrap items-end text-sm w-4/12'>
+        {payment.toLocaleString()} 원
+      </HStack>
+      <FaAngleRight />
+    </button> */
+}

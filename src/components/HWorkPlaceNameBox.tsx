@@ -8,22 +8,31 @@ import { FaAngleRight } from 'react-icons/fa6';
 type Prop = {
   workPlaceName: string | undefined;
   colorType: string | undefined;
+  onClick?: () => void;
   center?: boolean;
   hover?: boolean;
   arrow?: boolean;
+  className?: string;
   children?: ReactNode | string;
 };
 const HWorkPlaceNameBox = ({
   workPlaceName,
   colorType,
-  children,
+  onClick = () => {},
+  className = '',
   center = false,
   arrow = false,
+  children,
 }: Prop) => {
   return (
-    <WhiteBox border className='hover:bg-[#f2ebf2]'>
+    <button
+      onClick={onClick}
+      className={clsx(
+        `flex flex-col bg-white w-full rounded-xl border border-gray-200 ${className}`
+      )}
+    >
       <div
-        className={clsx('flex py-5 justify-between items-center', {
+        className={clsx('flex py-5 px-5 justify-between items-center w-full', {
           'justify-center': center,
         })}
       >
@@ -42,7 +51,7 @@ const HWorkPlaceNameBox = ({
           )}
         </div>
       </div>
-    </WhiteBox>
+    </button>
   );
 };
 

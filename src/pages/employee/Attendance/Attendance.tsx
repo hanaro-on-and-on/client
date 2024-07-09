@@ -73,6 +73,10 @@ const Attendance = () => {
     }
   };
 
+  useEffect(() => {
+    console.log(attendances), [];
+  });
+
   const checkIn = async (id: number) => {
     try {
       const response: EmployeeCheckInResponse =
@@ -145,7 +149,7 @@ const Attendance = () => {
         <div className='w-full flex flex-col gap-10 mt-7'>
           {/* 오늘 출근 목록 */}
           <Wrapper title='오늘 출근 목록'>
-            <div>
+            <div className='flex flex-col gap-1'>
               {attendances &&
                 attendances.works.map((item, index) => (
                   <WhiteBox

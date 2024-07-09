@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { HStack, VStack } from '../ui/Stack';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
-import MyWorkPlaceListView from './MyWorkPlaceListView';
 import {
   AiOutlineExclamationCircle,
   AiOutlinePlusCircle,
@@ -9,6 +8,7 @@ import {
 import { isCurrentDate } from '../../utils/is-current-date';
 import ApiClient from '../../api/apiClient';
 import { useNavigate } from 'react-router-dom';
+import WorkPlaceNameBox from '../WorkPlaceNameBox';
 
 const MyWorkPlaces = () => {
   const navigate = useNavigate();
@@ -80,15 +80,26 @@ const MyWorkPlaces = () => {
             <span className='text-2xl text-center'>사업장을 등록해주세요</span>
           </VStack>
         ) : (
-          <VStack className='ListView mt-7 gap-2'>
+          <div className='mt-5'>
             {data?.workPlaceList.map((item) => (
-              <MyWorkPlaceListView
+              <WorkPlaceNameBox
                 key={item.workPlaceId}
-                length={item.employeeList.length}
-                {...item}
-              />
+                workPlaceName={item.workPlaceName}
+                colorType={item.workPlaceColor}
+                arrow
+                arrowText={`총 ${item.payment.toLocaleString()}원`}
+                onClick={() =>
+                  navigate(`/owner/myWorkPlaces/${item.workPlaceId}`)
+                }
+              >
+                <div className='flex gap-3'>
+                  <span className='text-gray-400'>
+                    총 {item.employeeList.length}명
+                  </span>
+                </div>
+              </WorkPlaceNameBox>
             ))}
-          </VStack>
+          </div>
         )}
         <button
           className='bg-hanaLightGreen gap-2 py-1 px-2 mt-2 flex items-center rounded-lg text-white self-end'
@@ -97,10 +108,6 @@ const MyWorkPlaces = () => {
           <AiOutlinePlusCircle />
           <div>사업장 추가</div>
         </button>
-
-        {/* {data.ownerSalaryEmployeeListGetResponseList.map((item) =>
-
-      )} */}
       </VStack>
     )
   );

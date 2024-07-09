@@ -11,6 +11,9 @@ import { useEmployeeContract } from '../../contexts/EmployeeContract-Context';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import ApiClient from '../../api/apiClient';
 import Notification from './Notification';
+import WorkPlaceNameBox from '../WorkPlaceNameBox';
+import WorkPlaceName from '../ui/WorkPlaceName';
+import WhiteBox from '../ui/WhiteBox';
 
 enum ToggleStatus {
   EMPLOYEES = '근무자 보기',
@@ -78,26 +81,27 @@ const MyWorkPlaceDetail = () => {
   return (
     data && (
       <VStack className='m-6 gap-4 h-full'>
-        <VStack className='border border-gray-300 rounded-md items-center justify-center gap-3 py-2'>
-          <button className='flex items-center gap-3 text-sm'>
-            {`${year}년 ${month}월 ${isCurrentDate(currentDate, year, month) ? '예정' : '확정'} 인건비`}{' '}
-            <FaAngleDown />
-          </button>
+        <WhiteBox border>
+          <VStack className='items-center justify-center gap-3 py-5'>
+            <VStack className='px-3 w-full justify-between items-center'>
+              <HStack className='gap-2 items-center'>
+                <WorkPlaceName
+                  name={data.workPlaceName}
+                  colorType={data.workPlaceColor}
+                />
+                <div className='text-sm text-gray-400 ho'>{`총 ${data.employeeList.length}명`}</div>
+              </HStack>
 
-          <HStack className='px-3 w-full justify-between items-center'>
-            <div className='w-1/12'>
-              <ColorCircle workPlaceColor={data.workPlaceColor} />
-            </div>
-            <VStack className='text-start w-4/12'>
-              <div className='font-bold text-ellipsis overflow-hidden whitespace-nowrap'>{`${data.workPlaceName}`}</div>
-              <div className='text-sm text-gray-400 ho'>{`총 ${data.employeeList.length}명`}</div>
+              <HStack className='text-nowrap items-end text-2xl font-bold py-1'>
+                {data.payment.toLocaleString()} 원
+              </HStack>
             </VStack>
-
-            <HStack className='text-nowrap items-end w-5/12'>
-              {data.payment.toLocaleString()} 원
-            </HStack>
-          </HStack>
-        </VStack>
+            <button className='flex items-center gap-3 text-sm'>
+              {`${year}년 ${month}월 ${isCurrentDate(currentDate, year, month) ? '예정' : '확정'} 인건비`}{' '}
+              <FaAngleDown />
+            </button>
+          </VStack>
+        </WhiteBox>
 
         <NavToggle
           selectedTab={selectedToggle}
@@ -113,15 +117,28 @@ const MyWorkPlaceDetail = () => {
 
         {selectedToggle === ToggleStatus.EMPLOYEES && (
           <>
-            <div className='flex flex-col border border-gray-300 rounded-lg max-h-96 overflow-y-scroll'>
+            <div className='flex flex-col gap-1'>
               {data.employeeList.map((employee) => (
-                <WorkEmployeeListView
+                <WorkPlaceNameBox
+                  className='hover:bg-[#f2ebf2]'
                   key={employee.workPlaceEmployeeId}
-                  employeeInfo={employee}
-                  placeId={data.workPlaceId}
-                />
+                  workPlaceName={employee.employeeName}
+                  colorType={data.workPlaceColor}
+                  arrowText={`${employee.payment.toLocaleString()}원`}
+                  arrow
+                  onClick={() => {
+                    navigate(
+                      `/owner/myWorkPlaces/${data.workPlaceId}/employees/${employee.workPlaceEmployeeId}`
+                    );
+                  }}
+                >
+                  <div className='flex justify-start text-sm text-gray-400'>
+                    {`근무 시작 ${employee.workStartDate}`}
+                  </div>
+                </WorkPlaceNameBox>
               ))}
             </div>
+
             <button
               onClick={() => onClickAddEmployee(data.workPlaceName)}
               className='bg-hanaLightGreen gap-2 py-1 px-2 mt-2 flex items-center rounded-lg text-white self-end'
