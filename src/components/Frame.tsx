@@ -1,14 +1,15 @@
 import { ReactNode } from 'react';
-import Nav from './Nav';
 import ToolBarLink from './ui/ToolBarLink';
 import { EmployeeMenuList } from '../pages/employee/datas';
 import Footer from './Footer';
+import Nav from './Nav';
 
 type Prop = {
   children: ReactNode;
   navTitle?: string;
   option?: boolean;
   toolBar?: boolean;
+  footer?: boolean;
 };
 
 const Frame = ({
@@ -16,6 +17,7 @@ const Frame = ({
   navTitle = '알바ON',
   option = true,
   toolBar = false,
+  footer = false,
 }: Prop) => {
   return (
     <div className='h-[100vh]'>
@@ -28,8 +30,8 @@ const Frame = ({
         }}
       >
         <div className='flex-grow flex flex-col items-center w-full  '>
-          <div className='flex-grow min-h-[90%] w-[90%] '>{children}</div>
-          <Footer />
+          <div className='flex-grow min-h-[90%] w-[90%] pb-5 '>{children}</div>
+          {footer && <Footer />}
         </div>
       </div>
     </div>
