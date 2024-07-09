@@ -30,12 +30,14 @@ import WorkEmployeeAddComplete from './components/owner-workplace/WorkEmployeeAd
 import OwnerGreeting from './pages/LandingPage/OwnerGreeting';
 import OwnerAddMainAccount from './pages/LandingPage/OwnerAddMainAccount';
 import LoginPage from './pages/LoginPgae/LoginPage';
+import AddWorkPlace from './pages/owner/AddWorkPlace';
 
 function App() {
   return (
     <>
       <Routes>
         <Route path='/' element={<LandingPage />} />
+        <Route path='hi' element={<AddWorkPlace />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/test' element={<Test />} />
         {/* <Route path='/ui' element={<UiTest />} /> */}
