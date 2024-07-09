@@ -1,14 +1,13 @@
 import { useNavigate } from 'react-router-dom';
-import BtnBottom from '../../../components/BtnBottom';
 import Frame from '../../../components/Frame';
 import ReturnArrow from '../../../components/ui/ReturnArrow';
 import ModalBottom from '../../../components/ModalBottom';
 import { useEffect, useRef, useState } from 'react';
 import InputBorderSelect from '../../../components/InputBorderSelect';
-import InputBorder from '../../../components/InputBorder';
 import ApiClient from '../../../api/apiClient';
 import ModalCenter from '../../../components/ModalCenter';
 import { BankList } from '../datas';
+import BtnBottom from '../../../components/BtnBottom';
 
 const EditMyPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

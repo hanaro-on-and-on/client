@@ -2,11 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import Frame from '../../../components/Frame';
 import InputBorder from '../../../components/InputBorder';
 import ReturnArrow from '../../../components/ui/ReturnArrow';
-import BtnBottom from '../../../components/BtnBottom';
 import { useNavigate } from 'react-router-dom';
 import ApiClient from '../../../api/apiClient';
 import ModalCenter from '../../../components/ModalCenter';
 import { SELECTED_TAB } from './PaymentMain';
+import BtnBottom from '../../../components/BtnBottom';
 
 const ManualWorkPlaceAddition = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);

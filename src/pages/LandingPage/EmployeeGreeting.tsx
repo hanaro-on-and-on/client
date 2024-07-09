@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import BtnBottom from '../../components/BtnBottom';
 import Frame from '../../components/Frame';
+import BtnBottom from '../../components/BtnBottom';
 
 const EmployeeGreeting = () => {
   const navigation = useNavigate();
