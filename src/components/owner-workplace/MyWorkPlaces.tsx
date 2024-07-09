@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { VStack } from '../ui/Stack';
-import { FaAngleDown } from 'react-icons/fa6';
+import { HStack, VStack } from '../ui/Stack';
+import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 import MyWorkPlaceListView from './MyWorkPlaceListView';
 import {
   AiOutlineExclamationCircle,
@@ -31,57 +31,95 @@ const MyWorkPlaces = () => {
     }
   };
 
+  const onClickDownMonth = () => {
+    if (month === 1) {
+      setYear(year - 1);
+      setMonth(12);
+    } else {
+      setMonth(month - 1);
+    }
+  };
+  const onClickUpMonth = () => {
+    if (month === 12) {
+      setYear(year + 1);
+      setMonth(1);
+    } else {
+      setMonth(month + 1);
+    }
+  };
+
   useEffect(() => {
     fetchData(year, month);
   }, [year, month]);
 
-  return data ? (
-    <VStack className='m-6'>
-      <VStack className='bg-white border border-gray-300 rounded-md items-center justify-center gap-3 p-4'>
-        <button className='bg-transparent flex items-center gap-3 text-sm'>
-          {`${year}년 ${month}월 ${isCurrentDate(currentDate, year, month) ? '예정' : '확정'} 인건비`}{' '}
-          <FaAngleDown />
+  return (
+    data && (
+      <VStack className='m-6'>
+        <VStack className='bg-white border border-gray-300 rounded-md items-center justify-center gap-3 p-4'>
+          <HStack className='items-center justify-center gap-4'>
+            <button className='bg-white' onClick={onClickDownMonth}>
+              <FaAngleLeft />
+            </button>
+            <div className='text-sm'>
+              {`${year}년 ${month}월 ${isCurrentDate(currentDate, year, month) ? '예정' : '확정'} 인건비`}{' '}
+              {/* <FaAngleDown /> */}
+            </div>
+            <button className='bg-white' onClick={onClickUpMonth}>
+              <FaAngleRight />
+            </button>
+          </HStack>
+          <div className='text-2xl'>{`총 ${data.totalPayment.toLocaleString()} 원`}</div>
+        </VStack>
+
+        {data.workPlaceList.length === 0 ? (
+          <VStack className='flex items-center text-gray-300 m-16'>
+            <AiOutlineExclamationCircle className='h-full text-9xl' />
+            <span className='text-xl text-center'>
+              등록된 사업장이 없습니다.
+            </span>
+            <span className='text-2xl text-center'>사업장을 등록해주세요</span>
+          </VStack>
+        ) : (
+          <VStack className='ListView mt-7 gap-2'>
+            {data?.workPlaceList.map((item) => (
+              <MyWorkPlaceListView
+                key={item.workPlaceId}
+                length={item.employeeList.length}
+                {...item}
+              />
+            ))}
+          </VStack>
+        )}
+        <button
+          className='bg-hanaLightGreen gap-2 py-1 px-2 mt-2 flex items-center rounded-lg text-white self-end'
+          onClick={onClickAddPlace}
+        >
+          <AiOutlinePlusCircle />
+          <div>사업장 추가</div>
         </button>
-        <div className='text-2xl'>{`총 ${data.totalPayment.toLocaleString()} 원`}</div>
-      </VStack>
 
-      <VStack className='ListView mt-7 gap-2'>
-        {data?.workPlaceList.map((item) => (
-          <MyWorkPlaceListView
-            key={item.workPlaceId}
-            length={item.employeeList.length}
-            {...item}
-          />
-        ))}
-      </VStack>
-      <button
-        className='bg-hanaLightGreen gap-2 py-1 px-2 mt-2 flex items-center rounded-lg text-white self-end'
-        onClick={onClickAddPlace}
-      >
-        <AiOutlinePlusCircle />
-        <div>사업장 추가</div>
-      </button>
-
-      {/* {data.ownerSalaryEmployeeListGetResponseList.map((item) =>
+        {/* {data.ownerSalaryEmployeeListGetResponseList.map((item) =>
 
       )} */}
-    </VStack>
-  ) : (
-    <VStack className='m-6 gap-60'>
-      <button
-        className='bg-hanaLightGreen gap-2 py-1 px-2 mt-2 flex items-center rounded-lg text-white self-end'
-        onClick={onClickAddPlace}
-      >
-        <AiOutlinePlusCircle />
-        <div>사업장 추가</div>
-      </button>
-      <VStack className='flex items-center text-gray-300'>
-        <AiOutlineExclamationCircle className='h-full text-9xl' />
-        <span className='text-xl text-center'>등록된 사업장이 없습니다.</span>
-        <span className='text-2xl text-center'>사업장을 등록해주세요</span>
       </VStack>
-    </VStack>
+    )
   );
+  // : (
+  //   <VStack className='m-6 gap-60'>
+  //     <button
+  //       className='bg-hanaLightGreen gap-2 py-1 px-2 mt-2 flex items-center rounded-lg text-white self-end'
+  //       onClick={onClickAddPlace}
+  //     >
+  //       <AiOutlinePlusCircle />
+  //       <div>사업장 추가</div>
+  //     </button>
+  //     <VStack className='flex items-center text-gray-300'>
+  //       <AiOutlineExclamationCircle className='h-full text-9xl' />
+  //       <span className='text-xl text-center'>등록된 사업장이 없습니다.</span>
+  //       <span className='text-2xl text-center'>사업장을 등록해주세요</span>
+  //     </VStack>
+  //   </VStack>
+  // );
 };
 
 export default MyWorkPlaces;
