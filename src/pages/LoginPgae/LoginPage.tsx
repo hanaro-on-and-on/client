@@ -4,6 +4,7 @@ import BtnBottom from '../../components/BtnBottom';
 import login, { LoginReturnType, ROLE } from '../../components/login';
 import ModalCenter from '../../components/ModalCenter';
 import { useNavigate } from 'react-router-dom';
+import DetailWorkInfo from '../../components/employee/DetailWorkInfo';
 
 const LoginPage = () => {
   const [pwErr, pwIdErr] = useState<string>('');
@@ -51,7 +52,7 @@ const LoginPage = () => {
       )}
       <Frame navTitle='로그인'>
         <div className='w-full h-full flex flex-col gap-10 my-10 justify-between'>
-          <div className='flex flex-col gap-3 h-full'>
+          <div className='flex flex-col gap-3 '>
             <div className='text-2xl font-bold mb-3'>Log-in</div>
             <div className='text-gray-300 text-sm mb-10'>
               간편 비밀번호를 입력해주세요
@@ -67,6 +68,7 @@ const LoginPage = () => {
               <span className='text-red-500 text-sm'>{pwErr}</span>
             </div>
           </div>
+
           <BtnBottom text='로그인' action={onLogin} />
         </div>
       </Frame>
