@@ -20,7 +20,7 @@ const WhiteBox = ({
   return (
     <>
       <div
-        className={clsx(`flex flex-col bg-white px-5 rounded-xl ${className}`, {
+        className={clsx(`flex flex-col bg-white px-5 rounded-lg ${className}`, {
           'border border-gray-200': border,
           'drop-shadow-sm': dropShadow,
         })}

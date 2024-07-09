@@ -29,7 +29,7 @@ const WorkPlaceNameBox = ({
     <button
       onClick={onClick}
       className={clsx(
-        `flex flex-col bg-white w-full rounded-xl border border-gray-200 ${className}`
+        `flex flex-col bg-white w-full rounded-lg border border-gray-200 ${className}`
       )}
     >
       <div
