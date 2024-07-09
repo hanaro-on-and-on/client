@@ -148,7 +148,7 @@ const WorkPlaceAdd = () => {
             placeholder='정확한 상호명을 입력해주세요.'
           />
           <VStack
-            className={`border-2 border-gray-300  focus-within:border-hanaLightGreen rounded-xl p-5 shadow-lg gap-2 transition-all duration-300`}
+            className={`border-2 border-gray-300 bg-white  focus-within:border-hanaLightGreen rounded-xl p-5 shadow-lg gap-2 transition-all duration-300`}
           >
             <label htmlFor='startDate' className='font-semibold text-left'>
               개업일

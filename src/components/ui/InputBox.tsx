@@ -40,7 +40,7 @@ const InputBox = (props: PropsWithChildren<InputBoxProps>) => {
 
   return (
     <VStack
-      className={`border-2 border-gray-300  focus-within:border-hanaLightGreen  rounded-xl p-5 shadow-lg gap-2 transition-all duration-300`}
+      className={`border-2 bg-white border-gray-300  focus-within:border-hanaLightGreen  rounded-xl p-5 shadow-lg gap-2 transition-all duration-300`}
     >
       <div
         className={`text-left font-bold ${isFocused ? 'text-lg' : 'text-md'}`}
@@ -50,7 +50,7 @@ const InputBox = (props: PropsWithChildren<InputBoxProps>) => {
       <div>
         {children || (
           <input
-            className={`w-full border-gray-300 ${getClassNameByType(type)} focus:outline-none focus:border-hanaLightGreen`}
+            className={`w-full bg-transparent border-gray-300 ${getClassNameByType(type)} focus:outline-none focus:border-hanaLightGreen`}
             value={value}
             type={valueType}
             onChange={onChange}

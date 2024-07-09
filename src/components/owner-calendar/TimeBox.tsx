@@ -42,7 +42,7 @@ const TimeBox = (props: TimeBoxProps) => {
         <div className='font-semibold text-sm me-3'>휴게 시간</div>
         <div>
           <input
-            className='max-w-16 border-b-2 border-b-gray-400 font-bold items-center'
+            className='max-w-16 bg-transparent border-b-2 border-b-gray-400 font-bold items-center'
             type={'number'}
             value={restMinutes}
             onChange={onChangeRestMinute}

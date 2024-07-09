@@ -77,7 +77,7 @@ const KakaoPostcode = ({
 
   return (
     <div>
-      <VStack className='border-2 border-gray-300  focus-within:border-hanaLightGreen rounded-xl p-5 shadow-lg gap-4 transition-all duration-300'>
+      <VStack className='bg-white border-2 border-gray-300  focus-within:border-hanaLightGreen rounded-xl p-5 shadow-lg gap-4 transition-all duration-300'>
         <div className='text-left font-bold'>주소</div>
         <HStack className='justify-between'>
           <input

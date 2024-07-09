@@ -26,7 +26,7 @@ const Select = ({ options, selectedId, onSelect }: SelectProps) => {
   return (
     <div className='w-full'>
       <button
-        className='w-full bg-white border-b border-b-hanaLightGreen flex flex-row gap-2 justify-between items-center'
+        className='w-full bg-transparent border-b border-b-hanaLightGreen flex flex-row gap-2 justify-between items-center'
         onClick={() => setShowList(!showList)}
       >
         <div className='flex flex-row h-10 w-full items-center'>
