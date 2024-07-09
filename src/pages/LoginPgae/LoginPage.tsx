@@ -56,7 +56,6 @@ const LoginPage = () => {
             <div className='text-gray-300 text-sm mb-10'>
               간편 비밀번호를 입력해주세요
             </div>
-
             <div>
               <input
                 placeholder='비밀번호'
