@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import ApiClient from '../api/apiClient';
+import { convertPhoneNum } from '../utils/convert-phone-num';
 
 type Prop = {
   contractId: number;
@@ -80,7 +81,7 @@ const Contract = ({ contractId }: Prop) => {
                 나의 연락처
               </td>
               <td className='border border-gray-200 px-4 py-2  text-end'>
-                {contract?.employeePhone}
+                {convertPhoneNum(contract?.employeePhone)}
               </td>
             </tr>
             <tr>

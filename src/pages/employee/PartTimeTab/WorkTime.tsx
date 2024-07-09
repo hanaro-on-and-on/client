@@ -140,7 +140,7 @@ const WorkTime = () => {
             ) : (
               <WhiteBox>
                 <div className='flex h-[55px] items-center justify-center text-gray-500 text-sm'>
-                  등록된 매장이 없습니다
+                  연동 요청이 없습니다
                 </div>
               </WhiteBox>
             )}

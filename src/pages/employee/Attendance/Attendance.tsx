@@ -146,12 +146,12 @@ const Attendance = () => {
       )}
 
       <Frame navTitle='알바ON' toolBar footer>
-        <div className='w-full flex flex-col gap-10 mt-7'>
+        <div className='w-full flex flex-col gap-10'>
           {/* 오늘 출근 목록 */}
           <Wrapper title='오늘 출근 목록'>
             <div className='flex flex-col gap-1'>
-              {attendances &&
-                attendances.works.map((item, index) => (
+              {attendances && attendances.works?.length > 0 ? (
+                attendances?.works.map((item, index) => (
                   <WhiteBox
                     key={item.workPlaceEmployeeId}
                     border
@@ -203,15 +203,22 @@ const Attendance = () => {
                       )}
                     </div>
                   </WhiteBox>
-                ))}
+                ))
+              ) : (
+                <WhiteBox>
+                  <div className='flex h-[55px] items-center justify-center text-gray-500 text-sm'>
+                    오늘 출근 일정이 없습니다
+                  </div>
+                </WhiteBox>
+              )}
               {!attendances && <PulseAttendance />}
             </div>
           </Wrapper>
           {/* 전체 출근 목록 */}
           <Wrapper title='전체 출근 목록'>
             <div className='flex flex-col gap-1'>
-              {attendances &&
-                attendances.totalWorks?.map((item) => (
+              {attendances && attendances.totalWorks?.length > 0 ? (
+                attendances?.totalWorks?.map((item) => (
                   <WhiteBox key={item.workPlaceEmployeeId} border>
                     <button
                       type='button'
@@ -238,7 +245,14 @@ const Attendance = () => {
                       </div>
                     </button>
                   </WhiteBox>
-                ))}
+                ))
+              ) : (
+                <WhiteBox>
+                  <div className='flex h-[55px] items-center justify-center text-gray-500 text-sm'>
+                    다른 출근 일정이 없습니다
+                  </div>
+                </WhiteBox>
+              )}
               {!attendances && (
                 <div className='flex flex-col gap-2'>
                   <PulseWorkPlace />
