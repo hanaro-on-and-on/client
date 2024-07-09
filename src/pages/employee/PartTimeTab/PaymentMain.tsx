@@ -36,8 +36,7 @@ const PaymentMain = () => {
 
   return (
     <>
-      <Frame navTitle='알바ON'>
-        <ToolBarLink options={EmployeeMenuList} />
+      <Frame navTitle='알바ON' toolBar>
         <div className='w-full flex flex-col  items-center gap-5 mt-7'>
           {/* 토글 버튼 */}
           <NavToggle
