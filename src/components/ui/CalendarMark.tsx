@@ -1,5 +1,5 @@
 import calculateDailyWage from '../../utils/get-DailyPay';
-import { getColor } from '../../utils/get-color';
+import { getBorderColor, getColor } from '../../utils/get-color';
 import { HStack } from './Stack';
 
 type CalendarMarkProps = {
@@ -17,9 +17,11 @@ const CalendarMark = (props: CalendarMarkProps) => {
 
   return (
     <div
-      className={`flex flex-row rounded-lg border gap-0.5 border-red-300 text-2xs items-left`}
+      className={`flex flex-row rounded-lg border gap-0.5 ${getBorderColor(workPlaceColor)} text-2xs items-left`}
     >
-      <div className='font-semibold bg-red-300 rounded-lg pr-1'>
+      <div
+        className={`font-semibold ${getColor(workPlaceColor)} rounded-lg pr-1`}
+      >
         {employeeSize}
       </div>
       <span className='font-semibold'>{payment.toLocaleString()}</span>

@@ -53,3 +53,30 @@ export function getTextColor(colorType: string) {
       return 'text-violet-200';
   }
 }
+
+export function getBorderColor(colorType: string) {
+  switch (colorType) {
+    case '01':
+      return 'border-red-200';
+    case '02':
+      return 'border-lime-200';
+    case '03':
+      return 'border-yellow-200 ';
+    case '04':
+      return 'border-blue-100';
+    case '05':
+      return 'border-emerald-200';
+    case '06':
+      return 'border-slate-200';
+    case '07':
+      return 'border-cyan-200';
+    case '08':
+      return 'border-pink-100';
+    case '09':
+      return 'border-fuchsia-100';
+    case '10':
+      return 'border-violet-100';
+    default:
+      return 'border-violet-200';
+  }
+}
