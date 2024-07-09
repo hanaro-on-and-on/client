@@ -12,6 +12,8 @@ import ToolBarLink from '../../../components/ui/ToolBarLink';
 import { EmployeeMenuList } from '../datas';
 import ModalCenter from '../../../components/ModalCenter';
 import BtnDanger from '../../../components/\bBtnDanger';
+import PulseAttendance from '../../../components/PulseAttendance';
+import PulseWorkPlace from '../../../components/ui/PulseWorkPlace';
 
 enum AttendanceStatus {
   WORKING = 'working',
@@ -85,7 +87,7 @@ const Attendance = () => {
           openModal('출석할 수 없습니다.\n 가까운 위치에서 다시 시도해주세요');
           return;
         }
-        window.location.reload();
+        getAttendanceList();
       }
     } catch (err) {
       console.log(err);
@@ -139,18 +141,18 @@ const Attendance = () => {
           <div>{modalMsg}</div>
         </ModalCenter>
       )}
-      {attendances && (
-        <Frame navTitle='알바ON'>
-          <ToolBarLink options={EmployeeMenuList} />
-          <div className='w-full flex flex-col gap-10 mt-7'>
-            {/* 오늘 출근 목록 */}
-            <Wrapper title='오늘 출근 목록'>
-              <div>
-                {attendances?.works.map((item, index) => (
+
+      <Frame navTitle='알바ON' toolBar>
+        <div className='w-full flex flex-col gap-10 mt-7'>
+          {/* 오늘 출근 목록 */}
+          <Wrapper title='오늘 출근 목록'>
+            <div>
+              {attendances &&
+                attendances.works.map((item, index) => (
                   <WhiteBox
                     key={item.workPlaceEmployeeId}
                     border
-                    className='py-5'
+                    className='py-5 '
                   >
                     <div className='flex flex-col gap-1 text-start'>
                       <button
@@ -197,12 +199,14 @@ const Attendance = () => {
                     </div>
                   </WhiteBox>
                 ))}
-              </div>
-            </Wrapper>
-            {/* 전체 출근 목록 */}
-            <Wrapper title='전체 출근 목록'>
-              <div className='flex flex-col gap-1'>
-                {attendances?.totalWorks?.map((item) => (
+              {!attendances && <PulseAttendance />}
+            </div>
+          </Wrapper>
+          {/* 전체 출근 목록 */}
+          <Wrapper title='전체 출근 목록'>
+            <div className='flex flex-col gap-1'>
+              {attendances &&
+                attendances.totalWorks?.map((item) => (
                   <WhiteBox key={item.workPlaceEmployeeId} border>
                     <button
                       type='button'
@@ -230,11 +234,17 @@ const Attendance = () => {
                     </button>
                   </WhiteBox>
                 ))}
-              </div>
-            </Wrapper>
-          </div>
-        </Frame>
-      )}
+              {!attendances && (
+                <div className='flex flex-col gap-2'>
+                  <PulseWorkPlace />
+                  <PulseWorkPlace />
+                  <PulseWorkPlace />
+                </div>
+              )}
+            </div>
+          </Wrapper>
+        </div>
+      </Frame>
     </>
   );
 };
