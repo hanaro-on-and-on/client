@@ -173,7 +173,9 @@ const Attendance = () => {
                       {item.notice.length > 0 && (
                         <div className='border rounded-sm text-sm border-hanaLightGreen px-3 py-1 mb-2'>
                           <div className='flex font-semibold '>
-                            <span className='pr-1'>[{item.workPlaceName}]</span>
+                            <span className='pr-1'>
+                              📢 [{item.workPlaceName}]
+                            </span>
                             <span>{item?.notice[0].title}</span>
                           </div>
                           {` ${item?.notice[0].content}`}
