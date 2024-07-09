@@ -11,9 +11,9 @@ type Prop = {
   center?: boolean;
   hover?: boolean;
   arrow?: boolean;
-  children?: ReactNode;
+  children?: ReactNode | string;
 };
-const WorkPlaceNameBox = ({
+const HWorkPlaceNameBox = ({
   workPlaceName,
   colorType,
   children,
@@ -23,28 +23,27 @@ const WorkPlaceNameBox = ({
   return (
     <WhiteBox border className='hover:bg-[#f2ebf2]'>
       <div
-        className={clsx('flex py-5 justify-between', {
+        className={clsx('flex py-5 justify-between items-center', {
           'justify-center': center,
         })}
       >
-        <div className='flex flex-col gap-1 justify-center'>
-          {/* 매장명 */}
-          {workPlaceName !== undefined && colorType ? (
-            <WorkPlaceName name={workPlaceName} colorType={colorType} />
-          ) : (
-            <PulseWorkPlaceName />
-          )}
-          {children && <div>{children}</div>}
-        </div>
-
-        {arrow && (
-          <div className='flex items-center justify-end'>
-            <FaAngleRight />
-          </div>
+        {/* 매장명 */}
+        {workPlaceName !== undefined && colorType ? (
+          <WorkPlaceName name={workPlaceName} colorType={colorType} />
+        ) : (
+          <PulseWorkPlaceName />
         )}
+        <div className='flex justify-between items-center gap-1'>
+          {children && <div>{children}</div>}
+          {arrow && (
+            <div className='flex items-center justify-end'>
+              <FaAngleRight />
+            </div>
+          )}
+        </div>
       </div>
     </WhiteBox>
   );
 };
 
-export default WorkPlaceNameBox;
+export default HWorkPlaceNameBox;
