@@ -23,7 +23,9 @@ const Frame = ({
       {toolBar && <ToolBarLink options={EmployeeMenuList} />}
       <div
         className='flex flex-col items-center overflow-y-scroll '
-        style={{ height: 'calc(100vh - 110px)' }}
+        style={{
+          height: !toolBar ? 'calc(100vh - 60px)' : 'calc(100vh - 110px)',
+        }}
       >
         <div className='flex-grow flex flex-col items-center w-full  '>
           <div className='flex-grow min-h-[90%] w-[90%] '>{children}</div>

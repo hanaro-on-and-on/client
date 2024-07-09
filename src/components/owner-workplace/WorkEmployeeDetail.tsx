@@ -1,7 +1,6 @@
 import { useParams } from 'react-router-dom';
 import NavToggle from '../NavToggle';
 import { useState } from 'react';
-import PayStub from '../../pages/employee/PartTimeTab/PayStub';
 import { HStack, VStack } from '../ui/Stack';
 import OwnerPayStub from './OwnerPayStub';
 import WorkPlaceName from '../ui/WorkPlaceName';
