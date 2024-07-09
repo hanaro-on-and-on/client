@@ -554,7 +554,7 @@ class ApiClient implements employeeApi, userApi, ownerApi {
       }
       config.headers['Content-Type'] = 'application/json';
       // config.headers['Authorization'] =
-      //   `Bearer ${import.meta.env.VITE_ACCESS_TOKEN}`;
+      // `Bearer ${import.meta.env.VITE_ACCESS_TOKEN}`;
       // config.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173';
       return config;
     });

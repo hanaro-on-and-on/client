@@ -105,7 +105,7 @@ const EmployeeAddMainAccount = () => {
         </ModalBottom>
       )}
       <Frame>
-        <div className='flex flex-col justify-between w-full h-full py-5 gap-2'>
+        <div className='flex flex-col justify-between w-full h-full pt-5 gap-2'>
           <Wrapper title='알바생 대표 계좌 등록'>
             <div className=' flex flex-col justify-start gap-2'>
               {/* 이름 */}
