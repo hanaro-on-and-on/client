@@ -8,6 +8,8 @@ import ApiClient from '../../../api/apiClient';
 import Contract from '../../../components/Contract';
 import ModalCenter from '../../../components/ModalCenter';
 import PulseAttendance from '../../../components/ui/PulseAttendance';
+import { convertPhoneNum } from '../../../utils/convert-phone-num';
+import { convertAccountNum } from '../../../utils/convert-account-num';
 
 const MyPage = () => {
   const navigation = useNavigate();
@@ -93,12 +95,16 @@ const MyPage = () => {
                 {/* 전화번호 */}
                 <div className='flex justify-between'>
                   <div>전화번호</div>
-                  <div className='text-gray-400'>{myInfo?.phoneNumber}</div>
+                  <div className='text-gray-400'>
+                    {convertPhoneNum(myInfo?.phoneNumber)}
+                  </div>
                 </div>
                 {/* 계좌번호 */}
                 <div className='flex justify-between'>
                   <div>계좌번호</div>
-                  <div className='text-gray-400'>{myInfo?.accountNumber}</div>
+                  <div className='text-gray-400'>
+                    {convertAccountNum(myInfo?.accountNumber)}
+                  </div>
                 </div>
               </div>
             </WhiteBox>
