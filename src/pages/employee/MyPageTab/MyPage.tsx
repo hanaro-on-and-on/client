@@ -8,6 +8,8 @@ import ApiClient from '../../../api/apiClient';
 import ModalBottom from '../../../components/ModalBottom';
 import ToolBarLink from '../../../components/ui/ToolBarLink';
 import { EmployeeMenuList } from '../datas';
+import Contract from '../../../components/Contract';
+import ModalCenter from '../../../components/ModalCenter';
 
 const MyPage = () => {
   const navigation = useNavigate();
@@ -69,91 +71,15 @@ const MyPage = () => {
   return (
     <>
       {isModalOpen && paperDetail && (
-        <ModalBottom
-          title='근로계약서'
+        <ModalCenter
           closeModal={closeModal}
-          btnBottom
-          btnText='확인'
-          action={closeModal}
+          confirmText='확인'
+          confirmAction={closeModal}
+          className='w-[90%] h-[70%]'
+          title='근로 계약서'
         >
-          <div className='flex flex-col gap-3 mb-5 text-sm max-h-[450px] overflow-y-scroll'>
-            <div className='flex justify-between w-full pt-5'>
-              <div className='font-semibold text-start'>근무지</div>
-              <div>
-                <WorkPlaceName
-                  name={paperDetail?.workPlaceName}
-                  colorType='02'
-                />
-              </div>
-            </div>
-            <div className='flex justify-between w-full'>
-              <div className='font-semibold text-start'>근무지 주소</div>
-              <div>{paperDetail?.workSite}</div>
-            </div>
-            <div className='flex justify-between w-full'>
-              <div className='font-semibold text-start'>근무 내용</div>
-              <div>{paperDetail?.workDetail}</div>
-            </div>
-            <div className='flex justify-between w-full'>
-              <div className='font-semibold text-start'>근무 시작일</div>
-              <div>
-                {paperDetail.workStartDate
-                  .toString()
-                  .substring(
-                    0,
-                    paperDetail.workStartDate.toString().indexOf('T')
-                  )}
-              </div>
-            </div>
-
-            <div className='flex justify-between'>
-              <div className='font-semibold text-start'>나의 주소</div>
-              <div>{paperDetail?.employeeAddress}</div>
-            </div>
-            <div className='flex justify-between gap-10'>
-              <div className='font-semibold text-start'>나의 연락처</div>
-              <div>{paperDetail?.employeePhone}</div>
-            </div>
-            <div className='flex justify-between w-full'>
-              <div className='font-semibold text-start'>휴무일</div>
-              <div>{paperDetail?.restDayOfWeek}</div>
-            </div>
-            <div className='flex justify-between w-full'>
-              <div className='font-semibold text-start'>시급</div>
-              <div>{paperDetail?.payPerHour.toLocaleString()}원</div>
-            </div>
-            <div className='flex justify-between w-full'>
-              <div className='font-semibold text-start'>급여일</div>
-              <div>{paperDetail?.paymentDay}일</div>
-            </div>
-
-            <div className='flex  justify-between w-full'>
-              <div className='font-semibold text-start mb-2'>근무일</div>
-              <div className='flex flex-col gap-3 justify-between'>
-                {paperDetail?.workTimes?.map((item) => {
-                  return (
-                    <div
-                      key={item.workDayOfWeek}
-                      className='flex justify-between'
-                    >
-                      <div className='text-start pr-3'>
-                        {item.workDayOfWeek}
-                      </div>
-                      <div className='flex flex-col'>
-                        <div>
-                          근무시간 {item.workStartTime} - {item.workEndTime}
-                        </div>
-                        <div>
-                          휴게시간 {item.restStartTime} - {item.restEndTime}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </ModalBottom>
+          <Contract contractId={paperDetail.employmentContractId} />
+        </ModalCenter>
       )}
       <Frame navTitle='알바ON'>
         <ToolBarLink options={EmployeeMenuList} />

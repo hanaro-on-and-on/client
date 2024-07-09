@@ -105,30 +105,32 @@ const WorkTime = () => {
       )}
       <div className='w-full flex flex-col gap-10'>
         <Wrapper title='연동 요청'>
-          {workPlaceList?.invitatedWorkPlaceList?.length > 0
-            ? workPlaceList.invitatedWorkPlaceList.map((item, index) => (
-                <WhiteBox
-                  className='py-3'
-                  border
-                  key={item.employmentContractId + String(index)}
-                >
-                  <div className='flex justify-between items-center'>
-                    <WorkPlaceName
-                      name={item.workPlaceName}
-                      colorType={item.colorCodeType}
-                    />
-                    <BtnBorder
-                      color='green'
-                      text='서명 요청'
-                      onClick={() => {
-                        setCurrSignContractId(item.employmentContractId);
-                        setModalCenterOpen(true);
-                      }}
-                    />
-                  </div>
-                </WhiteBox>
-              ))
-            : '연동된 매장이 없습니다'}
+          <div className='flex flex-col gap-1'>
+            {workPlaceList?.invitatedWorkPlaceList?.length > 0
+              ? workPlaceList.invitatedWorkPlaceList.map((item, index) => (
+                  <WhiteBox
+                    className='py-3'
+                    border
+                    key={item.employmentContractId + String(index)}
+                  >
+                    <div className='flex justify-between items-center'>
+                      <WorkPlaceName
+                        name={item.workPlaceName}
+                        colorType={item.colorCodeType}
+                      />
+                      <BtnBorder
+                        color='green'
+                        text='서명 요청'
+                        onClick={() => {
+                          setCurrSignContractId(item.employmentContractId);
+                          setModalCenterOpen(true);
+                        }}
+                      />
+                    </div>
+                  </WhiteBox>
+                ))
+              : '연동된 매장이 없습니다'}
+          </div>
         </Wrapper>
 
         {/* 사장님과 연동 */}
