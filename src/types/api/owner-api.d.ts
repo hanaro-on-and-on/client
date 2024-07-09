@@ -170,3 +170,25 @@ type OwnerConfirmPayment = {
 type OwnerConfirmPaymentResponse = {
   salaryTransferReserveId: number;
 };
+
+// 사장님 - 근무 세부 조회
+type AttendanceResponse = {
+  attendanceId: number;
+  workPlaceEmployeeId: number;
+  payPerHour: number;
+  startTime: Date;
+  endTime: Date;
+  restMinute: number;
+};
+
+// 사장님 - 근무 수정
+type UpdateAttendanceRequest = {
+  workPlaceEmployeeId: number;
+  payPerHour: number; // 시급
+  startTime: string; // 시작 시간
+  endTime: string; // 끝 시간
+  restMinute: number;
+};
+type UpdateAttendanceResponse = {
+  attendanceId: number;
+};

@@ -3,7 +3,6 @@ import InputBox from '../ui/InputBox';
 import { Spacer, VStack } from '../ui/Stack';
 import TimeBox from './TimeBox';
 import Select from './Select';
-import { getTimeString } from '../../utils/get-TimeString';
 import { MINIMUM_PAY_PER_HOUR } from '../../utils/const-value';
 import ModalCenter from '../ModalCenter';
 import { useNavigate, useParams } from 'react-router-dom';

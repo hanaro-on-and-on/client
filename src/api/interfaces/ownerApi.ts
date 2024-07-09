@@ -42,6 +42,7 @@ interface ownerApi {
 
   // 사장님 - 알림 삭제
   deleteNotice(workPlaceId: number, id: number): Promise<DeleteNoticeResponse>;
+
   OwnerGetEmployeeAccountInfo(
     workPlaceEmployeeId: number
   ): Promise<OwnerGetEmployeeAccountInfo>;
@@ -50,5 +51,13 @@ interface ownerApi {
     payStubId: number,
     request: OwnerConfirmPayment
   ): Promise<OwnerConfirmPaymentResponse>;
+
+  // 사장님 - 근무 세부 조회
+  getAttendance(id: number): Promise<AttendanceResponse>;
+  // 사장님 - 근무 수정
+  updateAttendance(
+    id: number,
+    request: UpdateAttendanceRequest
+  ): Promise<UpdateAttendanceResponse>;
 }
 export default ownerApi;

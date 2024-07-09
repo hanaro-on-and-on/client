@@ -539,6 +539,29 @@ class ApiClient implements employeeApi, userApi, ownerApi {
     return response.data;
   }
 
+  // 사장 - 근무 세부 조회
+  public async getAttendance(id: number): Promise<AttendanceResponse> {
+    const response: BaseResponse<AttendanceResponse> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `/owner/attendances/${id}`,
+      });
+    return response.data;
+  }
+  // 사장 - 근무 수정
+  public async updateAttendance(
+    id: number,
+    request: UpdateAttendanceRequest
+  ): Promise<UpdateAttendanceResponse> {
+    const response: BaseResponse<UpdateAttendanceResponse> =
+      await this.axiosInstance.request({
+        method: 'put',
+        url: `/owner/attendances/manual/${id}`,
+        data: request,
+      });
+    return response.data;
+  }
+
   //==========================
   // 생성 메소드
   private static createAxiosInstance() {
