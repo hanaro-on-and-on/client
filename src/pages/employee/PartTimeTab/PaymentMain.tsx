@@ -36,7 +36,7 @@ const PaymentMain = () => {
   return (
     <>
       <Frame navTitle='알바ON' toolBar footer>
-        <div className='w-full flex flex-col  items-center gap-5 mt-7'>
+        <div className='w-full flex flex-col  items-center gap-5 '>
           {/* 토글 버튼 */}
           <NavToggle
             selectedTab={selectedTab}

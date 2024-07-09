@@ -10,6 +10,7 @@ type Prop = {
   option?: boolean;
   toolBar?: boolean;
   footer?: boolean;
+  toolBarOption?: LinkData[];
 };
 
 const Frame = ({
@@ -18,11 +19,16 @@ const Frame = ({
   option = true,
   toolBar = false,
   footer = false,
+  toolBarOption = [],
 }: Prop) => {
   return (
     <div className='h-[100vh]'>
       {option && <Nav title={navTitle} />}
-      {toolBar && <ToolBarLink options={EmployeeMenuList} />}
+      {toolBar && (
+        <ToolBarLink
+          options={toolBarOption.length > 0 ? toolBarOption : EmployeeMenuList}
+        />
+      )}
       <div
         className='flex flex-col items-center overflow-y-scroll '
         style={{
@@ -30,7 +36,9 @@ const Frame = ({
         }}
       >
         <div className='flex-grow flex flex-col items-center w-full  '>
-          <div className='flex-grow min-h-[90%] w-[90%] pb-14 '>{children}</div>
+          <div className='flex-grow min-h-[90%] w-[90%] pt-5 pb-10 '>
+            {children}
+          </div>
           {footer && <Footer />}
         </div>
       </div>
