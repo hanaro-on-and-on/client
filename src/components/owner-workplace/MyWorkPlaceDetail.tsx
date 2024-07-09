@@ -163,8 +163,8 @@ const MyWorkPlaceDetail = () => {
               {data.employeeList.map((employee) => (
                 <WorkEmployeeListView
                   key={employee.workPlaceEmployeeId}
-                  placeId={+id}
                   employeeInfo={employee}
+                  placeId={data.workPlaceId}
                 />
               ))}
             </div>
