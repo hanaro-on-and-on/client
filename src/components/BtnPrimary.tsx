@@ -12,7 +12,7 @@ const BtnPrimary = ({ text, action, className = '' }: Prop) => {
       <button
         type='button'
         className={clsx(
-          'bg-hanaLightGreen rounded-md px-5 text-white font-semibold h-[45px] text-center',
+          'bg-hanaLightGreen rounded-md px-5 text-white font-semibold min-h-[45px] text-center',
           className
         )}
         onClick={action}
