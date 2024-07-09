@@ -82,6 +82,7 @@ type NotificationsResponseNotice = {
   createdAt: Date;
   updatedAt: Date;
 };
+
 //사장님 - 대표계좌 등록
 type OwnerAddMainAccountRequest = {
   ownerNm: string;
@@ -90,4 +91,13 @@ type OwnerAddMainAccountRequest = {
 
 type OwnerAddMainAccountResponse = {
   ownerId: number;
+};
+
+//알바생 정보 조회 ( 급여명세서 정보 조회 )
+type OwnerGetEmployeeInfo = {
+  workPlaceEmployeeId: number;
+  workPlaceName: string;
+  colorTypeCode: string;
+  employeeName: string;
+  workStartDate: string;
 };

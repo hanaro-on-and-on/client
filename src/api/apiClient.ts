@@ -398,6 +398,19 @@ class ApiClient implements employeeApi, userApi, ownerApi {
     return response.data;
   }
 
+  // 공통 - 급여 명세서 정보 조회 (알바생 정보 조회)
+  public async getEmmplyeeInfo(
+    workPlaceEmployeeId: number
+  ): Promise<OwnerGetEmployeeInfo> {
+    const respnose: BaseResponse<OwnerGetEmployeeInfo> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `/papers/pay-stubs/${workPlaceEmployeeId}/info`,
+      });
+
+    return respnose.data;
+  }
+
   //==========================
   // 생성 메소드
   private static createAxiosInstance() {
