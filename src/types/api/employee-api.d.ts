@@ -26,9 +26,9 @@ type EmployeeSalaryGetResponseList = {
   id: number | null;
   isConnected: boolean;
   isQuit: boolean;
-  payStubId: number | null;
   workPlaceName: string;
   workPlaceColorCode: string;
+  payStubStatus: 'READY' | 'COMPLETED' | 'SIGN' | 'WAITING' | null;
   payment: number;
 };
 
@@ -303,4 +303,8 @@ type EmployeeCalendarWorkPlace = {
   endDate: Date;
   restMinute: number;
   payment: number;
+};
+//계좌 목록 조회
+type AccountList = {
+  accountNumber: string;
 };

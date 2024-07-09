@@ -8,10 +8,11 @@ import { useNavigate } from 'react-router-dom';
 import ApiClient from '../../../api/apiClient';
 import { useEffect, useState } from 'react';
 import BtnGray from '../../../components/BtnGray';
-import ToolBarLink from '../../../components/ui/ToolBarLink';
-import { EmployeeMenuList } from '../datas';
+
 import ModalCenter from '../../../components/ModalCenter';
-import BtnDanger from '../../../components/\bBtnDanger';
+import BtnDanger from '../../../components/BtnDanger';
+import PulseWorkPlace from '../../../components/ui/PulseWorkPlace';
+import PulseAttendance from '../../../components/ui/PulseAttendance';
 
 enum AttendanceStatus {
   WORKING = 'working',
@@ -85,7 +86,7 @@ const Attendance = () => {
           openModal('출석할 수 없습니다.\n 가까운 위치에서 다시 시도해주세요');
           return;
         }
-        window.location.reload();
+        getAttendanceList();
       }
     } catch (err) {
       console.log(err);
@@ -139,18 +140,18 @@ const Attendance = () => {
           <div>{modalMsg}</div>
         </ModalCenter>
       )}
-      {attendances && (
-        <Frame navTitle='알바ON'>
-          <ToolBarLink options={EmployeeMenuList} />
-          <div className='w-full flex flex-col gap-10 mt-7'>
-            {/* 오늘 출근 목록 */}
-            <Wrapper title='오늘 출근 목록'>
-              <div>
-                {attendances?.works.map((item, index) => (
+
+      <Frame navTitle='알바ON' toolBar footer>
+        <div className='w-full flex flex-col gap-10 mt-7'>
+          {/* 오늘 출근 목록 */}
+          <Wrapper title='오늘 출근 목록'>
+            <div>
+              {attendances &&
+                attendances.works.map((item, index) => (
                   <WhiteBox
                     key={item.workPlaceEmployeeId}
                     border
-                    className='py-5'
+                    className='py-5 '
                   >
                     <div className='flex flex-col gap-1 text-start'>
                       <button
@@ -171,7 +172,9 @@ const Attendance = () => {
                       {item.notice.length > 0 && (
                         <div className='border rounded-sm text-sm border-hanaLightGreen px-3 py-1 mb-2'>
                           <div className='flex font-semibold '>
-                            <span className='pr-1'>[{item.workPlaceName}]</span>
+                            <span className='pr-1'>
+                              📢 [{item.workPlaceName}]
+                            </span>
                             <span>{item?.notice[0].title}</span>
                           </div>
                           {` ${item?.notice[0].content}`}
@@ -197,12 +200,14 @@ const Attendance = () => {
                     </div>
                   </WhiteBox>
                 ))}
-              </div>
-            </Wrapper>
-            {/* 전체 출근 목록 */}
-            <Wrapper title='전체 출근 목록'>
-              <div className='flex flex-col gap-1'>
-                {attendances?.totalWorks?.map((item) => (
+              {!attendances && <PulseAttendance />}
+            </div>
+          </Wrapper>
+          {/* 전체 출근 목록 */}
+          <Wrapper title='전체 출근 목록'>
+            <div className='flex flex-col gap-1'>
+              {attendances &&
+                attendances.totalWorks?.map((item) => (
                   <WhiteBox key={item.workPlaceEmployeeId} border>
                     <button
                       type='button'
@@ -230,11 +235,17 @@ const Attendance = () => {
                     </button>
                   </WhiteBox>
                 ))}
-              </div>
-            </Wrapper>
-          </div>
-        </Frame>
-      )}
+              {!attendances && (
+                <div className='flex flex-col gap-2'>
+                  <PulseWorkPlace />
+                  <PulseWorkPlace />
+                  <PulseWorkPlace />
+                </div>
+              )}
+            </div>
+          </Wrapper>
+        </div>
+      </Frame>
     </>
   );
 };

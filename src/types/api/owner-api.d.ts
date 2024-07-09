@@ -82,6 +82,7 @@ type NotificationsResponseNotice = {
   createdAt: Date;
   updatedAt: Date;
 };
+
 //사장님 - 대표계좌 등록
 type OwnerAddMainAccountRequest = {
   ownerNm: string;
@@ -139,4 +140,33 @@ type RegisterWorkPlaceResponse = {
 // 사장님 - 공지사항 삭제
 type DeleteNoticeResponse = {
   success: boolean;
+};
+//알바생 정보 조회 ( 급여명세서 정보 조회 )
+type OwnerGetEmployeeInfo = {
+  workPlaceEmployeeId: number;
+  workPlaceName: string;
+  colorTypeCode: string;
+  employeeName: string;
+  workStartDate: string;
+};
+
+//사장님 - 알바생 계좌 조회
+type OwnerGetEmployeeAccountInfo = {
+  ownerNm: string;
+  ownerAccountNumber: string;
+  employeeNm: string;
+  employeeAccountNumber: string;
+};
+
+//사장님 - 간편 지급 예약
+type OwnerConfirmPayment = {
+  senderAccountNumber: string;
+  senderNm: string;
+  receiverAccountNumber: string;
+  receiverNm: string;
+  amount: number;
+};
+
+type OwnerConfirmPaymentResponse = {
+  salaryTransferReserveId: number;
 };

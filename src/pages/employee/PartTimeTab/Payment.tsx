@@ -6,9 +6,27 @@ import { FaAngleRight } from 'react-icons/fa6';
 import WorkPlaceName from '../../../components/ui/WorkPlaceName';
 import ApiClient from '../../../api/apiClient';
 import { useDate } from '../../../contexts/Date-Context';
+import ColorTag from '../../../components/ui/ColorTag';
 
 type Prop = {
   monthList: Date[];
+};
+
+const textConvert = (
+  status: 'READY' | 'COMPLETED' | 'SIGN' | 'WAITING' | null
+) => {
+  switch (status) {
+    case 'SIGN':
+      return '수령 받기';
+    case 'COMPLETED':
+      return '수령 완료';
+    case 'WAITING':
+      return '수령 대기';
+    default:
+      return '';
+  }
+
+  return '';
 };
 
 const Payment = ({ monthList }: Prop) => {
@@ -94,6 +112,11 @@ const Payment = ({ monthList }: Prop) => {
                   name={item.workPlaceName}
                   colorType={item.workPlaceColorCode}
                 />
+                {item.payStubStatus && (
+                  <ColorTag className='bg-purple-100'>
+                    {textConvert(item.payStubStatus)}
+                  </ColorTag>
+                )}
                 <div className='flex items-center gap-1'>
                   {item.payment.toLocaleString()}
                   <FaAngleRight />

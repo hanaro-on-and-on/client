@@ -1,0 +1,15 @@
+/* WorkPlaceName.css */
+.scroll-text {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scroll-text 5s linear infinite; /* Adjust animation duration as needed */
+}
+
+@keyframes scroll-text {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}

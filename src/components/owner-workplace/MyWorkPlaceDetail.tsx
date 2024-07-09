@@ -13,8 +13,8 @@ import ApiClient from '../../api/apiClient';
 import Notification from './Notification';
 
 enum ToggleStatus {
-  EMPLOYEES = 'employees',
-  NOTIFICATIONS = 'notifications',
+  EMPLOYEES = '근무자 보기',
+  NOTIFICATIONS = '공지사항',
 }
 
 const MyWorkPlaceDetail = () => {
@@ -100,6 +100,7 @@ const MyWorkPlaceDetail = () => {
         </VStack>
 
         <NavToggle
+          selectedTab={selectedToggle}
           first='근무자 보기'
           second='공지사항'
           firstSelected={() => {
@@ -116,7 +117,8 @@ const MyWorkPlaceDetail = () => {
               {data.employeeList.map((employee) => (
                 <WorkEmployeeListView
                   key={employee.workPlaceEmployeeId}
-                  {...employee}
+                  employeeInfo={employee}
+                  placeId={data.workPlaceId}
                 />
               ))}
             </div>

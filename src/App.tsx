@@ -39,7 +39,6 @@ function App() {
     <>
       <Routes>
         <Route path='/' element={<LandingPage />} />
-        {/* <Route path='/hi' element={<AddWorkPlace />} /> */}
         <Route path='/login' element={<LoginPage />} />
         <Route path='/test' element={<Test />} />
         {/* <Route path='/ui' element={<UiTest />} /> */}

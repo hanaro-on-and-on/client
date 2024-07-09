@@ -1,22 +1,23 @@
 import { useNavigate } from 'react-router-dom';
-import BtnBottom from '../../../components/BtnBottom';
 import Frame from '../../../components/Frame';
 import ReturnArrow from '../../../components/ui/ReturnArrow';
 import ModalBottom from '../../../components/ModalBottom';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import InputBorderSelect from '../../../components/InputBorderSelect';
-import InputBorder from '../../../components/InputBorder';
 import ApiClient from '../../../api/apiClient';
 import ModalCenter from '../../../components/ModalCenter';
 import { BankList } from '../datas';
+import BtnBottom from '../../../components/BtnBottom';
 
 const EditMyPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalCenterOpen, setIsModalCenterOpen] = useState(false);
   const [modalMsg, setModalMsg] = useState<string>('');
 
+  const [selectionList, setSelectionList] = useState<SelectionProp[]>([]);
+
   const bankRef = useRef<HTMLSelectElement | null>(null);
-  const accountRef = useRef<HTMLInputElement | null>(null);
+  const accountRef = useRef<HTMLSelectElement | null>(null);
 
   const navigation = useNavigate();
 
@@ -59,10 +60,31 @@ const EditMyPage = () => {
     }
   };
 
+  const fetchAccountList = async () => {
+    try {
+      const response: AccountList[] =
+        await ApiClient.getInstance().userGetAccountList();
+
+      console.log('accounts', response);
+      const selections: SelectionProp[] = response.map((item) => ({
+        text: item.accountNumber,
+        value: item.accountNumber,
+      }));
+
+      setSelectionList(selections);
+      console.log(selections);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const confirmAction = () => {
     closeModal();
     updateAccount();
   };
+
+  useEffect(() => {
+    fetchAccountList();
+  }, []);
 
   return (
     <>
@@ -97,7 +119,7 @@ const EditMyPage = () => {
         </ModalBottom>
       )}
       <Frame navTitle='알바ON'>
-        <div className='w-full flex flex-col gap-2 h-full justify-between my-5'>
+        <div className='w-full flex flex-col gap-2 h-full justify-between'>
           <div className='flex flex-col justify-start gap-2'>
             <ReturnArrow To='/my' text='뒤로가기' />
             <InputBorderSelect
@@ -106,11 +128,14 @@ const EditMyPage = () => {
               title='은행'
               defaultValue={BankList[0]}
             />
-            <InputBorder
-              ref={accountRef}
-              title='계좌번호'
-              placeHolder='-를 제외하고 입력해주세요'
-            />
+            {selectionList.length > 0 && (
+              <InputBorderSelect
+                ref={accountRef}
+                title='계좌번호'
+                selectionList={selectionList}
+                defaultValue={selectionList[1]}
+              />
+            )}
           </div>
 
           <BtnBottom text='수정하기' action={openModal} />

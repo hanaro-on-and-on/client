@@ -485,6 +485,56 @@ class ApiClient implements employeeApi, userApi, ownerApi {
         method: 'delete',
         url: `/owner/work-places/${id}/notifications/${noticeId}`,
       });
+    return response.data;
+  }
+  // 사장님 - 알바생 계좌 조회
+  public async OwnerGetEmployeeAccountInfo(
+    workPlaceEmployeeId: number
+  ): Promise<OwnerGetEmployeeAccountInfo> {
+    const respnose: BaseResponse<OwnerGetEmployeeAccountInfo> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `/owner/accounts/${workPlaceEmployeeId}`,
+      });
+
+    return respnose.data;
+  }
+
+  //사장님 - 알바생 급여 지급 예약
+  public async OwnerConfirmPayment(
+    payStubId: number,
+    request: OwnerConfirmPayment
+  ): Promise<OwnerConfirmPaymentResponse> {
+    const respnose: BaseResponse<OwnerConfirmPaymentResponse> =
+      await this.axiosInstance.request({
+        method: 'post',
+        url: `papers/pay-stubs/${payStubId}/reservation`,
+        data: request,
+      });
+
+    return respnose.data;
+  }
+
+  // 공통 - 급여 명세서 정보 조회 (알바생 정보 조회)
+  public async getEmmplyeeInfo(
+    workPlaceEmployeeId: number
+  ): Promise<OwnerGetEmployeeInfo> {
+    const respnose: BaseResponse<OwnerGetEmployeeInfo> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `/papers/pay-stubs/${workPlaceEmployeeId}/info`,
+      });
+
+    return respnose.data;
+  }
+
+  //공통 - 계좌 조회
+  public async userGetAccountList(): Promise<AccountList[]> {
+    const response: BaseResponse<AccountList[]> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: '/users/accounts',
+      });
 
     return response.data;
   }
@@ -503,8 +553,8 @@ class ApiClient implements employeeApi, userApi, ownerApi {
         config.headers['Authorization'] = `Bearer ${token}`;
       }
       config.headers['Content-Type'] = 'application/json';
-      config.headers['Authorization'] =
-        `Bearer ${import.meta.env.VITE_ACCESS_TOKEN}`;
+      // config.headers['Authorization'] =
+      //   `Bearer ${import.meta.env.VITE_ACCESS_TOKEN}`;
       // config.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173';
       return config;
     });

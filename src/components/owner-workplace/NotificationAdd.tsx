@@ -1,7 +1,6 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import BtnBottom from '../BtnBottom';
+import { useParams } from 'react-router-dom';
 import BtnChoiceBox from '../ui/BtnChoiceBox';
-import { HStack, VStack } from '../ui/Stack';
+import { VStack } from '../ui/Stack';
 import { ChangeEvent, useState } from 'react';
 import ApiClient from '../../api/apiClient';
 
