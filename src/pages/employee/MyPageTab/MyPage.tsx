@@ -81,7 +81,7 @@ const MyPage = () => {
           <Contract contractId={paperDetail.employmentContractId} />
         </ModalCenter>
       )}
-      <Frame navTitle='알바ON' toolBar>
+      <Frame navTitle='알바ON' toolBar footer>
         <div className='w-full flex flex-col gap-10 pb-10 '>
           {/* 나의 정보 */}
           <Wrapper title='나의 정보' className='mt-7'>

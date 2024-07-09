@@ -32,7 +32,7 @@ const LoginPage = () => {
 
       if (isSuccess) {
         if (role === ROLE.EMPLOYEE) navigation('/my');
-        else if (role === ROLE.OWNER) navigation('owner/MyWorkSpaces');
+        else if (role === ROLE.OWNER) navigation('/owner/MyWorkSpaces');
       }
     } catch (err) {
       console.log(err);
@@ -51,7 +51,7 @@ const LoginPage = () => {
         </ModalCenter>
       )}
       <Frame navTitle='로그인'>
-        <div className='w-full h-full flex flex-col gap-10 my-10 justify-between'>
+        <div className='w-full h-full flex flex-col gap-10 pt-10 justify-between'>
           <div className='flex flex-col gap-3 '>
             <div className='text-2xl font-bold mb-3'>Log-in</div>
             <div className='text-gray-300 text-sm mb-10'>
