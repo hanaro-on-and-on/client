@@ -142,6 +142,8 @@ const AttendanceDetail = () => {
               <WorkPlaceName
                 name={attendanceDetail.workPlaceName}
                 colorType={attendanceDetail.colorTypeCode}
+                textSlide
+                wide
               />
               {/* 지도 */}
               <div className='bg-white rounded-md border h-[200px]'>

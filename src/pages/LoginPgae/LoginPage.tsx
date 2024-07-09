@@ -4,7 +4,6 @@ import BtnBottom from '../../components/BtnBottom';
 import login, { LoginReturnType, ROLE } from '../../components/login';
 import ModalCenter from '../../components/ModalCenter';
 import { useNavigate } from 'react-router-dom';
-import DetailWorkInfo from '../../components/employee/DetailWorkInfo';
 
 const LoginPage = () => {
   const [pwErr, pwIdErr] = useState<string>('');
@@ -62,7 +61,7 @@ const LoginPage = () => {
                 placeholder='비밀번호'
                 ref={pwRef}
                 type='password'
-                className='py-2 px-1 border-b-2 border-b-hanaLightGreen w-[80%] focus:outline-none'
+                className='py-2 px-1 border-b-2 border-b-hanaLightGreen w-[80%] focus:outline-none bg-transparent'
               />
               <span className='text-red-500 text-sm'>{pwErr}</span>
             </div>

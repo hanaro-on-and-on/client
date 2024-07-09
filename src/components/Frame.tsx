@@ -30,7 +30,7 @@ const Frame = ({
         }}
       >
         <div className='flex-grow flex flex-col items-center w-full  '>
-          <div className='flex-grow min-h-[90%] w-[90%] pb-5 '>{children}</div>
+          <div className='flex-grow min-h-[90%] w-[90%] pb-14 '>{children}</div>
           {footer && <Footer />}
         </div>
       </div>

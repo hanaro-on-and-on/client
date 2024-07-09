@@ -1,4 +1,4 @@
-import WhiteBox from './ui/WhiteBox';
+import WhiteBox from './WhiteBox';
 
 const PulseAttendance = () => {
   return (
