@@ -29,13 +29,16 @@ const WorkPlaceName: React.FC<WorkPlaceNameProps> = ({
         )}
       ></span>
       <span
-        className={clsx('line-clamp-1 w-[120px] text-start overflow-hidden', {
-          'text-sm': textSmall,
-          'w-full': wide,
-        })}
+        className={clsx(
+          'line-clamp-1 max-w-[120px] w-fit text-start overflow-hidden',
+          {
+            'text-sm': textSmall,
+            'w-full': wide,
+          }
+        )}
       >
         <span
-          className={clsx({
+          className={clsx(' font-semibold', {
             'scroll-text': name.length > 14 && textSlide && !wide,
           })}
         >
