@@ -73,7 +73,7 @@ const WorkTime = () => {
       const response =
         await ApiClient.getInstance().employeeDeleteCustomWorkPlace(id);
       if (response.success) {
-        toggle();
+        getWorkPlaceList();
       }
     } catch (err) {
       console.log(err);

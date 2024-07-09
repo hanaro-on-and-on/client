@@ -2,14 +2,21 @@ import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 
 type Prop = {
+  selectedTab: string;
   first: string;
   second: string;
   firstSelected: () => void;
   secondSelected: () => void;
 };
 
-const NavToggle = ({ first, second, firstSelected, secondSelected }: Prop) => {
-  const [selected, setSelected] = useState<string>(first);
+const NavToggle = ({
+  selectedTab,
+  first,
+  second,
+  firstSelected,
+  secondSelected,
+}: Prop) => {
+  const [selected, setSelected] = useState<string>(selectedTab);
 
   // 첫 항목 선택
   const selectPayment = () => {
@@ -22,6 +29,10 @@ const NavToggle = ({ first, second, firstSelected, secondSelected }: Prop) => {
     setSelected(second);
     secondSelected();
   };
+
+  useEffect(() => {
+    setSelected(selectedTab);
+  }, [selectedTab]);
 
   return (
     <>
