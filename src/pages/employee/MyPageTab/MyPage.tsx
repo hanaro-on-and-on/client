@@ -5,11 +5,11 @@ import WhiteBox from '../../../components/ui/WhiteBox';
 import WorkPlaceName from '../../../components/ui/WorkPlaceName';
 import { useEffect, useState } from 'react';
 import ApiClient from '../../../api/apiClient';
-import ModalBottom from '../../../components/ModalBottom';
 import ToolBarLink from '../../../components/ui/ToolBarLink';
 import { EmployeeMenuList } from '../datas';
 import Contract from '../../../components/Contract';
 import ModalCenter from '../../../components/ModalCenter';
+import PulseAttendance from '../../../components/PulseAttendance';
 
 const MyPage = () => {
   const navigation = useNavigate();
@@ -81,9 +81,8 @@ const MyPage = () => {
           <Contract contractId={paperDetail.employmentContractId} />
         </ModalCenter>
       )}
-      <Frame navTitle='알바ON'>
-        <ToolBarLink options={EmployeeMenuList} />
-        <div className='w-full flex flex-col gap-10 '>
+      <Frame navTitle='알바ON' toolBar>
+        <div className='w-full flex flex-col gap-10 pb-10 '>
           {/* 나의 정보 */}
           <Wrapper title='나의 정보' className='mt-7'>
             <WhiteBox className='px-3 py-7' border>
@@ -117,23 +116,31 @@ const MyPage = () => {
           {/* 근로계약서 */}
           <Wrapper title='근로계약서'>
             <div className='flex flex-col gap-2'>
-              {papers?.map((item, index) => (
-                <WhiteBox border key={item.employmentContractId}>
-                  <button
-                    type='button'
-                    className='flex flex-col justify-center text-sm w-full h-full bg-transparent py-4'
-                    onClick={() => getContract(item.employmentContractId)}
-                  >
-                    <div className='w-full flex justify-between items-center'>
-                      <WorkPlaceName
-                        name={item.workPlaceNm}
-                        colorType={item.colorTypeCd}
-                      />
-                      <div>{item.employmentContractCreatedAt}</div>
-                    </div>
-                  </button>
-                </WhiteBox>
-              ))}
+              {papers &&
+                papers.map((item, index) => (
+                  <WhiteBox border key={item.employmentContractId}>
+                    <button
+                      type='button'
+                      className='flex flex-col justify-center text-sm w-full h-full bg-transparent py-4'
+                      onClick={() => getContract(item.employmentContractId)}
+                    >
+                      <div className='w-full flex justify-between items-center'>
+                        <WorkPlaceName
+                          name={item.workPlaceNm}
+                          colorType={item.colorTypeCd}
+                        />
+                        <div>{item.employmentContractCreatedAt}</div>
+                      </div>
+                    </button>
+                  </WhiteBox>
+                ))}
+              {!papers && (
+                <div className='flex flex-col gap-2'>
+                  <PulseAttendance />
+                  <PulseAttendance />
+                  <PulseAttendance />
+                </div>
+              )}
             </div>
           </Wrapper>
         </div>
