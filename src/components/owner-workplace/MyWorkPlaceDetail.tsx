@@ -36,8 +36,6 @@ const MyWorkPlaceDetail = () => {
     fetchData(year, month);
   }, [year, month]);
   useEffect(() => {
-    console.log('🚀  showAddNotification:', showAddNotification);
-    console.log('>>>>>>>>>>>> 호출되나여?');
     fetchNotifications();
   }, [showAddNotification]);
 
@@ -50,9 +48,7 @@ const MyWorkPlaceDetail = () => {
       );
       console.log('API 호출 결과:', response);
       setData(response);
-    } catch (error) {
-      console.error('API 호출 실패:', error);
-    }
+    } catch (error) {}
   };
   const fetchNotifications = async () => {
     try {
@@ -139,7 +135,11 @@ const MyWorkPlaceDetail = () => {
             <>
               <div className='flex flex-col max-h-/3 border border-gray-300 rounded-lg overflow-y-scroll'>
                 {notifiactions.list.map((n) => (
-                  <Notification key={n.notificationId} {...n} />
+                  <Notification
+                    key={n.notificationId}
+                    fetchNotices={fetchNotifications}
+                    {...n}
+                  />
                 ))}
               </div>
               <button

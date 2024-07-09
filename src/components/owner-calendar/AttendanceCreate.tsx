@@ -9,6 +9,7 @@ import ModalCenter from '../ModalCenter';
 import { useNavigate, useParams } from 'react-router-dom';
 import ApiClient from '../../api/apiClient';
 import BtnBottom from '../BtnBottom';
+import { convertToISOFormat } from '../../utils/date-util';
 
 const convertDate = (
   date: string | undefined,
@@ -76,17 +77,17 @@ const AttendanceCreate = () => {
     }
   };
 
-  const onClickConfirm = () => {
+  const onClickConfirm = async () => {
     if (workPlaceEmployeeId && startDate && endDate) {
       const request = {
         workPlaceEmployeeId,
         payPerHour,
-        startTime: startDate,
-        endTime: endDate,
+        startTime: convertToISOFormat(startDate),
+        endTime: convertToISOFormat(endDate),
         restMinute: restMinutes,
       };
       console.log(request);
-      fetchAttendance(request);
+      await fetchAttendance(request);
       navigation(`/owner/calendar/${date}`, { replace: true });
     }
   };

@@ -95,7 +95,10 @@ const CalendarCustom = () => {
       return (
         <div className='h-full w-full'>
           {list.map((data) => (
-            <CalendarMark key={`${data}`} {...data} />
+            <CalendarMark
+              key={`${data.attendDate}_${data.payment}_${data.workPlaceName}`}
+              {...data}
+            />
           ))}
           {/* {events.map((event) => (
             <CalendarMark key={event.attendanceId} {...event} />

@@ -32,17 +32,20 @@ import OwnerAddMainAccount from './pages/LandingPage/OwnerAddMainAccount';
 import LoginPage from './pages/LoginPgae/LoginPage';
 import CalendarEmployee from './components/employee/CalendarEmployee';
 import WorkPlaceAdd from './components/owner-workplace/WorkPlaceAdd';
+import AddWorkPlace from './pages/owner/AddWorkPlace';
 
 function App() {
   return (
     <>
       <Routes>
         <Route path='/' element={<LandingPage />} />
+        {/* <Route path='/hi' element={<AddWorkPlace />} /> */}
         <Route path='/login' element={<LoginPage />} />
         <Route path='/test' element={<Test />} />
         {/* <Route path='/ui' element={<UiTest />} /> */}
         {/* <Route path='/owner/myWorkPlaces/add' element={<WorkPlaceAddPage />} /> */}
-        <Route path='/owner/addPlace' element={<WorkPlaceAdd />} />
+        <Route path='/owner/addPlaceFirst' element={<WorkPlaceAdd />} />
+        <Route path='/owner/addPlaceSecond' element={<AddWorkPlace />} />
         <Route path='/owner/*' element={<OwnerMainPage />}>
           <Route path='test' element={<CalendarEmployee />} />
           <Route path='calendar' element={<CalendarCustom />} />

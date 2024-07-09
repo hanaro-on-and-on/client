@@ -102,8 +102,8 @@ type RegisterEmployeeResponse = {
 type RegisterAttendanceManualRequest = {
   workPlaceEmployeeId: number;
   payPerHour: number;
-  startTime: Date;
-  endTime: Date;
+  startTime: string;
+  endTime: string;
   restMinute: number;
 };
 type RegisterAttendanceManualResponse = {
@@ -116,3 +116,27 @@ type RegisterNoticeRequest = {
   content: string;
 };
 type RegisterNoticeResponse = { notificationId: number };
+
+// 사장님 - 사업자등록번호 조회
+type ValidBusinessNumberRequest = {
+  businessRegistrationNumber: string;
+  openDate: string;
+  businessName: string;
+  businessAddress: string;
+};
+type ValidBusinessNumberResponse = {
+  valid: boolean;
+  b_nm: string;
+  b_stt: string;
+  b_adr: string;
+};
+
+// 사장님 - 사업장 등록
+type RegisterWorkPlaceResponse = {
+  workPlaceId: number;
+};
+
+// 사장님 - 공지사항 삭제
+type DeleteNoticeResponse = {
+  success: boolean;
+};

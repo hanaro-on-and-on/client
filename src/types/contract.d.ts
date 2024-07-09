@@ -58,3 +58,26 @@ export type ThirdInfo = {
   otherAllowancesName: string | undefined;
   overtimeRate: number;
 };
+
+// 사업장 등록 관련 ------
+export type Place = {
+  workPlaceNm: string;
+  address: string;
+  businessRegistrationNumber: string;
+  openingDate: string;
+  workPlaceType: string;
+  colorTypeCode: string;
+  location: GeoPoint;
+};
+export type GeoPoint = {
+  lng: number;
+  lat: number;
+};
+export type PlaceFirstInfo = {
+  workPlaceNm: string;
+  address: string;
+  businessRegistrationNumber: string;
+  openingDate: string;
+  workPlaceType: string;
+  colorTypeCode: string;
+};

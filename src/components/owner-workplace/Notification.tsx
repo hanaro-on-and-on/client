@@ -1,20 +1,48 @@
 import { useState } from 'react';
 import { HStack, VStack } from '../ui/Stack';
 import { BiTrash } from 'react-icons/bi';
+import { useNavigate, useParams } from 'react-router-dom';
+import ApiClient from '../../api/apiClient';
 
 type NotificationProps = {
   notificationId: number;
   title: string;
   content: string;
   createdAt: Date;
+  fetchNotices: () => void;
 };
 
-const Notification = ({ title, content, createdAt }: NotificationProps) => {
+const Notification = ({
+  notificationId,
+  title,
+  content,
+  createdAt,
+  fetchNotices,
+}: NotificationProps) => {
   const [expanded, setExpanded] = useState(false);
   const created = new Date(createdAt);
+  const navigate = useNavigate();
+  const { id } = useParams();
 
   const toggleExpand = () => {
     setExpanded(!expanded);
+  };
+
+  const onClickDelete = async (id: string | undefined) => {
+    if (!id) return;
+    await deleteNoticeFetch(Number(id), notificationId);
+    await fetchNotices(); // 삭제 후 새로운 데이터를 다시 호출하여 업데이트
+  };
+
+  const deleteNoticeFetch = async (id: number, notificationId: number) => {
+    try {
+      const response = await ApiClient.getInstance().deleteNotice(
+        id,
+        notificationId
+      );
+    } catch (error) {
+      console.error('API 호출 실패:', error);
+    }
   };
 
   return (
@@ -23,7 +51,7 @@ const Notification = ({ title, content, createdAt }: NotificationProps) => {
         <HStack className='items-baseline'>
           <div className='font-semibold'>{title}</div>
         </HStack>
-        <button className='bg-transparent'>
+        <button className='bg-transparent' onClick={() => onClickDelete(id)}>
           <BiTrash />
         </button>
       </HStack>

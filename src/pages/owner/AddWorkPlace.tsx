@@ -1,9 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-var */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { useEffect, useState } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import Frame from '../../components/Frame';
 import WhiteBox from '../../components/ui/WhiteBox';
 import BtnBorder from '../../components/BtnBorder';
 import BtnBottom from '../../components/BtnBottom';
+import { usePlace } from '../../contexts/Place-Context';
+import ApiClient from '../../api/apiClient';
+import { FirstInfo, PlaceFirstInfo } from '../../types/contract';
+import { useNavigate } from 'react-router-dom';
 
 type MarkerProp = {
   position: {
@@ -14,11 +23,14 @@ type MarkerProp = {
 };
 
 const AddWorkPlace = () => {
+  const { firstInfo } = usePlace();
+  const [address, setAddress] = useState(firstInfo ? firstInfo.address : '');
+  const navigate = useNavigate();
+
   const [info, setInfo] = useState<MarkerProp | null>(null);
   const [markers, setMarkers] = useState<MarkerProp[]>([]);
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
   const [keyword, setKeyword] = useState<string>('');
-  const keywordRef = useRef<HTMLInputElement | null>(null);
   const [selected, setSelected] = useState<boolean>(false);
   const [add, setAdd] = useState<string>('');
 
@@ -31,6 +43,26 @@ const AddWorkPlace = () => {
     console.log(response); // coords: GeolocationCoordinates {latitude: 위도, longitude: 경도, …} timestamp: 1673446873903
     const { latitude, longitude } = response.coords;
     setLocation({ latitude, longitude });
+  };
+
+  const fetchPlace = async (firstInfo: PlaceFirstInfo, info: MarkerProp) => {
+    try {
+      const location = { lat: info.position.lat, lng: info.position.lng };
+      const response = await ApiClient.getInstance().registerWorkPlace({
+        location,
+        ...firstInfo,
+      });
+      console.log('API 호출 결과:', response);
+    } catch (error) {
+      console.error('API 호출 실패:', error);
+    }
+  };
+
+  const onClickConfirm = async () => {
+    if (firstInfo && info) {
+      const response = await fetchPlace(firstInfo, info);
+      navigate('/owner/myWorkPlaces');
+    }
   };
 
   useEffect(() => {
@@ -129,6 +161,13 @@ const AddWorkPlace = () => {
   return (
     <Frame navTitle='사장ON'>
       <div className='w-full flex flex-col'>
+        {firstInfo && (
+          <h2 className='text-lg p-2'>
+            <span className='text-2xl underline'>{firstInfo.workPlaceNm}</span>
+            {` 사업장을 등록할까요?`}
+          </h2>
+        )}
+
         <WhiteBox border className='py-3 px-3 mt-5' title='사업장 위치 등록'>
           <div className='flex flex-col gap-5 w-full'>
             <Map // 로드뷰를 표시할 Container
@@ -159,28 +198,29 @@ const AddWorkPlace = () => {
 
             <div className=' grid grid-cols-10 justify-between pb-1'>
               <input
-                ref={keywordRef}
+                value={address}
+                // ref={keywordRef}
+                onChange={(e) => setAddress(e.target.value)}
                 className='col-span-8 w-full border-b-2 border-hanaLightGreen px-1 focus:outline-none'
               />
               <div className='col-span-2'>
                 <BtnBorder
                   color='green'
                   text='검색'
-                  onClick={() => setKeyword(keywordRef.current?.value || '')}
+                  onClick={() => setKeyword(address)}
+                  // onClick={() => setKeyword(keywordRef.current?.value || '')}
                 />
               </div>
             </div>
           </div>
         </WhiteBox>
         {selected && (
-          <WhiteBox
-            title={`${info?.content} 를 등록하시겠습니까?`}
-            border
-            className='mt-5 py-3 px-2'
-          >
+          <WhiteBox title={add} border className='mt-5 py-3 px-2'>
             <div className='flex flex-col gap-2'>
-              <div className='text-gray-400 text-sm text-start'>{add}</div>
-              <BtnBottom text='등록' action={() => {}} />
+              <div className='text-gray-400 text-sm text-start'>
+                {'검색한 사업장의 위치를 저장할까요?'}
+              </div>
+              <BtnBottom text='등록' action={onClickConfirm} />
             </div>
           </WhiteBox>
         )}

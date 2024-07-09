@@ -11,7 +11,6 @@ type NotificationAddProps = {
 
 const NotificationAdd = ({ closeAddNotification }: NotificationAddProps) => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [error, setError] = useState<string>('');

@@ -3,7 +3,7 @@ import employeeApi from './interfaces/employeeApi';
 import ownerApi from './interfaces/ownerApi';
 import userApi from './interfaces/userApi';
 import { getToken } from '../utils/token';
-import { EmployeeContract } from '../types/contract';
+import { EmployeeContract, Place } from '../types/contract';
 
 class ApiClient implements employeeApi, userApi, ownerApi {
   //singleton pattern
@@ -449,6 +449,43 @@ class ApiClient implements employeeApi, userApi, ownerApi {
         url: `/owner/work-places/${id}/notifications`,
         data: request,
       });
+    return response.data;
+  }
+  // 사장님 - 사업자등록번호 조회
+  public async validBusinessNumber(
+    request: ValidBusinessNumberRequest
+  ): Promise<ValidBusinessNumberResponse> {
+    const response: BaseResponse<ValidBusinessNumberResponse> =
+      await this.axiosInstance.request({
+        method: 'post',
+        url: `/owner/work-places/valid/registration-number`,
+        data: request,
+      });
+    return response.data;
+  }
+  // 사장님 - 사업장 등록
+  public async registerWorkPlace(
+    request: Place
+  ): Promise<RegisterWorkPlaceResponse> {
+    const response: BaseResponse<RegisterWorkPlaceResponse> =
+      await this.axiosInstance.request({
+        method: 'post',
+        url: `/owner/work-places`,
+        data: request,
+      });
+    return response.data;
+  }
+  // 사장님 - 공지 삭제
+  public async deleteNotice(
+    id: number,
+    noticeId: number
+  ): Promise<DeleteNoticeResponse> {
+    const response: BaseResponse<DeleteNoticeResponse> =
+      await this.axiosInstance.request({
+        method: 'delete',
+        url: `/owner/work-places/${id}/notifications/${noticeId}`,
+      });
+
     return response.data;
   }
 
