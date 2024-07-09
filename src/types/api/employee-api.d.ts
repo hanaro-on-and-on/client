@@ -26,9 +26,9 @@ type EmployeeSalaryGetResponseList = {
   id: number | null;
   isConnected: boolean;
   isQuit: boolean;
-  payStubId: number | null;
   workPlaceName: string;
   workPlaceColorCode: string;
+  payStubStatus: 'READY' | 'COMPLETED' | 'SIGN' | 'WAITING' | null;
   payment: number;
 };
 

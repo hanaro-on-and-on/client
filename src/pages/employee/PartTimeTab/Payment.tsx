@@ -12,6 +12,23 @@ type Prop = {
   monthList: Date[];
 };
 
+const textConvert = (
+  status: 'READY' | 'COMPLETED' | 'SIGN' | 'WAITING' | null
+) => {
+  switch (status) {
+    case 'SIGN':
+      return '수령 받기';
+    case 'COMPLETED':
+      return '수령 완료';
+    case 'WAITING':
+      return '수령 대기';
+    default:
+      return '';
+  }
+
+  return '';
+};
+
 const Payment = ({ monthList }: Prop) => {
   const navigate = useNavigate();
 
@@ -28,7 +45,6 @@ const Payment = ({ monthList }: Prop) => {
       const response: MonthlyPayment =
         await ApiClient.getInstance().getMonthlyPayment(year, month);
 
-      console.log('rere', response);
       if (response) {
         setTotalMonthlyPayment(response.totalPayment);
         setPaymentList(response.list);
@@ -96,7 +112,11 @@ const Payment = ({ monthList }: Prop) => {
                   name={item.workPlaceName}
                   colorType={item.workPlaceColorCode}
                 />
-                <ColorTag />
+                {item.payStubStatus && (
+                  <ColorTag className='bg-purple-100'>
+                    {textConvert(item.payStubStatus)}
+                  </ColorTag>
+                )}
                 <div className='flex items-center gap-1'>
                   {item.payment.toLocaleString()}
                   <FaAngleRight />
