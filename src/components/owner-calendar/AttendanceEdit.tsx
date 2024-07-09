@@ -1,5 +1,4 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useAttendance } from '../../contexts/Attendance-Context';
 import InputBox from '../ui/InputBox';
 import { Spacer, VStack } from '../ui/Stack';
 import TimeBox from './TimeBox';
@@ -25,13 +24,10 @@ const AttendanceEdit = () => {
     undefined
   );
 
-  // const { attendance, changeAttendance } = useAttendance();
-  // console.log(attendance);
   const [workPlaceEmployeeId, setWorkPlaceEmployeeId] = useState<
     number | undefined
   >();
   const [startTime, setStartTime] = useState<Date | undefined>(undefined);
-  // console.log('🚀  AttendanceEdit  startTime:', startTime);
   const [endTime, setEndTime] = useState<Date | undefined>(undefined);
   const [restMinute, setRestMinute] = useState<number>(0);
   const [payPerHour, setPayPerHour] = useState<number>(MINIMUM_PAY_PER_HOUR);
