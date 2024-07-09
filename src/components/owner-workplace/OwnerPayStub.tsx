@@ -14,9 +14,19 @@ import { HStack } from '../ui/Stack';
 type Prop = {
   year: number;
   month: number;
+  workPlaceEmployeeId: number | undefined;
 };
 
-const OwnerPayStub = ({ year, month }: Prop) => {
+const textConvert = (status: string): string => {
+  if (status === 'READY') return '간편 지급';
+  if (status === 'SIGN') return '수령 받기';
+  if (status === 'WAITING') return '수령 대기';
+  if (status === 'COMPLETED') return '수령 완료';
+
+  return '';
+};
+
+const OwnerPayStub = ({ year, month, workPlaceEmployeeId }: Prop) => {
   const navigation = useNavigate();
   const [monthList, setMonthList] = useState<Date[]>([]);
   const [selectedYear, setSelectedYear] = useState<number>(year);
@@ -64,19 +74,11 @@ const OwnerPayStub = ({ year, month }: Prop) => {
     }
   };
 
-  const textConvert = (status: string): string => {
-    if (status === 'READY') return '간편 지급';
-    if (status === 'SIGN') return '수령 받기';
-    if (status === 'WAITING') return '수령 대기';
-    if (status === 'COMPLETED') return '수령 완료';
-
-    return '';
-  };
-
   const getData = async () => {
+    if (!workPlaceEmployeeId) return;
     try {
       const response = await ApiClient.getInstance().employeeGetPayStub(
-        '1',
+        workPlaceEmployeeId,
         selectedYear,
         selectedMonth
       );
@@ -144,7 +146,7 @@ const OwnerPayStub = ({ year, month }: Prop) => {
               총 급여 : {payStub.totalPay.toLocaleString()} 원
             </div>
           </div>
-          {payStub.status === 'READY' ? (
+          {payStub.status === 'SIGN' ? (
             <BtnPrimary
               text={textConvert(payStub.status)}
               action={() =>
