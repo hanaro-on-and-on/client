@@ -49,7 +49,7 @@ const InputBorderSelect = forwardRef(
               <option
                 key={item.text}
                 defaultChecked={
-                  item.value === defaultValue || item.text === defaultValue
+                  item.value == defaultValue || item.text == defaultValue
                 }
               >
                 {item.text}

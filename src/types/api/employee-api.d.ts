@@ -283,3 +283,8 @@ type EmployeeCheckOutResponse = {
 type EmployeeContractSignRequest = {
   workPlaceEmployeeId: number;
 };
+
+//계좌 목록 조회
+type AccountList = {
+  accountNumber: string;
+};
