@@ -84,7 +84,7 @@ const MyPage = () => {
       <Frame navTitle='알바ON' toolBar footer>
         <div className='w-full flex flex-col gap-10 '>
           {/* 나의 정보 */}
-          <Wrapper title='나의 정보' className='mt-7'>
+          <Wrapper title='나의 정보'>
             <WhiteBox className='px-3 py-7' border>
               <div className='flex flex-col gap-2 text-sm'>
                 {/* 성명 */}
@@ -120,7 +120,7 @@ const MyPage = () => {
           {/* 근로계약서 */}
           <Wrapper title='근로계약서'>
             <div className='flex flex-col gap-2'>
-              {papers &&
+              {papers && papers.length > 0 ? (
                 papers.map((item, index) => (
                   <WhiteBox border key={item.employmentContractId}>
                     <button
@@ -137,7 +137,14 @@ const MyPage = () => {
                       </div>
                     </button>
                   </WhiteBox>
-                ))}
+                ))
+              ) : (
+                <WhiteBox>
+                  <div className='flex h-[55px] items-center justify-center text-gray-500 text-sm'>
+                    등록된 근로 계약서가 없습니다
+                  </div>
+                </WhiteBox>
+              )}
               {!papers && (
                 <div className='flex flex-col gap-2'>
                   <PulseAttendance />
