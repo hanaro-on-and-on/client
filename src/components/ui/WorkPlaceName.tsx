@@ -8,12 +8,16 @@ type WorkPlaceNameProps = {
   name: string;
   colorType: string;
   textSmall?: boolean;
+  textSlide?: boolean;
+  wide?: boolean;
 };
 
 const WorkPlaceName: React.FC<WorkPlaceNameProps> = ({
   name,
   colorType,
   textSmall = false,
+  textSlide = false,
+  wide = false,
 }) => {
   return (
     <span className='flex gap-2 items-center'>
@@ -27,9 +31,14 @@ const WorkPlaceName: React.FC<WorkPlaceNameProps> = ({
       <span
         className={clsx('line-clamp-1 w-[120px] text-start overflow-hidden', {
           'text-sm': textSmall,
+          'w-full': wide,
         })}
       >
-        <span className={clsx({ 'scroll-text': name.length > 14 })}>
+        <span
+          className={clsx({
+            'scroll-text': name.length > 14 && textSlide && !wide,
+          })}
+        >
           {name}
         </span>
       </span>

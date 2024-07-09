@@ -9,7 +9,7 @@ type ToolBarLinkProps = {
 const ToolBarLink = ({ options }: ToolBarLinkProps) => {
   return (
     <>
-      <div className='flex justify-evenly h-[50px] items-center border-b border-gray-200 w-full '>
+      <div className='flex justify-evenly h-[50px] items-center border-b border-gray-200 w-full bg-white'>
         {options.map((option) => {
           return (
             <NavLink

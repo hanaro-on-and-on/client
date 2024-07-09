@@ -8,12 +8,11 @@ import { useNavigate } from 'react-router-dom';
 import ApiClient from '../../../api/apiClient';
 import { useEffect, useState } from 'react';
 import BtnGray from '../../../components/BtnGray';
-import ToolBarLink from '../../../components/ui/ToolBarLink';
-import { EmployeeMenuList } from '../datas';
+
 import ModalCenter from '../../../components/ModalCenter';
 import BtnDanger from '../../../components/\bBtnDanger';
-import PulseAttendance from '../../../components/PulseAttendance';
 import PulseWorkPlace from '../../../components/ui/PulseWorkPlace';
+import PulseAttendance from '../../../components/ui/PulseAttendance';
 
 enum AttendanceStatus {
   WORKING = 'working',
@@ -142,7 +141,7 @@ const Attendance = () => {
         </ModalCenter>
       )}
 
-      <Frame navTitle='알바ON' toolBar>
+      <Frame navTitle='알바ON' toolBar footer>
         <div className='w-full flex flex-col gap-10 mt-7'>
           {/* 오늘 출근 목록 */}
           <Wrapper title='오늘 출근 목록'>
