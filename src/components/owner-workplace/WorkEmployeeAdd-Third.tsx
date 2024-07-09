@@ -76,14 +76,15 @@ const WorkEmployeeAddThird = () => {
       console.error('API 호출 실패:', error);
     }
   };
-  const [ready, setReady] = useState(false);
-  if (ready) {
-    console.log(employeeContract);
-    fetchContract();
-    setReady(false);
-  }
 
-  const onClickAddThird = () => {
+  // const [ready, setReady] = useState(false);
+  // if (ready) {
+  //   console.log(employeeContract);
+  //   fetchContract();
+  //   setReady(false);
+  // }
+
+  const onClickAddThird = async () => {
     addThirdInfo({
       payPerHour,
       paymentDay,
@@ -108,8 +109,9 @@ const WorkEmployeeAddThird = () => {
       otherAllowancesName: allowance === Allowance.OFF ? undefined : '제수당',
       overtimeRate,
     });
-    setReady(true);
-    navigate(`/owner/myWorkPlaces/${placeId}/addEmployee/third`);
+    await fetchContract();
+    // setReady(true);
+    navigate(`/owner/myWorkPlaces/${placeId}/addEmployee/complete`);
   };
 
   return (

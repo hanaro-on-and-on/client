@@ -2,13 +2,11 @@ import { useEffect, useState } from 'react';
 import './CalendarEmployee.css';
 import Calendar, { OnArgs } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-// import CalendarMark from './CalendarMark';
 import { useNavigate } from 'react-router-dom';
-import { useCalendarData } from '../../contexts/Calender-Data-Context';
 import ApiClient from '../../api/apiClient';
 import { parseYYYMMDD } from '../../utils/date-util';
 import { useEmployeeCalendarData } from '../../contexts/Employee-Calender-Data-Context';
-import CalendarMark from '../ui/CalendarMark';
+import EmployeeCalendarMark from './EmployeeCalendarMark';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -19,8 +17,6 @@ const CalendarEmployee = () => {
   const [value, setValue] = useState<Value>(currentDate);
   const { calendarData, setCalendarData } = useEmployeeCalendarData();
   const navigate = useNavigate();
-
-  console.log('🚀  CalendarCustom  value:', value);
 
   useEffect(() => {
     if (value instanceof Date) {
@@ -54,17 +50,17 @@ const CalendarEmployee = () => {
 
   const onClickDate = (date: Date) => {
     const localDateString = date.toLocaleDateString('en-CA'); // 'YYYY-MM-DD' 형식
-    navigate(`/owner/calendar/${localDateString}`);
+    navigate(`/calendar/${localDateString}`);
   };
 
   const getListForDate = (date: Date) => {
     const list = [];
     calendarData &&
       calendarData.list.map((workPlace) => {
-        if (
-          new Date(parseYYYMMDD(workPlace.attendDate)).toDateString() ===
-          date.toDateString()
-        ) {
+        const result = new Date(
+          parseYYYMMDD(workPlace.attendDate)
+        ).toDateString();
+        if (result === date.toDateString()) {
           list.push({
             ...workPlace,
           });
@@ -76,6 +72,7 @@ const CalendarEmployee = () => {
   // const getEventsForDate = (date: Date) => {
   //   const events = [];
   //   calendarData.forEach((workPlace) => {
+
   //     workPlace.days.forEach((day) => {
   //       if (new Date(day.startTime).toDateString() === date.toDateString()) {
   //         events.push({
@@ -94,13 +91,12 @@ const CalendarEmployee = () => {
     if (view === 'month') {
       // const events = getEventsForDate(date);
       const list = getListForDate(date);
-      console.log(list, '>>>>>>>>>>>>>>>>>');
+      // console.log(list, '>>>>>>>>>>>>>>>>>');
       return (
         // <div>헬로</div>
         <div className='h-full w-full'>
           {list.map((data) => (
-            <div key={`${data}`}>{data.workPlaceName}</div>
-            // <CalendarMark key={`${data}`} {...data} />
+            <EmployeeCalendarMark key={`${data.id}`} {...data} />
           ))}
         </div>
       );

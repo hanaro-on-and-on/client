@@ -20,21 +20,21 @@ export const EmployeeCalendarDataProvider = ({
   const [calendarData, setCalendarData] =
     useState<EmployeeCalendarDataResponse | null>(null);
 
-  // const getFilteredData = (date: Date) => {
-  //   const filteredData: DateWorkDetail[] = [];
-  //   calendarData?.workPlaceList.forEach((data) => {
-  //     data.employeeList.forEach((emp) => {
-  //       if (new Date(emp.startTime).toDateString() === date.toDateString()) {
-  //         filteredData.push({
-  //           ...emp,
-  //           workPlaceName: data.workPlaceName,
-  //           workPlaceColor: data.workPlaceColorCode,
-  //         });
-  //       }
-  //     });
-  //   });
-  //   return filteredData;
-  // };
+  const getFilteredData = (date: Date) => {
+    const filteredData: DateWorkDetail[] = [];
+    calendarData?.list.forEach((data) => {
+      data.employeeList.forEach((emp) => {
+        if (new Date(emp.startTime).toDateString() === date.toDateString()) {
+          filteredData.push({
+            ...emp,
+            workPlaceName: data.workPlaceName,
+            workPlaceColor: data.workPlaceColorCode,
+          });
+        }
+      });
+    });
+    return filteredData;
+  };
 
   return (
     <EmployeeCalendarDataContext.Provider
