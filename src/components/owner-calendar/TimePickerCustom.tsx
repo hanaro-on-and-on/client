@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaAngleDown } from 'react-icons/fa6';
 import { TimePicker } from 'react-time-picker-typescript';
 import 'react-time-picker-typescript/dist/style.css';
@@ -16,7 +16,6 @@ const TimePickerCustom = ({
   onChangeTime,
   onSaveTime,
 }: TimePickerCustomProps) => {
-  // const [value, setValue] = useState('10:00');
   const [isFocused, setIsFocused] = useState(false);
 
   const handleTimeChange = (timeValue: string | null) => {
@@ -41,7 +40,7 @@ const TimePickerCustom = ({
         onCancel={() => setIsFocused(false)}
       />
       <FaAngleDown
-        className={`${isFocused ? 'text-hanaLightGreen' : 'text-gray-400'}`}
+        className={`text-sm ${isFocused ? 'text-hanaLightGreen' : 'text-gray-400'}`}
       />
     </HStack>
   );

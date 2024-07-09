@@ -10,7 +10,7 @@ import BtnGray from '../BtnGray';
 import BtnPrimary from '../BtnPrimary';
 import Circle from '../ui/Circle';
 import { HStack } from '../ui/Stack';
-import BtnDanger from '../\bBtnDanger';
+import BtnDanger from '../BtnDanger';
 
 type Prop = {
   year: number;

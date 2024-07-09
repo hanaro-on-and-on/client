@@ -93,6 +93,54 @@ type OwnerAddMainAccountResponse = {
   ownerId: number;
 };
 
+// 사장님 - 근로자 등록 응답
+type RegisterEmployeeResponse = {
+  employmentContractId: number;
+  workPlaceEmployeeId: number;
+};
+
+// 사장님 - 근무 수동 추가 요청, 응답
+type RegisterAttendanceManualRequest = {
+  workPlaceEmployeeId: number;
+  payPerHour: number;
+  startTime: string;
+  endTime: string;
+  restMinute: number;
+};
+type RegisterAttendanceManualResponse = {
+  attendanceId: number;
+};
+
+// 사장님 - 공지 추가
+type RegisterNoticeRequest = {
+  title: string;
+  content: string;
+};
+type RegisterNoticeResponse = { notificationId: number };
+
+// 사장님 - 사업자등록번호 조회
+type ValidBusinessNumberRequest = {
+  businessRegistrationNumber: string;
+  openDate: string;
+  businessName: string;
+  businessAddress: string;
+};
+type ValidBusinessNumberResponse = {
+  valid: boolean;
+  b_nm: string;
+  b_stt: string;
+  b_adr: string;
+};
+
+// 사장님 - 사업장 등록
+type RegisterWorkPlaceResponse = {
+  workPlaceId: number;
+};
+
+// 사장님 - 공지사항 삭제
+type DeleteNoticeResponse = {
+  success: boolean;
+};
 //알바생 정보 조회 ( 급여명세서 정보 조회 )
 type OwnerGetEmployeeInfo = {
   workPlaceEmployeeId: number;

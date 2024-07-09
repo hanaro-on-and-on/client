@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import InputBox from '../ui/InputBox';
 import { Spacer, VStack } from '../ui/Stack';
 import TimeBox from './TimeBox';
@@ -7,69 +7,51 @@ import { getTimeString } from '../../utils/get-TimeString';
 import { MINIMUM_PAY_PER_HOUR } from '../../utils/const-value';
 import ModalCenter from '../ModalCenter';
 import { useNavigate, useParams } from 'react-router-dom';
+import ApiClient from '../../api/apiClient';
+import BtnBottom from '../BtnBottom';
+import { convertToISOFormat } from '../../utils/date-util';
 
-const mockData = [
-  {
-    workPlaceId: 1, // Long
-    workPlaceNm: '롯데리아 자양점',
-    workPlaceColor: '01', // String
-    workPlaceEmployeeId: 10, // Long
-    employeeNm: '이신광', // String
-  },
-  {
-    workPlaceId: 1, // Long
-    workPlaceNm: '롯데리아 자양점',
-    workPlaceColor: '01', // String
-    workPlaceEmployeeId: 12, // Long
-    employeeNm: '이서하', // String
-  },
-  {
-    workPlaceId: 1, // Long
-    workPlaceNm: '롯데리아 자양점',
-    workPlaceColor: '01',
-    workPlaceEmployeeId: 13, // Long
-    employeeNm: '정연주', // String
-  },
-  {
-    workPlaceId: 2, // Long
-    workPlaceNm: '버거킹',
-    workPlaceColor: '02', // String
-    workPlaceEmployeeId: 14, // Long
-    employeeNm: '고영우', // String
-  },
-  {
-    workPlaceId: 2, // Long
-    workPlaceNm: '버거킹',
-    workPlaceColor: '02', // String
-    workPlaceEmployeeId: 18, // Long
-    employeeNm: '최은진', // String
-  },
-];
+const convertDate = (
+  date: string | undefined,
+  time: string | undefined
+): Date | undefined => {
+  if (!date || !time) return undefined;
+  const newDate = new Date(date);
+  const [hours, minutes] = time.split(':').map(Number);
+  newDate.setHours(hours, minutes);
+  return newDate;
+};
 
 const AttendanceCreate = () => {
   const navigation = useNavigate();
   const { date } = useParams();
-  console.log(date);
 
-  const [workEmployeeList] = useState(mockData); // 나의 전체 사업장의 전 직원들
+  const [workEmployeeList, setworkEmployeeList] = useState<Employee[]>([]); // 나의 전체 사업장의 전 직원들
+  const fetchData = async (workingStatus: string) => {
+    try {
+      const response =
+        await ApiClient.getInstance().getMyEmployees(workingStatus);
+      console.log('API 호출 결과:', response);
+      setworkEmployeeList(response.employeeList);
+    } catch (error) {
+      console.error('API 호출 실패:', error);
+    }
+  };
+  useEffect(() => {
+    fetchData('WORKING');
+  }, []);
 
-  // const { attendance, changeAttendance } = useAttendance();
-  const [workPlaceEmployeeId, setWorkPlaceEmployeeId] = useState(1);
-  // const [workPlaceEmployeeId, setWorkPlaceEmployeeId] = useState(
-  //   attendance?.workPlaceEmployeeId
-  // );
-  const [startTime, setStartTime] = useState<Date | undefined>(new Date(date!));
-  // const [startTime, setStartTime] = useState<Date | undefined>(
-  //   attendance?.startTime
-  // );
-  const [endTime, setEndTime] = useState<Date | undefined>(new Date(date!));
-  // const [endTime, setEndTime] = useState<Date | undefined>(attendance?.endTime);
+  const [workPlaceEmployeeId, setWorkPlaceEmployeeId] = useState<
+    number | undefined
+  >(undefined);
+  const [startDate, setStartDate] = useState<Date | undefined>(undefined);
+  console.log('🚀  AttendanceCreate  startDate:', startDate);
+  const [endDate, setEndDate] = useState<Date | undefined>(undefined);
+  console.log('🚀  AttendanceCreate  endDate:', endDate);
   const [restMinutes, setRestMinutes] = useState(0);
-  // const [restMinutes, setRestMinutes] = useState(attendance?.restMinutes);
-  const [payPerHour, setPayPerHour] = useState(0);
-  // const [payPerHour, setPayPerHour] = useState(attendance?.payPerHour);
-
-  const dateUrl = startTime!.toLocaleDateString('en-CA');
+  const [payPerHour, setPayPerHour] = useState(MINIMUM_PAY_PER_HOUR);
+  const [startTime, setStartTime] = useState<string | undefined>(undefined);
+  const [endTime, setEndTime] = useState<string | undefined>(undefined);
 
   // 모달 관련
   const [isModalOpen, setModalOpen] = useState(false);
@@ -85,16 +67,41 @@ const AttendanceCreate = () => {
     setPayPerHour(Number(e.target.value));
   };
 
-  const updateTime = (
-    date: Date | undefined,
-    time: string
-  ): Date | undefined => {
-    if (!date) return undefined;
-    const [hours, minutes] = time.split(':').map(Number);
-    const newDate = new Date(date);
-    newDate.setHours(hours, minutes);
-    return newDate;
+  const fetchAttendance = async (request: RegisterAttendanceManualRequest) => {
+    try {
+      const response =
+        await ApiClient.getInstance().registerAttendance(request);
+      console.log('API 호출 결과:', response);
+    } catch (error) {
+      console.error('API 호출 실패:', error);
+    }
   };
+
+  const onClickConfirm = async () => {
+    if (workPlaceEmployeeId && startDate && endDate) {
+      const request = {
+        workPlaceEmployeeId,
+        payPerHour,
+        startTime: convertToISOFormat(startDate),
+        endTime: convertToISOFormat(endDate),
+        restMinute: restMinutes,
+      };
+      console.log(request);
+      await fetchAttendance(request);
+      navigation(`/owner/calendar/${date}`, { replace: true });
+    }
+  };
+
+  useEffect(() => {
+    setStartDate(convertDate(date, startTime));
+    setEndDate(convertDate(date, endTime));
+  }, [date, startTime, endTime]);
+
+  // // KST로 초기 시간을 설정
+  // useEffect(() => {
+  //   const nowKST = moment().tz('Asia/Seoul');
+  //   setTime(nowKST.format('HH:mm'));
+  // }, []);
 
   return (
     <>
@@ -103,7 +110,7 @@ const AttendanceCreate = () => {
           title={' '}
           closeModal={() => setModalOpen(false)}
           hasDecline
-          confirmAction={() => navigation(`/owner/calendar/${dateUrl}`)}
+          confirmAction={onClickConfirm}
         >{`추가하시겠습니까?`}</ModalCenter>
       )}
 
@@ -117,14 +124,10 @@ const AttendanceCreate = () => {
         </InputBox>
         <InputBox label='근무 시간'>
           <TimeBox
-            startTime={getTimeString(attendance!.startTime)}
-            changeStartTime={(time: string) =>
-              setStartTime(updateTime(startTime, time))
-            }
-            endTime={getTimeString(end.endTime)}
-            changeEndTime={(time: string) =>
-              setEndTime(updateTime(endTime, time))
-            }
+            startTime={startTime}
+            changeStartTime={(time: string) => setStartTime(time)}
+            endTime={endTime}
+            changeEndTime={(time: string) => setEndTime(time)}
             restMinutes={restMinutes!}
             changeRestMinutes={(minutes: number) => setRestMinutes(minutes)}
           />
@@ -147,19 +150,19 @@ const AttendanceCreate = () => {
         </div>
 
         <Spacer />
-        {/* <BtnBottom
+        <BtnBottom
           text='근무 추가'
           action={() => {
-            changeAttendance({
-              workPlaceEmployeeId: workPlaceEmployeeId!,
-              payPerHour: payPerHour!,
-              startTime: startTime!,
-              endTime: endTime!,
-              restMinutes: restMinutes!,
-            });
+            // changeAttendance({
+            //   workPlaceEmployeeId: workPlaceEmployeeId!,
+            //   payPerHour: payPerHour!,
+            //   startTime: startTime!,
+            //   endTime: endTime!,
+            //   restMinutes: restMinutes!,
+            // });
             setModalOpen(true);
           }}
-        /> */}
+        />
       </VStack>
     </>
   );
