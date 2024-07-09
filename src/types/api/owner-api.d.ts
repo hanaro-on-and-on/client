@@ -101,3 +101,24 @@ type OwnerGetEmployeeInfo = {
   employeeName: string;
   workStartDate: string;
 };
+
+//사장님 - 알바생 계좌 조회
+type OwnerGetEmployeeAccountInfo = {
+  ownerNm: string;
+  ownerAccountNumber: string;
+  employeeNm: string;
+  employeeAccountNumber: string;
+};
+
+//사장님 - 간편 지급 예약
+type OwnerConfirmPayment = {
+  senderAccountNumber: string;
+  senderNm: string;
+  receiverAccountNumber: string;
+  receiverNm: string;
+  amount: number;
+};
+
+type OwnerConfirmPaymentResponse = {
+  salaryTransferReserveId: number;
+};

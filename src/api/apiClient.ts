@@ -398,6 +398,34 @@ class ApiClient implements employeeApi, userApi, ownerApi {
     return response.data;
   }
 
+  // 사장님 - 알바생 계좌 조회
+  public async OwnerGetEmployeeAccountInfo(
+    workPlaceEmployeeId: number
+  ): Promise<OwnerGetEmployeeAccountInfo> {
+    const respnose: BaseResponse<OwnerGetEmployeeAccountInfo> =
+      await this.axiosInstance.request({
+        method: 'get',
+        url: `/owner/accounts/${workPlaceEmployeeId}`,
+      });
+
+    return respnose.data;
+  }
+
+  //사장님 - 알바생 급여 지급 예약
+  public async OwnerConfirmPayment(
+    payStubId: number,
+    request: OwnerConfirmPayment
+  ): Promise<OwnerConfirmPaymentResponse> {
+    const respnose: BaseResponse<OwnerConfirmPaymentResponse> =
+      await this.axiosInstance.request({
+        method: 'post',
+        url: `papers/pay-stubs/${payStubId}/reservation`,
+        data: request,
+      });
+
+    return respnose.data;
+  }
+
   // 공통 - 급여 명세서 정보 조회 (알바생 정보 조회)
   public async getEmmplyeeInfo(
     workPlaceEmployeeId: number
