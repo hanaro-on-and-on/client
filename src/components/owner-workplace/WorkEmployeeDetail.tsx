@@ -7,8 +7,8 @@ import WorkPlaceName from '../ui/WorkPlaceName';
 import ApiClient from '../../api/apiClient';
 
 enum ToggleStatus {
-  PAYMENT = 'payment',
-  WORKTIME = 'worktime',
+  PAYMENT = '급여 명세서',
+  WORKTIME = '근무 내역',
 }
 
 const WorkEmployeeDetail = () => {
@@ -60,6 +60,7 @@ const WorkEmployeeDetail = () => {
 
       {/* 토글버튼 */}
       <NavToggle
+        selectedTab={selectedToggle}
         first='급여 명세서'
         second='근무 내역'
         firstSelected={() => setSelectedToggle(ToggleStatus.PAYMENT)}
