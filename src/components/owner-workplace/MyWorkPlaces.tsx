@@ -9,6 +9,7 @@ import {
 import { isCurrentDate } from '../../utils/is-current-date';
 import ApiClient from '../../api/apiClient';
 import { useNavigate } from 'react-router-dom';
+import WorkPlaceNameBox from '../WorkPlaceNameBox';
 
 const MyWorkPlaces = () => {
   const navigate = useNavigate();
@@ -45,7 +46,27 @@ const MyWorkPlaces = () => {
         <div className='text-2xl'>{`총 ${data.totalPayment.toLocaleString()} 원`}</div>
       </VStack>
 
-      <VStack className='ListView mt-7 gap-2'>
+      {/* 매장목록  */}
+      <div className='mt-5'>
+        {data?.workPlaceList.map((item) => (
+          <WorkPlaceNameBox
+            key={item.workPlaceId}
+            workPlaceName={item.workPlaceName}
+            colorType={item.workPlaceColor}
+            arrow
+            arrowText={`총 ${item.payment.toLocaleString()}원`}
+            onClick={() => navigate(`/owner/myWorkPlaces/${item.workPlaceId}`)}
+          >
+            <div className='flex gap-3'>
+              <span className='text-gray-400'>
+                총 {item.employeeList.length}명
+              </span>
+            </div>
+          </WorkPlaceNameBox>
+        ))}
+      </div>
+
+      {/* <VStack className='ListView mt-7 gap-2'>
         {data?.workPlaceList.map((item) => (
           <MyWorkPlaceListView
             key={item.workPlaceId}
@@ -53,7 +74,7 @@ const MyWorkPlaces = () => {
             {...item}
           />
         ))}
-      </VStack>
+      </VStack> */}
       <button
         className='bg-hanaLightGreen gap-2 py-1 px-2 mt-2 flex items-center rounded-lg text-white self-end'
         onClick={onClickAddPlace}
