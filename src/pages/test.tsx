@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import BtnBottom from '../components/BtnBottom';
 import Frame from '../components/Frame';
 import ModalBottom from '../components/ModalBottom';
+import BtnBottom from '../components/BtnBottom';
 
 const Test = () => {
   const [isModalOpen, setModalOpen] = useState<boolean>(true);

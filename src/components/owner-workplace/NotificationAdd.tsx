@@ -1,4 +1,3 @@
-import BtnBottom from '../BtnBottom';
 import BtnChoiceBox from '../ui/BtnChoiceBox';
 import { HStack, VStack } from '../ui/Stack';
 

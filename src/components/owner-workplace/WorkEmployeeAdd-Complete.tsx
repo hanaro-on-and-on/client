@@ -1,10 +1,7 @@
 import { useState } from 'react';
-import { MINIMUM_PAY_PER_HOUR } from '../../utils/const-value';
-import { HStack, Spacer, VStack } from '../ui/Stack';
-import { DayOfWeekShort } from './WorkEmployeeAdd-Second';
-import BtnChoiceBox from '../ui/BtnChoiceBox';
+import { VStack } from '../ui/Stack';
+
 import { FaCheckCircle } from 'react-icons/fa';
-import BtnBottom from '../BtnBottom';
 
 enum Bonus {
   ON = 'bonusOn',
