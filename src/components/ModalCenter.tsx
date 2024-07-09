@@ -36,7 +36,7 @@ const ModalCenter = ({
           )}
         >
           <div className='font-bold'>{title}</div>
-          <div className='max-w-full w-full'>{children}</div>
+          <div className='max-w-full w-full overflow-y-scroll'>{children}</div>
           <div className='flex gap-5 w-full'>
             {hasDecline && (
               <BtnGray

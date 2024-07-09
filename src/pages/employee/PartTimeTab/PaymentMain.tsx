@@ -42,7 +42,7 @@ const PaymentMain = () => {
           {/* 토글 버튼 */}
           <NavToggle
             first='급여관리'
-            second='근무 관리'
+            second='근무지 관리'
             firstSelected={() => {
               selectPayment();
               setYearMonth(today);
