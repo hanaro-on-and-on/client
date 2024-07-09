@@ -88,6 +88,8 @@ const WorkTime = () => {
     <>
       {isModalCenterOpen && (
         <ModalCenter
+          hasDecline
+          declineAction={() => setModalCenterOpen(false)}
           confirmText='서명하기'
           title='근로계약서 조회'
           confirmAction={() => {

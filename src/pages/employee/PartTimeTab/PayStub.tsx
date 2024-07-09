@@ -9,6 +9,11 @@ import ModalBottom from '../../../components/ModalBottom';
 import SignPad from '../../../components/SignPad';
 import { useDate } from '../../../contexts/Date-Context';
 
+// READY 간편지급
+// SIGN 서명 요청 (사장님 이체예약, 직원 서명 x)
+// WATING 지급 대기 (사장님 이체예약, 직원 서명 o)
+// COMPLETED 지급 완료
+
 type Prop = {
   monthList: Date[];
   year: number;
@@ -18,7 +23,7 @@ type Prop = {
 };
 
 const textConvert = (status: string): string => {
-  if (status === 'READY') return '간편 지급';
+  if (status === 'READY') return '수령 불가';
   if (status === 'SIGN') return '수령 받기';
   if (status === 'WAITING') return '수령 대기';
   if (status === 'COMPLETED') return '수령 완료';
@@ -149,24 +154,37 @@ const PayStub = ({ monthList, year, month, id, isConnected }: Prop) => {
                 </>
               )}
             </div>
-            <div className='text-xl font-bold'>
+            <div className='text-xl font-bold mb-1'>
               총 {payStub.totalPay.toLocaleString()}
             </div>
           </div>
         )}
         {payStub && payStub.status === 'READY' && (
-          <BtnPrimary
+          <BtnGray
             text={textConvert(payStub.status)}
+            className='w-full my-2'
+            disabled
+          />
+        )}
+        {payStub && payStub.status === 'SIGN' && (
+          <BtnPrimary
+            text={textConvert(payStub?.status)}
             action={() =>
               openModal('급여 수령을 위한 전자 서명을 시작하시겠습니까?')
             }
             className='w-full my-2'
           />
         )}
-        {payStub && payStub.status !== 'READY' && (
+        {payStub && payStub.status === 'WAITING' && (
           <BtnGray
             text={textConvert(payStub?.status)}
-            action={() => {}}
+            className='w-full my-2'
+            disabled
+          />
+        )}
+        {payStub && payStub.status === 'COMPLETED' && (
+          <BtnGray
+            text={textConvert(payStub?.status)}
             className='w-full my-2'
             disabled
           />
