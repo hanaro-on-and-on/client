@@ -217,7 +217,7 @@ const PayStub = ({ monthList, year, month, id, isConnected }: Prop) => {
                   <div>근무수당</div>
                   <div className='flex justify-between  text-gray-400'>
                     <div>
-                      {payStub.basicPay.toLocaleString()}원 *{' '}
+                      {payStub.basicPay?.toLocaleString()}원 *{' '}
                       {payStub.basicHour}H
                     </div>
                     <div>
@@ -228,7 +228,7 @@ const PayStub = ({ monthList, year, month, id, isConnected }: Prop) => {
                 </div>
               </div>
               {/* 추가 근무 수당 */}
-              {payStub.overPay && (
+              {/* {payStub.overPay && (
                 <div className='grid grid-cols-12 justify-between items-start'>
                   <div className='col-span-1'>
                     <Circle color='red' />
@@ -247,7 +247,7 @@ const PayStub = ({ monthList, year, month, id, isConnected }: Prop) => {
                     </div>
                   </div>
                 </div>
-              )}
+              )} */}
               {/* 주휴 수당 */}
               {payStub.weeklyHolidayTime > 0 && (
                 <div className='grid grid-cols-12 justify-between items-start'>

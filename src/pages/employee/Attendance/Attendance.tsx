@@ -19,6 +19,7 @@ enum AttendanceStatus {
   COMPLETED = 'completed',
   PREPARING = 'preparing',
 }
+
 const Attendance = () => {
   const navigation = useNavigate();
   const [isModalCenterOpen, setModalCenterOpen] = useState<boolean>(false);
@@ -26,26 +27,28 @@ const Attendance = () => {
   const [attendanceStatus, setAttendanceStatus] = useState<AttendanceStatus[]>(
     []
   );
-
   const [location, setLoacation] = useState<{
     latitude: number;
     longitude: number;
-  }>({ longitude: 0, latitude: 0 });
+  }>({ longitude: 126.9729, latitude: 37.5759722 });
+
+  const [attendances, setAttendances] =
+    useState<EmployeeTodayAttendancesResponse | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const successHandler = (response: any) => {
     console.log(response); // coords: GeolocationCoordinates {latitude: 위도, longitude: 경도, …} timestamp: 1673446873903
     const { latitude, longitude } = response.coords;
     setLoacation({ latitude, longitude });
   };
-  const [attendances, setAttendances] =
-    useState<EmployeeTodayAttendancesResponse | null>(null);
 
   const getAttendanceList = async () => {
+    setLoading(true);
     try {
       const response =
         await ApiClient.getInstance().employeeGetAttendanceList();
-
       setAttendances(response);
+      setLoading(false);
 
       response.works.forEach((item, index) => {
         if (item.realStartTime) {
@@ -54,8 +57,7 @@ const Attendance = () => {
               pre[index] = AttendanceStatus.COMPLETED;
               return [...pre];
             });
-          }
-          if (!item.realEndTime) {
+          } else {
             setAttendanceStatus((pre) => {
               pre[index] = AttendanceStatus.WORKING;
               return [...pre];
@@ -70,12 +72,20 @@ const Attendance = () => {
       });
     } catch (err) {
       console.error(err);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    console.log(attendances), [];
-  });
+    getAttendanceList();
+    // navigator.geolocation.getCurrentPosition(
+    //   successHandler,
+    //   (err) => {
+    //     console.log(err);
+    //   },
+    //   { maximumAge: 60000, timeout: 5000, enableHighAccuracy: true }
+    // );
+  }, []);
 
   const checkIn = async (id: number) => {
     try {
@@ -85,6 +95,7 @@ const Attendance = () => {
           location: { lat: location.latitude, lng: location.longitude },
         });
 
+      console.log(response);
       if (response) {
         if (!response.success) {
           openModal('출석할 수 없습니다.\n 가까운 위치에서 다시 시도해주세요');
@@ -122,17 +133,6 @@ const Attendance = () => {
     setModalCenterOpen(false);
   };
 
-  useEffect(() => {
-    getAttendanceList();
-    navigator.geolocation.getCurrentPosition(
-      successHandler,
-      (err) => {
-        console.log(err);
-      },
-      { maximumAge: 60000, timeout: 5000, enableHighAccuracy: true }
-    );
-  }, []);
-
   return (
     <>
       {isModalCenterOpen && (
@@ -150,117 +150,132 @@ const Attendance = () => {
           {/* 오늘 출근 목록 */}
           <Wrapper title='오늘 출근 목록'>
             <div className='flex flex-col gap-1'>
-              {attendances && attendances.works?.length > 0 ? (
-                attendances?.works.map((item, index) => (
-                  <WhiteBox
-                    key={item.workPlaceEmployeeId}
-                    border
-                    className='py-5 '
-                  >
-                    <div className='flex flex-col gap-1 text-start'>
-                      <button
-                        type='button'
-                        className='flex justify-between items-center bg-transparent'
-                        onClick={() =>
-                          navigation(
-                            `detail/${item.workPlaceEmployeeId}/${item.colorTypeCd}`
-                          )
-                        }
-                      >
-                        <WorkPlaceName
-                          name={item.workPlaceName}
-                          colorType={item.colorTypeCd}
-                        />
-                        <FaAngleRight />
-                      </button>
-                      <div className='text-sm'>{`${new Date(item.startTime).getHours()}:${new Date(item.startTime).getMinutes() || '00'} - ${new Date(item.endTime).getHours()}:${new Date(item.endTime).getMinutes() || '00'}`}</div>
-
-                      {item.notice.length > 0 && (
-                        <div className='border rounded-sm text-sm border-hanaLightGreen px-3 py-1 mb-2'>
-                          <div className='flex font-semibold '>
-                            <span className='pr-1'>
-                              📢 [{item.workPlaceName}]
-                            </span>
-                            <span>{item?.notice[0].title}</span>
-                          </div>
-                          {` ${item?.notice[0].content}`}
-                        </div>
-                      )}
-                      {attendanceStatus[index] ===
-                        AttendanceStatus.PREPARING && (
-                        <BtnPrimary
-                          text='출근'
-                          action={() => checkIn(item.workPlaceEmployeeId)}
-                        />
-                      )}
-                      {attendanceStatus[index] === AttendanceStatus.WORKING && (
-                        <BtnDanger
-                          text='퇴근'
-                          action={() => checkOut(item.workPlaceEmployeeId)}
-                        />
-                      )}
-                      {attendanceStatus[index] ===
-                        AttendanceStatus.COMPLETED && (
-                        <BtnGray text='출근 불가' disabled />
-                      )}
-                    </div>
-                  </WhiteBox>
-                ))
+              {loading ? (
+                <PulseAttendance />
               ) : (
-                <WhiteBox>
-                  <div className='flex h-[55px] items-center justify-center text-gray-500 text-sm'>
-                    오늘 출근 일정이 없습니다
-                  </div>
-                </WhiteBox>
+                <>
+                  {attendances && attendances.works?.length > 0 ? (
+                    attendances?.works.map((item, index) => (
+                      <WhiteBox
+                        key={item.workPlaceEmployeeId}
+                        border
+                        className='py-5 '
+                      >
+                        <div className='flex flex-col gap-1 text-start'>
+                          <button
+                            type='button'
+                            className='flex justify-between items-center bg-transparent'
+                            onClick={() =>
+                              navigation(
+                                `detail/${item.workPlaceEmployeeId}/${item.colorTypeCd}`
+                              )
+                            }
+                          >
+                            <WorkPlaceName
+                              name={item.workPlaceName}
+                              colorType={item.colorTypeCd}
+                            />
+                            <FaAngleRight />
+                          </button>
+                          <div className='text-sm'>{`${new Date(item.startTime).getHours()}:${new Date(item.startTime).getMinutes() || '00'} - ${new Date(item.endTime).getHours()}:${new Date(item.endTime).getMinutes() || '00'}`}</div>
+
+                          {item.notice.length > 0 && (
+                            <div className='border rounded-sm text-sm border-hanaLightGreen px-3 py-1 mb-2'>
+                              <div className='flex font-semibold '>
+                                <span className='pr-1'>
+                                  📢 [{item.workPlaceName}]
+                                </span>
+                                <span>{item?.notice[0].title}</span>
+                              </div>
+                              {` ${item?.notice[0].content}`}
+                            </div>
+                          )}
+                          {attendanceStatus[index] ===
+                            AttendanceStatus.PREPARING && (
+                            <BtnPrimary
+                              text='출근'
+                              action={() => checkIn(item.workPlaceEmployeeId)}
+                            />
+                          )}
+                          {attendanceStatus[index] ===
+                            AttendanceStatus.WORKING && (
+                            <BtnDanger
+                              text='퇴근'
+                              action={() => checkOut(item.workPlaceEmployeeId)}
+                            />
+                          )}
+                          {attendanceStatus[index] ===
+                            AttendanceStatus.COMPLETED && (
+                            <BtnGray text='출근 불가' disabled />
+                          )}
+                        </div>
+                      </WhiteBox>
+                    ))
+                  ) : (
+                    <WhiteBox>
+                      <div className='flex h-[55px] items-center justify-center text-gray-500 text-sm'>
+                        오늘 출근 일정이 없습니다
+                      </div>
+                    </WhiteBox>
+                  )}
+                </>
               )}
-              {!attendances && <PulseAttendance />}
             </div>
           </Wrapper>
           {/* 전체 출근 목록 */}
           <Wrapper title='전체 출근 목록'>
             <div className='flex flex-col gap-1'>
-              {attendances && attendances.totalWorks?.length > 0 ? (
-                attendances?.totalWorks?.map((item) => (
-                  <WhiteBox key={item.workPlaceEmployeeId} border>
-                    <button
-                      type='button'
-                      className='flex justify justify-between items-center w-full h-full py-3 bg-transparent'
-                      onClick={() =>
-                        navigation(`detail/${item.workPlaceEmployeeId}`)
-                      }
-                    >
-                      <div className='flex flex-col items-start gap-1'>
-                        <WorkPlaceName
-                          name={item.workPlaceName}
-                          colorType={item.colorTypeCd}
-                        />
-                        {item.workTime.length > 0 ? (
-                          <div className='text-gray-400 text-sm'>
-                            <span className='font-semibold pr-3'>근무요일</span>
-                            {item.workTime?.map((i) => i.workDayOfWeek + ' ')}
-                          </div>
-                        ) : (
-                          <div className='text-gray-400 text-sm'>
-                            입력된 근무일정 없음
-                          </div>
-                        )}
-                      </div>
-                    </button>
-                  </WhiteBox>
-                ))
-              ) : (
-                <WhiteBox>
-                  <div className='flex h-[55px] items-center justify-center text-gray-500 text-sm'>
-                    다른 출근 일정이 없습니다
-                  </div>
-                </WhiteBox>
-              )}
-              {!attendances && (
+              {loading ? (
                 <div className='flex flex-col gap-2'>
                   <PulseWorkPlace />
                   <PulseWorkPlace />
                   <PulseWorkPlace />
                 </div>
+              ) : (
+                <>
+                  {attendances && attendances.totalWorks?.length > 0 ? (
+                    attendances?.totalWorks?.map((item) => (
+                      <WhiteBox key={item.workPlaceEmployeeId} border>
+                        <button
+                          type='button'
+                          className='flex justify justify-between items-center w-full h-full py-3 bg-transparent'
+                          onClick={() =>
+                            navigation(
+                              `detail/${item.workPlaceEmployeeId}/${item.colorTypeCd}`
+                            )
+                          }
+                        >
+                          <div className='flex flex-col items-start gap-1'>
+                            <WorkPlaceName
+                              name={item.workPlaceName}
+                              colorType={item.colorTypeCd}
+                            />
+                            {item.workTime.length > 0 ? (
+                              <div className='text-gray-400 text-sm'>
+                                <span className='font-semibold pr-3'>
+                                  근무요일
+                                </span>
+                                {item.workTime?.map(
+                                  (i) => i.workDayOfWeek + ' '
+                                )}
+                              </div>
+                            ) : (
+                              <div className='text-gray-400 text-sm'>
+                                입력된 근무일정 없음
+                              </div>
+                            )}
+                          </div>
+                        </button>
+                      </WhiteBox>
+                    ))
+                  ) : (
+                    <WhiteBox>
+                      <div className='flex h-[55px] items-center justify-center text-gray-500 text-sm'>
+                        다른 출근 일정이 없습니다
+                      </div>
+                    </WhiteBox>
+                  )}
+                </>
               )}
             </div>
           </Wrapper>

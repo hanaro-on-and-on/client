@@ -30,7 +30,7 @@ const LoginPage = () => {
       );
 
       if (isSuccess) {
-        if (role === ROLE.EMPLOYEE) navigation('/my');
+        if (role === ROLE.EMPLOYEE) navigation('/part-time/payment');
         else if (role === ROLE.OWNER) navigation('/owner/MyWorkSpaces');
       }
     } catch (err) {

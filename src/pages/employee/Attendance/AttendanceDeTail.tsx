@@ -33,12 +33,17 @@ const AttendanceDetail = () => {
   const [location, setLoacation] = useState<{
     latitude: number;
     longitude: number;
-  }>({ longitude: 0, latitude: 0 });
+  }>({ longitude: 126.9729, latitude: 37.5759722 });
 
   const successHandler = (response: any) => {
     console.log(response); // coords: GeolocationCoordinates {latitude: 위도, longitude: 경도, …} timestamp: 1673446873903
     const { latitude, longitude } = response.coords;
     setLoacation({ latitude, longitude });
+  };
+
+  const openModal = (msg: string = '') => {
+    setModalMsg(msg);
+    setModalCenterOpen(true);
   };
 
   const getDetail = async () => {
@@ -164,13 +169,13 @@ const AttendanceDetail = () => {
 
   useEffect(() => {
     if (!attendanceDetail) getDetail();
-    navigator.geolocation.getCurrentPosition(
-      successHandler,
-      (err) => {
-        console.log(err);
-      },
-      { maximumAge: 60000, timeout: 5000, enableHighAccuracy: true }
-    );
+    // navigator.geolocation.getCurrentPosition(
+    //   successHandler,
+    //   (err) => {
+    //     console.log(err);
+    //   },
+    //   { maximumAge: 60000, timeout: 5000, enableHighAccuracy: true }
+    // );
   }, [attendanceDetail]);
 
   return (
@@ -267,7 +272,11 @@ const AttendanceDetail = () => {
               </WhiteBox>
               <BtnPrimary
                 text='출근'
-                action={() => {}}
+                action={() =>
+                  openModal(
+                    '출석할 수 없습니다.\n 가까운 위치에서 다시 시도해주세요'
+                  )
+                }
                 className='py-4'
               ></BtnPrimary>
             </Wrapper>
