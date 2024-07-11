@@ -247,7 +247,7 @@ const OwnerPayStub = ({ year, month, workPlaceEmployeeId }: Prop) => {
               <span>{payStub.paymentDay}일</span>
             </div>
             <div className='text-xl font-bold'>
-              총 급여 : {payStub.totalPay.toLocaleString()} 원
+              총 급여 : {payStub.salary.toLocaleString()} 원
             </div>
           </div>
           {payStub?.status === 'READY' && (
@@ -295,8 +295,8 @@ const OwnerPayStub = ({ year, month, workPlaceEmployeeId }: Prop) => {
               <span className='font-bold'>지급 합계</span>
               <span className='font-semibold'>
                 {(
-                  payStub.basicHour * payStub.basicPay +
-                  payStub.overHour * payStub.overPay
+                  payStub.basicHour * payStub.payPerHour +
+                  payStub.overHour * payStub.payPerHour
                 ).toLocaleString()}
                 원
               </span>
@@ -310,10 +310,12 @@ const OwnerPayStub = ({ year, month, workPlaceEmployeeId }: Prop) => {
                 <div>근무수당</div>
                 <div className='flex justify-between  text-gray-400'>
                   <div>
-                    {payStub.basicPay.toLocaleString()}원 * {payStub.basicHour}H
+                    {payStub.payPerHour.toLocaleString()}원 *{' '}
+                    {payStub.basicHour}H
                   </div>
                   <div>
-                    {(payStub.basicHour * payStub.basicPay).toLocaleString()}원
+                    {(payStub.basicHour * payStub.payPerHour).toLocaleString()}
+                    원
                   </div>
                 </div>
               </div>
@@ -375,7 +377,7 @@ const OwnerPayStub = ({ year, month, workPlaceEmployeeId }: Prop) => {
                 <div>세금</div>
                 <div className='flex justify-between text-gray-400'>
                   <div>세율 {payStub.taxRate} </div>
-                  <div>{payStub.totalPay.toLocaleString()}원</div>
+                  <div>{payStub.taxPay.toLocaleString()}원</div>
                 </div>
               </div>
             </div>

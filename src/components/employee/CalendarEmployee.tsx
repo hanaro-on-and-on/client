@@ -7,6 +7,7 @@ import ApiClient from '../../api/apiClient';
 import { parseYYYMMDD } from '../../utils/date-util';
 import { useEmployeeCalendarData } from '../../contexts/Employee-Calender-Data-Context';
 import EmployeeCalendarMark from './EmployeeCalendarMark';
+import { HStack, VStack } from '../ui/Stack';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -15,6 +16,7 @@ const currentDate = new Date();
 
 const CalendarEmployee = () => {
   const [value, setValue] = useState<Value>(currentDate);
+  // console.log('🚀  CalendarEmployee  value:', new Date(value!.toString()));
   const { calendarData, setCalendarData } = useEmployeeCalendarData();
   const navigate = useNavigate();
 
@@ -25,6 +27,8 @@ const CalendarEmployee = () => {
       fetchData(year, month);
     }
   }, [value]);
+
+  const convertDate = new Date(value!.toString());
 
   const fetchData = async (year: number, month: number) => {
     try {
@@ -104,7 +108,41 @@ const CalendarEmployee = () => {
   };
 
   return (
-    <div className='rounded-mdw-ful'>
+    <VStack className='gap-3'>
+      <HStack className='justify-between items-center'>
+        <HStack className='gap-2 items-center'>
+          <span className='font-bold text-2xl'>
+            {`${convertDate.getFullYear()}년`}
+          </span>
+          <span className='text-2xl font-bold'>{`${convertDate.getMonth() + 1}월`}</span>
+        </HStack>
+        {/* <VStack className='items-center'>
+          <span className='font-bold text-lg'>{convertDate.getFullYear()}</span>
+          <HStack className='items-center justify-center'>
+            <span className='text-2xl font-extrabold'>{`${convertDate.getMonth() + 1}월`}</span>
+            <VStack className='items-center justify-center'>
+              <FaAngleUp className='text-sm' />
+              <FaAngleDown className='text-sm' />
+            </VStack>
+          </HStack>
+        </VStack> */}
+        <HStack>
+          <VStack className='border border-hanaLightGreen rounded-lg py-1 px-3'>
+            <span className='text-sm'>어제까지 급여</span>
+            <span className='text-lg font-semibold'>
+              {`${calendarData ? calendarData.allCurrentPayment.toLocaleString() : 0} 원`}
+            </span>
+          </VStack>
+          <VStack className='border border-hanaLightGreen rounded-lg py-1 px-3 bg-hanaLightGreen text-white'>
+            <span className='text-sm font-semibold'>이번달 예상 급여</span>
+            <span className='text-lg font-semibold'>
+              {`${calendarData ? calendarData.allTotalPayment.toLocaleString() : 0} 원`}
+            </span>
+          </VStack>
+        </HStack>
+        {/* <div>{calendarData?.allTotalPayment.toLocaleString()}</div> */}
+        {/* <div>{calendarData?.allTotalPayment.toLocaleString()}</div> */}
+      </HStack>
       <Calendar
         locale='en'
         className={'w-full'}
@@ -115,7 +153,7 @@ const CalendarEmployee = () => {
         tileClassName={['h-28']}
         tileContent={tileContent}
       />
-    </div>
+    </VStack>
   );
 };
 export default CalendarEmployee;

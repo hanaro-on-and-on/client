@@ -54,7 +54,7 @@ const WorkTime = () => {
       const response: { workPlaceEmployeeId: number } =
         await ApiClient.getInstance().employeeContractSign(contractId);
 
-      if (response) toggle();
+      if (response) getWorkPlaceList();
     } catch (err) {
       console.log(err);
       return false;

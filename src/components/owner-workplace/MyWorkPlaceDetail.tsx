@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import NavToggle from '../NavToggle';
 import { HStack, VStack } from '../ui/Stack';
 import { isCurrentDate } from '../../utils/is-current-date';
-import { FaAngleDown, FaAngleRight } from 'react-icons/fa6';
+import { FaAngleDown, FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 import ColorCircle from '../ui/ColorCircle';
 import WorkEmployeeListView from './WorkEmployeeListView';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
@@ -69,6 +69,23 @@ const MyWorkPlaceDetail = () => {
 
   const [selectedToggle, setSelectedToggle] = useState(ToggleStatus.EMPLOYEES);
 
+  const onClickDownMonth = () => {
+    if (month === 1) {
+      setYear(year - 1);
+      setMonth(12);
+    } else {
+      setMonth(month - 1);
+    }
+  };
+  const onClickUpMonth = () => {
+    if (month === 12) {
+      setYear(year + 1);
+      setMonth(1);
+    } else {
+      setMonth(month + 1);
+    }
+  };
+
   const onClickAddEmployee = (workPlaceName: string) => {
     prepareInfo(workPlaceName);
     navigate(`/owner/myWorkPlaces/${id}/addEmployee/first`);
@@ -96,10 +113,18 @@ const MyWorkPlaceDetail = () => {
                 {data.payment.toLocaleString()} 원
               </HStack>
             </VStack>
-            <button className='flex items-center gap-3 text-sm'>
-              {`${year}년 ${month}월 ${isCurrentDate(currentDate, year, month) ? '예정' : '확정'} 인건비`}{' '}
-              <FaAngleDown />
-            </button>
+            <HStack className='items-center justify-center gap-4'>
+              <button className='bg-white' onClick={onClickDownMonth}>
+                <FaAngleLeft />
+              </button>
+              <div className='text-sm'>
+                {`${year}년 ${month}월 ${isCurrentDate(currentDate, year, month) ? '예정' : '확정'} 인건비`}{' '}
+                {/* <FaAngleDown /> */}
+              </div>
+              <button className='bg-white' onClick={onClickUpMonth}>
+                <FaAngleRight />
+              </button>
+            </HStack>
           </VStack>
         </WhiteBox>
 

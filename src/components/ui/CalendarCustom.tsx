@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCalendarData } from '../../contexts/Calender-Data-Context';
 import ApiClient from '../../api/apiClient';
 import { parseYYYMMDD } from '../../utils/date-util';
+import { HStack, VStack } from './Stack';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -19,6 +20,8 @@ const CalendarCustom = () => {
   const navigate = useNavigate();
 
   console.log('🚀  CalendarCustom  value:', value);
+
+  const convertDate = new Date(value!.toString());
 
   useEffect(() => {
     if (value instanceof Date) {
@@ -116,7 +119,30 @@ const CalendarCustom = () => {
   };
 
   return (
-    <div className='rounded-mdw-ful'>
+    <VStack className='my-6 gap-3'>
+      <HStack className='justify-between items-center m-2'>
+        <HStack className='gap-2 items-center'>
+          <span className='font-bold text-2xl'>
+            {`${convertDate.getFullYear()}년`}
+          </span>
+          <span className='text-2xl font-bold'>{`${convertDate.getMonth() + 1}월`}</span>
+        </HStack>
+        <HStack>
+          <VStack className='border border-hanaLightGreen rounded-lg py-1 px-3'>
+            <span className='text-sm'>어제까지 급여</span>
+            <span className='text-lg font-semibold'>
+              {`${calendarData ? calendarData.currentPayment.toLocaleString() : 0} 원`}
+            </span>
+          </VStack>
+          <VStack className='border border-hanaLightGreen rounded-lg py-1 px-3 bg-hanaLightGreen text-white'>
+            <span className='text-sm font-semibold'>이번달 예상 급여</span>
+            <span className='text-lg font-semibold'>
+              {`${calendarData ? calendarData.totalPayment.toLocaleString() : 0} 원`}
+            </span>
+          </VStack>
+        </HStack>
+      </HStack>
+
       <Calendar
         locale='en'
         className={'w-full'}
@@ -127,7 +153,7 @@ const CalendarCustom = () => {
         tileClassName={['h-28']}
         tileContent={tileContent}
       />
-    </div>
+    </VStack>
   );
 };
 export default CalendarCustom;
