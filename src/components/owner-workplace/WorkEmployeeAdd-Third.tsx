@@ -69,7 +69,20 @@ const WorkEmployeeAddThird = () => {
     try {
       const response = await ApiClient.getInstance().registerEmployee(
         Number(placeId),
-        employeeContract!
+        {
+          payPerHour,
+          paymentDay,
+          restDayOfWeek:
+            restDayOfWeek === '없음'
+              ? undefined
+              : addSuffixDayOfWeek(restDayOfWeek as DayOfWeekShort),
+          bonusAmount: bonus === Bonus.OFF ? 0 : 10000,
+          otherAllowancesAmount: allowance === Allowance.OFF ? 0 : 10000,
+          otherAllowancesName:
+            allowance === Allowance.OFF ? undefined : '제수당',
+          overtimeRate,
+          ...employeeContract,
+        }
       );
       console.log('API 호출 결과:', response);
     } catch (error) {

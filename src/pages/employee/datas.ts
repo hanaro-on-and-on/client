@@ -10,7 +10,7 @@ export const BankList: SelectionProp[] = [
 ];
 
 export const EmployeeMenuList: LinkData[] = [
-  { idx: 0, title: '캘린더', url: 'ca' },
+  { idx: 0, title: '캘린더', url: '/calendar' },
   { idx: 1, title: '급여관리', url: '/part-time/payment' },
   { idx: 2, title: '마이페이지', url: '/my' },
   { idx: 3, title: '출퇴근', url: '/attendance' },
